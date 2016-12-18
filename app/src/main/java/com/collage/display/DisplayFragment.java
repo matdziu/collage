@@ -34,10 +34,9 @@ public class DisplayFragment extends Fragment {
 
         List<Photo> photoList = new ArrayList<>();
 
-        // height and width are supplied here in dp, but layoutParams in adapter takes only px hence conversion
+        // height and width are supplied here in dp, but layoutParams in adapter take only px hence conversion
         photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo),
-                convertToPx(120), convertToPx(120)));
-
+                convertToPx(120), convertToPx(240)));
 
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter(new PhotosAdapter(photoList));
@@ -71,4 +70,5 @@ public class DisplayFragment extends Fragment {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                 getResources().getDisplayMetrics());
     }
+
 }
