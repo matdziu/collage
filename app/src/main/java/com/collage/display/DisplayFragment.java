@@ -28,13 +28,13 @@ public class DisplayFragment extends Fragment {
     @BindView(R.id.photos_recycler_view)
     RecyclerView recyclerView;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_display, container, false);
-        ButterKnife.bind(this, view);
+    private List<Photo> photoList;
 
-        List<Photo> photoList = new ArrayList<>();
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        photoList = new ArrayList<>();
 
         // height and width are supplied here in dp, but layoutParams in adapter take only px hence conversion
         photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo),
@@ -69,6 +69,16 @@ public class DisplayFragment extends Fragment {
                 convertToPx(randomiseWidth())));
         photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo),
                 convertToPx(randomiseWidth())));
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_display, container, false);
+        ButterKnife.bind(this, view);
+
+        // for testing purposes!
+        setRetainInstance(true);
 
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter(new PhotosAdapter(photoList));
@@ -105,7 +115,7 @@ public class DisplayFragment extends Fragment {
 
     private int randomiseWidth() {
         List<Integer> acceptable = new ArrayList<>(Arrays.asList
-                (60, 120, 240));
+                (80, 120, 150, 240));
         return acceptable.get(new Random().nextInt(acceptable.size()));
     }
 
