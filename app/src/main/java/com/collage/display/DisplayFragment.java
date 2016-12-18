@@ -30,7 +30,6 @@ public class DisplayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_display, container, false);
         ButterKnife.bind(this, view);
-        hideSystemUI();
 
         List<Photo> photoList = new ArrayList<>();
         photoList.add(new Photo(ContextCompat.getColor(getContext(), R.color.colorAccent)));
@@ -43,6 +42,12 @@ public class DisplayFragment extends Fragment {
         recyclerView.setAdapter(new PhotosAdapter(photoList));
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        hideSystemUI();
     }
 
     private View getDecorView() {
