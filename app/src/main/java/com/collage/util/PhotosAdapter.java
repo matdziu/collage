@@ -31,7 +31,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.imageView.setBackgroundColor(photoList.get(position).getColorRes());
+        holder.imageView.setImageDrawable(photoList.get(position).getSamplePhoto());
     }
 
     @Override

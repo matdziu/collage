@@ -1,14 +1,16 @@
 package com.collage.model;
 
+import android.graphics.drawable.Drawable;
+
 public class Photo {
 
-    private int colorRes;
+    private Drawable samplePhoto;
 
-    public Photo(int colorRes) {
-        this.colorRes = colorRes;
+    public Photo(Drawable samplePhoto) {
+        this.samplePhoto = samplePhoto;
     }
 
-    public int getColorRes() {
-        return colorRes;
+    public Drawable getSamplePhoto() {
+        return samplePhoto;
     }
 }

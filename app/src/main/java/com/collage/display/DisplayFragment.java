@@ -32,11 +32,29 @@ public class DisplayFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         List<Photo> photoList = new ArrayList<>();
-        photoList.add(new Photo(ContextCompat.getColor(getContext(), R.color.colorAccent)));
-        photoList.add(new Photo(ContextCompat.getColor(getContext(), R.color.colorPrimary)));
-        photoList.add(new Photo(ContextCompat.getColor(getContext(), R.color.colorAccent)));
-        photoList.add(new Photo(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark)));
-        photoList.add(new Photo(ContextCompat.getColor(getContext(), R.color.colorAccent)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
 
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter(new PhotosAdapter(photoList));
