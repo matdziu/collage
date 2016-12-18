@@ -32,6 +32,8 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.imageView.setImageDrawable(photoList.get(position).getSamplePhoto());
+        setImageViewBounds(holder.imageView, photoList.get(position).getHeightPx(),
+                photoList.get(position).getWidthPx());
     }
 
     @Override
@@ -48,5 +50,12 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    private void setImageViewBounds(ImageView imageView, int height, int width) {
+        ViewGroup.LayoutParams params = imageView.getLayoutParams();
+        params.width = width;
+        params.height = height;
+        imageView.setLayoutParams(params);
     }
 }

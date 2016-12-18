@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,29 +33,11 @@ public class DisplayFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         List<Photo> photoList = new ArrayList<>();
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo)));
+
+        // height and width are supplied here in dp, but layoutParams in adapter takes only px hence conversion
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo),
+                convertToPx(120), convertToPx(120)));
+
 
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter(new PhotosAdapter(photoList));
@@ -82,5 +65,10 @@ public class DisplayFragment extends Fragment {
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
+
+    private int convertToPx(int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                getResources().getDisplayMetrics());
     }
 }
