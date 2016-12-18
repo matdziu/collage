@@ -16,7 +16,9 @@ import com.collage.model.Photo;
 import com.collage.util.PhotosAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,7 +38,37 @@ public class DisplayFragment extends Fragment {
 
         // height and width are supplied here in dp, but layoutParams in adapter take only px hence conversion
         photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo),
-                convertToPx(120), convertToPx(240)));
+                convertToPx(randomiseWidth())));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo),
+                convertToPx(randomiseWidth())));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo),
+                convertToPx(randomiseWidth())));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo),
+                convertToPx(randomiseWidth())));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo),
+                convertToPx(randomiseWidth())));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo),
+                convertToPx(randomiseWidth())));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo),
+                convertToPx(randomiseWidth())));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo),
+                convertToPx(randomiseWidth())));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo),
+                convertToPx(randomiseWidth())));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo),
+                convertToPx(randomiseWidth())));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo),
+                convertToPx(randomiseWidth())));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo),
+                convertToPx(randomiseWidth())));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo),
+                convertToPx(randomiseWidth())));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo),
+                convertToPx(randomiseWidth())));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo),
+                convertToPx(randomiseWidth())));
+        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo),
+                convertToPx(randomiseWidth())));
 
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter(new PhotosAdapter(photoList));
@@ -69,6 +101,12 @@ public class DisplayFragment extends Fragment {
     private int convertToPx(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                 getResources().getDisplayMetrics());
+    }
+
+    private int randomiseWidth() {
+        List<Integer> acceptable = new ArrayList<>(Arrays.asList
+                (60, 120, 240));
+        return acceptable.get(new Random().nextInt(acceptable.size()));
     }
 
 }

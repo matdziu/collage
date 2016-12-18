@@ -32,7 +32,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.imageView.setImageDrawable(photoList.get(position).getSamplePhoto());
-        setImageViewBounds(holder.imageView, photoList.get(position).getHeightPx(),
+        setImageViewBounds(holder.imageView, photoList.get(position).getWidthPx(),
                 photoList.get(position).getWidthPx());
     }
 
