@@ -55,6 +55,9 @@ public class CameraFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
         ButterKnife.bind(this, view);
 
+        // TODO: this is not in a proper place
+        requestCameraPermission();
+
         return view;
     }
 
@@ -74,6 +77,11 @@ public class CameraFragment extends Fragment {
         return getActivity()
                 .getWindow()
                 .getDecorView();
+    }
+
+    private void requestCameraPermission() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA},
+                CameraFragment.CAMERA_PERMISSION_REQUEST_CODE);
     }
 
     private void hideSystemUI() {
@@ -184,11 +192,9 @@ public class CameraFragment extends Fragment {
     private void openCamera() {
         CameraManager cameraManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
         try {
-            if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA},
-                        CameraFragment.CAMERA_PERMISSION_REQUEST_CODE);
+            if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                cameraManager.openCamera(cameraId, stateCallback, null);
             }
-            cameraManager.openCamera(cameraId, stateCallback, null);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
