@@ -5,19 +5,24 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Size;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.collage.R;
 
@@ -41,12 +46,17 @@ public class CameraFragment extends Fragment {
     private CameraDevice cameraDevice;
     private TextureView.SurfaceTextureListener surfaceTextureListener;
     private CameraDevice.StateCallback stateCallback;
+    private CaptureRequest captureRequest;
+    private CaptureRequest.Builder captureRequestBuilder;
+    private CameraCaptureSession cameraCaptureSession;
+    private CameraCaptureSession.CaptureCallback captureCallback;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         surfaceTextureListener = initSurfaceTextureListener();
         stateCallback = initStateCallback();
+        captureCallback = initCaptureCallback();
     }
 
     @Nullable
@@ -122,21 +132,31 @@ public class CameraFragment extends Fragment {
     private CameraDevice.StateCallback initStateCallback() {
         return new CameraDevice.StateCallback() {
             @Override
-            public void onOpened(CameraDevice cameraDevice) {
+            public void onOpened(@NonNull CameraDevice cameraDevice) {
                 CameraFragment.this.cameraDevice = cameraDevice;
+                createCameraPreviewSession();
             }
 
             @Override
-            public void onDisconnected(CameraDevice cameraDevice) {
+            public void onDisconnected(@NonNull CameraDevice cameraDevice) {
                 cameraDevice.close();
                 CameraFragment.this.cameraDevice = null;
             }
 
             @Override
-            public void onError(CameraDevice cameraDevice, int error) {
+            public void onError(@NonNull CameraDevice cameraDevice, int error) {
                 cameraDevice.close();
                 CameraFragment.this.cameraDevice = null;
 
+            }
+        };
+    }
+
+    private CameraCaptureSession.CaptureCallback initCaptureCallback() {
+        return new CameraCaptureSession.CaptureCallback() {
+            @Override
+            public void onCaptureStarted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, long timestamp, long frameNumber) {
+                super.onCaptureStarted(session, request, timestamp, frameNumber);
             }
         };
     }
@@ -156,6 +176,40 @@ public class CameraFragment extends Fragment {
                 return;
             }
 
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createCameraPreviewSession() {
+        try {
+            SurfaceTexture surfaceTexture = textureView.getSurfaceTexture();
+            surfaceTexture.setDefaultBufferSize(previewSize.getWidth(), previewSize.getHeight());
+            Surface previewSurface = new Surface(surfaceTexture);
+            captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+            captureRequestBuilder.addTarget(previewSurface);
+            cameraDevice.createCaptureSession(Collections.singletonList(previewSurface), new CameraCaptureSession.StateCallback() {
+                @Override
+                public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
+                    if (cameraDevice == null) {
+                        return;
+                    }
+
+                    try {
+                        captureRequest = captureRequestBuilder.build();
+                        CameraFragment.this.cameraCaptureSession = cameraCaptureSession;
+                        CameraFragment.this.cameraCaptureSession.setRepeatingRequest(captureRequest,
+                                CameraFragment.this.captureCallback, null);
+                    } catch (CameraAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
+                    Toast.makeText(getContext(), R.string.camera_error, Toast.LENGTH_SHORT).show();
+                }
+            }, null);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
