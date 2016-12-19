@@ -77,10 +77,17 @@ public class CameraFragment extends Fragment {
         hideSystemUI();
 
         if (textureView.isAvailable()) {
-
+            setUpCamera(textureView.getWidth(), textureView.getHeight());
+            openCamera();
         } else {
             textureView.setSurfaceTextureListener(surfaceTextureListener);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        closeCamera();
     }
 
     private View getDecorView() {
@@ -253,4 +260,17 @@ public class CameraFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
+    private void closeCamera() {
+        if (cameraCaptureSession != null) {
+            cameraCaptureSession.close();
+            cameraCaptureSession = null;
+        }
+
+        if (cameraDevice != null) {
+            cameraDevice.close();
+            cameraDevice = null;
+        }
+    }
+
 }
