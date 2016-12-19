@@ -12,6 +12,8 @@ import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -50,6 +52,8 @@ public class CameraFragment extends Fragment {
     private CaptureRequest.Builder captureRequestBuilder;
     private CameraCaptureSession cameraCaptureSession;
     private CameraCaptureSession.CaptureCallback captureCallback;
+    private HandlerThread backgroundThread;
+    private Handler backgroundHandler;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,6 +79,7 @@ public class CameraFragment extends Fragment {
     public void onResume() {
         super.onResume();
         hideSystemUI();
+        openBackgroundThread();
 
         if (textureView.isAvailable()) {
             setUpCamera(textureView.getWidth(), textureView.getHeight());
@@ -86,8 +91,9 @@ public class CameraFragment extends Fragment {
 
     @Override
     public void onPause() {
-        super.onPause();
         closeCamera();
+        closeBackgroundThread();
+        super.onPause();
     }
 
     private View getDecorView() {
@@ -206,7 +212,7 @@ public class CameraFragment extends Fragment {
                         captureRequest = captureRequestBuilder.build();
                         CameraFragment.this.cameraCaptureSession = cameraCaptureSession;
                         CameraFragment.this.cameraCaptureSession.setRepeatingRequest(captureRequest,
-                                CameraFragment.this.captureCallback, null);
+                                CameraFragment.this.captureCallback, backgroundHandler);
                     } catch (CameraAccessException e) {
                         e.printStackTrace();
                     }
@@ -254,7 +260,7 @@ public class CameraFragment extends Fragment {
         CameraManager cameraManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
         try {
             if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                cameraManager.openCamera(cameraId, stateCallback, null);
+                cameraManager.openCamera(cameraId, stateCallback, backgroundHandler);
             }
         } catch (CameraAccessException e) {
             e.printStackTrace();
@@ -270,6 +276,23 @@ public class CameraFragment extends Fragment {
         if (cameraDevice != null) {
             cameraDevice.close();
             cameraDevice = null;
+        }
+    }
+
+    private void openBackgroundThread() {
+        backgroundThread = new HandlerThread("camera_background_thread");
+        backgroundThread.start();
+        backgroundHandler = new Handler(backgroundHandler.getLooper());
+    }
+
+    private void closeBackgroundThread() {
+        backgroundThread.quitSafely();
+        try {
+            backgroundThread.join();
+            backgroundThread = null;
+            backgroundHandler = null;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
