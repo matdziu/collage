@@ -9,7 +9,10 @@ import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CaptureFailure;
 import android.hardware.camera2.CaptureRequest;
+import android.hardware.camera2.CaptureResult;
+import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,6 +45,10 @@ public class CameraFragment extends Fragment {
     TextureView textureView;
 
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 0;
+
+    private int currentState;
+    private static final int STATE_PREVIEW = 1;
+    private static final int STATE_WAIT_LOCK = 2;
 
     private Size previewSize;
     private String cameraId;
@@ -170,6 +177,31 @@ public class CameraFragment extends Fragment {
             @Override
             public void onCaptureStarted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, long timestamp, long frameNumber) {
                 super.onCaptureStarted(session, request, timestamp, frameNumber);
+            }
+
+            @Override
+            public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
+                super.onCaptureCompleted(session, request, result);
+                process(result);
+            }
+
+            @Override
+            public void onCaptureFailed(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull CaptureFailure failure) {
+                super.onCaptureFailed(session, request, failure);
+            }
+
+            private void process(CaptureResult result) {
+                switch (currentState) {
+                    case STATE_PREVIEW:
+                        // do nothing
+                        break;
+                    case STATE_WAIT_LOCK:
+                        if (result.get(CaptureResult.CONTROL_AF_STATE)
+                                == CaptureRequest.CONTROL_AF_STATE_FOCUSED_LOCKED) {
+
+                        }
+                        break;
+                }
             }
         };
     }
