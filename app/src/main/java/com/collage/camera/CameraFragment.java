@@ -31,6 +31,8 @@ public class CameraFragment extends Fragment {
     TextureView textureView;
 
     private TextureView.SurfaceTextureListener surfaceTextureListener;
+    private Size previewSize;
+    private String cameraId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,6 +111,9 @@ public class CameraFragment extends Fragment {
                     continue;
                 }
                 StreamConfigurationMap streamConfigurationMap = cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+                previewSize = getPreferredPreviewSize(streamConfigurationMap.getOutputSizes(SurfaceTexture.class), width, height);
+                this.cameraId = cameraId;
+                return;
             }
 
         } catch (CameraAccessException e) {
