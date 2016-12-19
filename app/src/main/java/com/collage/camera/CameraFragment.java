@@ -38,6 +38,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class CameraFragment extends Fragment {
 
@@ -61,6 +62,7 @@ public class CameraFragment extends Fragment {
     private CameraCaptureSession.CaptureCallback captureCallback;
     private HandlerThread backgroundThread;
     private Handler backgroundHandler;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -252,7 +254,7 @@ public class CameraFragment extends Fragment {
 
                 @Override
                 public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
-                    Toast.makeText(getContext(), R.string.camera_error, Toast.LENGTH_SHORT).show();
+
                 }
             }, null);
         } catch (CameraAccessException e) {
@@ -328,7 +330,8 @@ public class CameraFragment extends Fragment {
         }
     }
 
-    private void takePhoto(View view) {
+    @OnClick(R.id.fab_camera)
+    public void takePhoto() {
         lockFocus();
     }
 
