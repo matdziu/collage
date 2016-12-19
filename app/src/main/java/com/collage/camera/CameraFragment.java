@@ -115,16 +115,19 @@ public class CameraFragment extends Fragment {
         return new CameraDevice.StateCallback() {
             @Override
             public void onOpened(CameraDevice cameraDevice) {
-
+                CameraFragment.this.cameraDevice = cameraDevice;
             }
 
             @Override
             public void onDisconnected(CameraDevice cameraDevice) {
-
+                cameraDevice.close();
+                CameraFragment.this.cameraDevice = null;
             }
 
             @Override
-            public void onError(CameraDevice cameraDevice, int i) {
+            public void onError(CameraDevice cameraDevice, int error) {
+                cameraDevice.close();
+                CameraFragment.this.cameraDevice = null;
 
             }
         };
