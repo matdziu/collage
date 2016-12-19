@@ -1,13 +1,17 @@
 package com.collage.camera;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Size;
 import android.view.LayoutInflater;
@@ -30,14 +34,19 @@ public class CameraFragment extends Fragment {
     @BindView(R.id.texture_view)
     TextureView textureView;
 
-    private TextureView.SurfaceTextureListener surfaceTextureListener;
+    private static final int CAMERA_PERMISSION_REQUEST_CODE = 0;
+
     private Size previewSize;
     private String cameraId;
+    private CameraDevice cameraDevice;
+    private TextureView.SurfaceTextureListener surfaceTextureListener;
+    private CameraDevice.StateCallback stateCallback;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        surfaceTextureListener = setSurfaceTextureListener();
+        surfaceTextureListener = initSurfaceTextureListener();
+        stateCallback = initStateCallback();
     }
 
     @Nullable
@@ -77,11 +86,12 @@ public class CameraFragment extends Fragment {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
-    private TextureView.SurfaceTextureListener setSurfaceTextureListener() {
+    private TextureView.SurfaceTextureListener initSurfaceTextureListener() {
         return new TextureView.SurfaceTextureListener() {
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
                 setUpCamera(width, height);
+                openCamera();
             }
 
             @Override
@@ -96,6 +106,25 @@ public class CameraFragment extends Fragment {
 
             @Override
             public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
+
+            }
+        };
+    }
+
+    private CameraDevice.StateCallback initStateCallback() {
+        return new CameraDevice.StateCallback() {
+            @Override
+            public void onOpened(CameraDevice cameraDevice) {
+
+            }
+
+            @Override
+            public void onDisconnected(CameraDevice cameraDevice) {
+
+            }
+
+            @Override
+            public void onError(CameraDevice cameraDevice, int i) {
 
             }
         };
@@ -147,5 +176,18 @@ public class CameraFragment extends Fragment {
             });
         }
         return mapSizes[0];
+    }
+
+    private void openCamera() {
+        CameraManager cameraManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
+        try {
+            if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA},
+                        CameraFragment.CAMERA_PERMISSION_REQUEST_CODE);
+            }
+            cameraManager.openCamera(cameraId, stateCallback, null);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
     }
 }
