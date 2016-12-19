@@ -90,10 +90,10 @@ public class CameraFragment extends Fragment {
     }
 
     @Override
-    public void onPause() {
+    public void onStop() {
+        super.onStop();
         closeCamera();
         closeBackgroundThread();
-        super.onPause();
     }
 
     private View getDecorView() {
@@ -282,7 +282,7 @@ public class CameraFragment extends Fragment {
     private void openBackgroundThread() {
         backgroundThread = new HandlerThread("camera_background_thread");
         backgroundThread.start();
-        backgroundHandler = new Handler(backgroundHandler.getLooper());
+        backgroundHandler = new Handler(backgroundThread.getLooper());
     }
 
     private void closeBackgroundThread() {
