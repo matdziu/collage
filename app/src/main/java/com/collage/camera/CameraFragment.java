@@ -198,7 +198,7 @@ public class CameraFragment extends Fragment {
                     case STATE_WAIT_LOCK:
                         if (result.get(CaptureResult.CONTROL_AF_STATE)
                                 == CaptureRequest.CONTROL_AF_STATE_FOCUSED_LOCKED) {
-
+                            unlockFocus();
                         }
                         break;
                 }
@@ -324,6 +324,34 @@ public class CameraFragment extends Fragment {
             backgroundThread = null;
             backgroundHandler = null;
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void takePhoto(View view) {
+        lockFocus();
+    }
+
+    private void lockFocus() {
+        try {
+            currentState = STATE_WAIT_LOCK;
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
+                    CaptureRequest.CONTROL_AF_TRIGGER_START);
+            cameraCaptureSession.capture(captureRequestBuilder.build(),
+                    captureCallback, backgroundHandler);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void unlockFocus() {
+        try {
+            currentState = STATE_PREVIEW;
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
+                    CaptureRequest.CONTROL_AF_TRIGGER_CANCEL);
+            cameraCaptureSession.capture(captureRequestBuilder.build(),
+                    captureCallback, backgroundHandler);
+        } catch (CameraAccessException e) {
             e.printStackTrace();
         }
     }
