@@ -10,9 +10,7 @@ import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
-import android.hardware.camera2.CaptureFailure;
 import android.hardware.camera2.CaptureRequest;
-import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
@@ -67,10 +65,6 @@ public class CameraFragment extends Fragment {
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
     }
 
-    private int currentState;
-    private static final int STATE_PREVIEW = 1;
-    private static final int STATE_WAIT_LOCK = 2;
-    private static final int STATE_PICTURE_CAPTURED = 3;
     private static final int CAMERA_FRAGMENT_PERMISSIONS_CODE = 0;
 
     private static File imageFile;
@@ -242,39 +236,6 @@ public class CameraFragment extends Fragment {
 
     private CameraCaptureSession.CaptureCallback initCaptureCallback() {
         return new CameraCaptureSession.CaptureCallback() {
-            @Override
-            public void onCaptureStarted(@NonNull CameraCaptureSession session,
-                                         @NonNull CaptureRequest request,
-                                         long timestamp, long frameNumber) {
-                super.onCaptureStarted(session, request, timestamp, frameNumber);
-            }
-
-            @Override
-            public void onCaptureCompleted(@NonNull CameraCaptureSession session,
-                                           @NonNull CaptureRequest request,
-                                           @NonNull TotalCaptureResult result) {
-                super.onCaptureCompleted(session, request, result);
-                process(result);
-            }
-
-            @Override
-            public void onCaptureFailed(@NonNull CameraCaptureSession session,
-                                        @NonNull CaptureRequest request,
-                                        @NonNull CaptureFailure failure) {
-                super.onCaptureFailed(session, request, failure);
-            }
-
-            private void process(CaptureResult result) {
-                switch (currentState) {
-                    case STATE_WAIT_LOCK:
-                        if (result.get(CaptureResult.CONTROL_AF_STATE)
-                                == CaptureRequest.CONTROL_AF_STATE_FOCUSED_LOCKED) {
-                            currentState = STATE_PICTURE_CAPTURED;
-                            captureStillImage();
-                        }
-                        break;
-                }
-            }
         };
     }
 
@@ -431,16 +392,8 @@ public class CameraFragment extends Fragment {
         }
     }
 
-    @OnClick(R.id.fab_camera)
-    public void takePhoto() {
-        lockFocus();
-    }
-
-    private void lockFocus() {
+    private void lock() {
         try {
-            currentState = STATE_WAIT_LOCK;
-            captureRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
-                    CaptureRequest.CONTROL_AF_TRIGGER_START);
             cameraCaptureSession.capture(captureRequestBuilder.build(),
                     captureCallback, backgroundHandler);
         } catch (CameraAccessException e) {
@@ -448,11 +401,8 @@ public class CameraFragment extends Fragment {
         }
     }
 
-    private void unlockFocus() {
+    private void unlock() {
         try {
-            currentState = STATE_PREVIEW;
-            captureRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
-                    CaptureRequest.CONTROL_AF_TRIGGER_CANCEL);
             cameraCaptureSession.setRepeatingRequest(captureRequestBuilder.build(),
                     captureCallback, backgroundHandler);
         } catch (CameraAccessException e) {
@@ -480,8 +430,10 @@ public class CameraFragment extends Fragment {
         return File.createTempFile(imageFileName, ".jpg", galleryFolder);
     }
 
-    private void captureStillImage() {
+    @OnClick(R.id.fab_camera)
+    public void captureImage() {
         try {
+            lock();
             CaptureRequest.Builder captureRequestBuilder =
                     cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             captureRequestBuilder.addTarget(imageReader.getSurface());
@@ -510,7 +462,7 @@ public class CameraFragment extends Fragment {
                                                @NonNull CaptureRequest request,
                                                @NonNull TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
-                    unlockFocus();
+                    unlock();
                 }
             };
             cameraCaptureSession.stopRepeating();
