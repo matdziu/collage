@@ -26,6 +26,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Size;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.TextureView;
@@ -56,11 +57,19 @@ public class CameraFragment extends Fragment {
     @BindView(R.id.texture_view)
     TextureView textureView;
 
-    private static final int CAMERA_PERMISSION_REQUEST_CODE = 0;
+    private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
+
+    static {
+        ORIENTATIONS.append(Surface.ROTATION_0, 90);
+        ORIENTATIONS.append(Surface.ROTATION_90, 0);
+        ORIENTATIONS.append(Surface.ROTATION_180, 270);
+        ORIENTATIONS.append(Surface.ROTATION_270, 180);
+    }
 
     private int currentState;
     private static final int STATE_PREVIEW = 1;
     private static final int STATE_WAIT_LOCK = 2;
+    private static final int CAMERA_FRAGMENT_PERMISSIONS_CODE = 0;
 
     private static File imageFile;
 
@@ -76,7 +85,6 @@ public class CameraFragment extends Fragment {
     private HandlerThread backgroundThread;
     private Handler backgroundHandler;
     private File galleryFolder;
-    private String GALLERY_LOCATION = "image gallery";
     private String imageFileLocation = "";
     private ImageReader imageReader;
     private ImageReader.OnImageAvailableListener onImageAvailableListener;
@@ -134,7 +142,7 @@ public class CameraFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         // TODO: this is not in a proper place
-        requestCameraPermission();
+        requestPermissions();
 
         return view;
     }
@@ -166,9 +174,10 @@ public class CameraFragment extends Fragment {
                 .getDecorView();
     }
 
-    private void requestCameraPermission() {
-        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA},
-                CameraFragment.CAMERA_PERMISSION_REQUEST_CODE);
+    private void requestPermissions() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                CameraFragment.CAMERA_FRAGMENT_PERMISSIONS_CODE);
     }
 
     private void hideSystemUI() {
@@ -255,7 +264,7 @@ public class CameraFragment extends Fragment {
                     case STATE_WAIT_LOCK:
                         if (result.get(CaptureResult.CONTROL_AF_STATE)
                                 == CaptureRequest.CONTROL_AF_STATE_FOCUSED_LOCKED) {
-                            unlockFocus();
+                            captureStillImage();
                         }
                         break;
                 }
@@ -312,28 +321,29 @@ public class CameraFragment extends Fragment {
             Surface previewSurface = new Surface(surfaceTexture);
             captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             captureRequestBuilder.addTarget(previewSurface);
-            cameraDevice.createCaptureSession(Collections.singletonList(previewSurface), new CameraCaptureSession.StateCallback() {
-                @Override
-                public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
-                    if (cameraDevice == null) {
-                        return;
-                    }
+            cameraDevice.createCaptureSession(Arrays.asList(previewSurface, imageReader.getSurface()),
+                    new CameraCaptureSession.StateCallback() {
+                        @Override
+                        public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
+                            if (cameraDevice == null) {
+                                return;
+                            }
 
-                    try {
-                        captureRequest = captureRequestBuilder.build();
-                        CameraFragment.this.cameraCaptureSession = cameraCaptureSession;
-                        CameraFragment.this.cameraCaptureSession.setRepeatingRequest(captureRequest,
-                                CameraFragment.this.captureCallback, backgroundHandler);
-                    } catch (CameraAccessException e) {
-                        e.printStackTrace();
-                    }
-                }
+                            try {
+                                captureRequest = captureRequestBuilder.build();
+                                CameraFragment.this.cameraCaptureSession = cameraCaptureSession;
+                                CameraFragment.this.cameraCaptureSession.setRepeatingRequest(captureRequest,
+                                        CameraFragment.this.captureCallback, backgroundHandler);
+                            } catch (CameraAccessException e) {
+                                e.printStackTrace();
+                            }
+                        }
 
-                @Override
-                public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
+                        @Override
+                        public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
 
-                }
-            }, null);
+                        }
+                    }, null);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -448,7 +458,7 @@ public class CameraFragment extends Fragment {
 
     private void createImageGallery() {
         File storageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        galleryFolder = new File(storageDirectory, GALLERY_LOCATION);
+        galleryFolder = new File(storageDirectory, getResources().getString(R.string.app_name));
         if (!galleryFolder.exists()) {
             galleryFolder.mkdirs();
         }
@@ -465,6 +475,32 @@ public class CameraFragment extends Fragment {
 
         return image;
 
+    }
+
+    private void captureStillImage() {
+        try {
+            CaptureRequest.Builder captureRequestBuilder =
+                    cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+            captureRequestBuilder.addTarget(imageReader.getSurface());
+
+            int rotation = getActivity()
+                    .getWindowManager()
+                    .getDefaultDisplay()
+                    .getRotation();
+            captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION,
+                    ORIENTATIONS.get(rotation));
+
+            CameraCaptureSession.CaptureCallback captureCallback = new CameraCaptureSession.CaptureCallback() {
+                @Override
+                public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
+                    super.onCaptureCompleted(session, request, result);
+                    unlockFocus();
+                }
+            };
+            cameraCaptureSession.capture(captureRequestBuilder.build(), captureCallback, null);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
     }
 
 }
