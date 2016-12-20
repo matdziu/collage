@@ -423,10 +423,8 @@ public class CameraFragment extends Fragment {
     }
 
     private File createImageFile() throws IOException {
-
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "image_" + timeStamp + "_";
-
         return File.createTempFile(imageFileName, ".jpg", galleryFolder);
     }
 
