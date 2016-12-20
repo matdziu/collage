@@ -453,7 +453,7 @@ public class CameraFragment extends Fragment {
             currentState = STATE_PREVIEW;
             captureRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
                     CaptureRequest.CONTROL_AF_TRIGGER_CANCEL);
-            cameraCaptureSession.capture(captureRequestBuilder.build(),
+            cameraCaptureSession.setRepeatingRequest(captureRequestBuilder.build(),
                     captureCallback, backgroundHandler);
         } catch (CameraAccessException e) {
             e.printStackTrace();
@@ -466,7 +466,7 @@ public class CameraFragment extends Fragment {
         if (!galleryFolder.exists()) {
             boolean wasCreated = galleryFolder.mkdirs();
             if (!wasCreated) {
-                Log.e("CapturesImages", "Failed to create directory");
+                Log.e("CapturedImages", "Failed to create directory");
             }
         }
 
@@ -513,6 +513,7 @@ public class CameraFragment extends Fragment {
                     unlockFocus();
                 }
             };
+            cameraCaptureSession.stopRepeating();
             cameraCaptureSession.capture(captureRequestBuilder.build(), captureCallback, null);
         } catch (CameraAccessException e) {
             e.printStackTrace();
