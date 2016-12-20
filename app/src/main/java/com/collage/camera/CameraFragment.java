@@ -25,6 +25,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
@@ -69,6 +70,7 @@ public class CameraFragment extends Fragment {
     private int currentState;
     private static final int STATE_PREVIEW = 1;
     private static final int STATE_WAIT_LOCK = 2;
+    private static final int STATE_PICTURE_CAPTURED = 3;
     private static final int CAMERA_FRAGMENT_PERMISSIONS_CODE = 0;
 
     private static File imageFile;
@@ -92,7 +94,7 @@ public class CameraFragment extends Fragment {
 
         private final Image image;
 
-        public ImageSaver(Image image) {
+        ImageSaver(Image image) {
             this.image = image;
         }
 
@@ -136,7 +138,8 @@ public class CameraFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
         ButterKnife.bind(this, view);
 
@@ -240,29 +243,33 @@ public class CameraFragment extends Fragment {
     private CameraCaptureSession.CaptureCallback initCaptureCallback() {
         return new CameraCaptureSession.CaptureCallback() {
             @Override
-            public void onCaptureStarted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, long timestamp, long frameNumber) {
+            public void onCaptureStarted(@NonNull CameraCaptureSession session,
+                                         @NonNull CaptureRequest request,
+                                         long timestamp, long frameNumber) {
                 super.onCaptureStarted(session, request, timestamp, frameNumber);
             }
 
             @Override
-            public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
+            public void onCaptureCompleted(@NonNull CameraCaptureSession session,
+                                           @NonNull CaptureRequest request,
+                                           @NonNull TotalCaptureResult result) {
                 super.onCaptureCompleted(session, request, result);
                 process(result);
             }
 
             @Override
-            public void onCaptureFailed(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull CaptureFailure failure) {
+            public void onCaptureFailed(@NonNull CameraCaptureSession session,
+                                        @NonNull CaptureRequest request,
+                                        @NonNull CaptureFailure failure) {
                 super.onCaptureFailed(session, request, failure);
             }
 
             private void process(CaptureResult result) {
                 switch (currentState) {
-                    case STATE_PREVIEW:
-                        // do nothing
-                        break;
                     case STATE_WAIT_LOCK:
                         if (result.get(CaptureResult.CONTROL_AF_STATE)
                                 == CaptureRequest.CONTROL_AF_STATE_FOCUSED_LOCKED) {
+                            currentState = STATE_PICTURE_CAPTURED;
                             captureStillImage();
                         }
                         break;
@@ -289,7 +296,8 @@ public class CameraFragment extends Fragment {
                         CameraCharacteristics.LENS_FACING_FRONT) {
                     continue;
                 }
-                StreamConfigurationMap streamConfigurationMap = cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+                StreamConfigurationMap streamConfigurationMap = cameraCharacteristics.get(
+                        CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
 
                 Size largestImageSize = Collections.max(Arrays.asList(
                         streamConfigurationMap.getOutputSizes(ImageFormat.JPEG)), new Comparator<Size>() {
@@ -303,7 +311,8 @@ public class CameraFragment extends Fragment {
                         largestImageSize.getHeight(), ImageFormat.JPEG, 1);
                 imageReader.setOnImageAvailableListener(onImageAvailableListener, backgroundHandler);
 
-                previewSize = getPreferredPreviewSize(streamConfigurationMap.getOutputSizes(SurfaceTexture.class), width, height);
+                previewSize = getPreferredPreviewSize(streamConfigurationMap.getOutputSizes(SurfaceTexture.class),
+                        width, height);
                 this.cameraId = cameraId;
                 return;
             }
@@ -379,7 +388,8 @@ public class CameraFragment extends Fragment {
     private void openCamera() {
         CameraManager cameraManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
         try {
-            if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.CAMERA)
+                    == PackageManager.PERMISSION_GRANTED) {
                 cameraManager.openCamera(cameraId, stateCallback, backgroundHandler);
             }
         } catch (CameraAccessException e) {
@@ -423,11 +433,6 @@ public class CameraFragment extends Fragment {
 
     @OnClick(R.id.fab_camera)
     public void takePhoto() {
-        try {
-            imageFile = createImageFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         lockFocus();
     }
 
@@ -459,7 +464,10 @@ public class CameraFragment extends Fragment {
         File storageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         galleryFolder = new File(storageDirectory, getResources().getString(R.string.app_name));
         if (!galleryFolder.exists()) {
-            galleryFolder.mkdirs();
+            boolean wasCreated = galleryFolder.mkdirs();
+            if (!wasCreated) {
+                Log.e("CapturesImages", "Failed to create directory");
+            }
         }
 
     }
@@ -467,7 +475,7 @@ public class CameraFragment extends Fragment {
     private File createImageFile() throws IOException {
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String imageFileName = "IMAGE_" + timeStamp + "_";
+        String imageFileName = "image_" + timeStamp + "_";
 
         return File.createTempFile(imageFileName, ".jpg", galleryFolder);
     }
@@ -487,7 +495,20 @@ public class CameraFragment extends Fragment {
 
             CameraCaptureSession.CaptureCallback captureCallback = new CameraCaptureSession.CaptureCallback() {
                 @Override
-                public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
+                public void onCaptureStarted(@NonNull CameraCaptureSession session,
+                                             @NonNull CaptureRequest request, long timestamp, long frameNumber) {
+                    super.onCaptureStarted(session, request, timestamp, frameNumber);
+                    try {
+                        imageFile = createImageFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onCaptureCompleted(@NonNull CameraCaptureSession session,
+                                               @NonNull CaptureRequest request,
+                                               @NonNull TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
                     unlockFocus();
                 }
