@@ -3,6 +3,7 @@ package com.collage.camera;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -39,6 +40,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -280,6 +282,19 @@ public class CameraFragment extends Fragment {
                     continue;
                 }
                 StreamConfigurationMap streamConfigurationMap = cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+
+                Size largestImageSize = Collections.max(Arrays.asList(
+                        streamConfigurationMap.getOutputSizes(ImageFormat.JPEG)), new Comparator<Size>() {
+                    @Override
+                    public int compare(Size lhs, Size rhs) {
+                        return Long.signum(lhs.getWidth() * lhs.getHeight() -
+                                rhs.getWidth() * rhs.getHeight());
+                    }
+                });
+                imageReader = ImageReader.newInstance(largestImageSize.getWidth(),
+                        largestImageSize.getHeight(), ImageFormat.JPEG, 1);
+                imageReader.setOnImageAvailableListener(onImageAvailableListener, backgroundHandler);
+
                 previewSize = getPreferredPreviewSize(streamConfigurationMap.getOutputSizes(SurfaceTexture.class), width, height);
                 this.cameraId = cameraId;
                 return;
@@ -372,6 +387,11 @@ public class CameraFragment extends Fragment {
         if (cameraDevice != null) {
             cameraDevice.close();
             cameraDevice = null;
+        }
+
+        if (imageReader != null) {
+            imageReader.close();
+            imageReader = null;
         }
     }
 
