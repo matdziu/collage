@@ -85,7 +85,6 @@ public class CameraFragment extends Fragment {
     private HandlerThread backgroundThread;
     private Handler backgroundHandler;
     private File galleryFolder;
-    private String imageFileLocation = "";
     private ImageReader imageReader;
     private ImageReader.OnImageAvailableListener onImageAvailableListener;
 
@@ -176,7 +175,7 @@ public class CameraFragment extends Fragment {
 
     private void requestPermissions() {
         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE},
                 CameraFragment.CAMERA_FRAGMENT_PERMISSIONS_CODE);
     }
 
@@ -470,11 +469,7 @@ public class CameraFragment extends Fragment {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "IMAGE_" + timeStamp + "_";
 
-        File image = File.createTempFile(imageFileName, ".jpg", galleryFolder);
-        imageFileLocation = image.getAbsolutePath();
-
-        return image;
-
+        return File.createTempFile(imageFileName, ".jpg", galleryFolder);
     }
 
     private void captureStillImage() {
