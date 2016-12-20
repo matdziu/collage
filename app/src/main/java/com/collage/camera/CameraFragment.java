@@ -15,6 +15,7 @@ import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
@@ -30,10 +31,15 @@ import android.view.ViewGroup;
 
 import com.collage.R;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,11 +67,26 @@ public class CameraFragment extends Fragment {
     private CameraCaptureSession.CaptureCallback captureCallback;
     private HandlerThread backgroundThread;
     private Handler backgroundHandler;
+    private File imageFile;
+    private File galleryFolder;
+    private String GALLERY_LOCATION = "image gallery";
+    private String imageFileLocation = "";
+
+    private static class ImageSaver implements Runnable {
+
+        @Override
+        public void run() {
+
+        }
+    }
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        createImageGallery();
+
         surfaceTextureListener = initSurfaceTextureListener();
         stateCallback = initStateCallback();
         captureCallback = initCaptureCallback();
@@ -331,6 +352,11 @@ public class CameraFragment extends Fragment {
 
     @OnClick(R.id.fab_camera)
     public void takePhoto() {
+        try {
+            imageFile = createImageFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         lockFocus();
     }
 
@@ -356,6 +382,27 @@ public class CameraFragment extends Fragment {
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    private void createImageGallery() {
+        File storageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        galleryFolder = new File(storageDirectory, GALLERY_LOCATION);
+        if (!galleryFolder.exists()) {
+            galleryFolder.mkdirs();
+        }
+
+    }
+
+    private File createImageFile() throws IOException {
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "IMAGE_" + timeStamp + "_";
+
+        File image = File.createTempFile(imageFileName, ".jpg", galleryFolder);
+        imageFileLocation = image.getAbsolutePath();
+
+        return image;
+
     }
 
 }
