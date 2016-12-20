@@ -15,6 +15,7 @@ import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
+import android.media.ImageReader;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -59,6 +60,8 @@ public class CameraFragment extends Fragment {
     private static final int STATE_PREVIEW = 1;
     private static final int STATE_WAIT_LOCK = 2;
 
+    private static File imageFile;
+
     private Size previewSize;
     private String cameraId;
     private CameraDevice cameraDevice;
@@ -73,8 +76,8 @@ public class CameraFragment extends Fragment {
     private File galleryFolder;
     private String GALLERY_LOCATION = "image gallery";
     private String imageFileLocation = "";
-
-    private static File imageFile;
+    private ImageReader imageReader;
+    private ImageReader.OnImageAvailableListener onImageAvailableListener;
 
     private static class ImageSaver implements Runnable {
 
@@ -119,6 +122,7 @@ public class CameraFragment extends Fragment {
         surfaceTextureListener = initSurfaceTextureListener();
         stateCallback = initStateCallback();
         captureCallback = initCaptureCallback();
+        onImageAvailableListener = initOnImageAvailableListener();
     }
 
     @Nullable
@@ -253,6 +257,15 @@ public class CameraFragment extends Fragment {
                         }
                         break;
                 }
+            }
+        };
+    }
+
+    private ImageReader.OnImageAvailableListener initOnImageAvailableListener() {
+        return new ImageReader.OnImageAvailableListener() {
+            @Override
+            public void onImageAvailable(ImageReader imageReader) {
+                backgroundHandler.post(new ImageSaver(imageReader.acquireNextImage()));
             }
         };
     }
