@@ -14,6 +14,7 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -32,7 +33,9 @@ import android.view.ViewGroup;
 import com.collage.R;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,16 +70,42 @@ public class CameraFragment extends Fragment {
     private CameraCaptureSession.CaptureCallback captureCallback;
     private HandlerThread backgroundThread;
     private Handler backgroundHandler;
-    private File imageFile;
     private File galleryFolder;
     private String GALLERY_LOCATION = "image gallery";
     private String imageFileLocation = "";
 
+    private static File imageFile;
+
     private static class ImageSaver implements Runnable {
+
+        private final Image image;
+
+        public ImageSaver(Image image) {
+            this.image = image;
+        }
 
         @Override
         public void run() {
+            ByteBuffer byteBuffer = image.getPlanes()[0].getBuffer();
+            byte[] bytes = new byte[byteBuffer.remaining()];
+            byteBuffer.get(bytes);
 
+            FileOutputStream fileOutputStream = null;
+            try {
+                fileOutputStream = new FileOutputStream(imageFile);
+                fileOutputStream.write(bytes);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                image.close();
+                if (fileOutputStream != null) {
+                    try {
+                        fileOutputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
     }
 
