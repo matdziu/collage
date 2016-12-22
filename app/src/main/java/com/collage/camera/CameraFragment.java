@@ -484,6 +484,8 @@ public class CameraFragment extends Fragment {
 
     @OnClick(R.id.fab_switch_camera)
     public void switchCamera() {
+        // for some reason it doesn't work
+        // refactor into activity
         closeCamera();
         closeBackgroundThread();
         Fragment newCameraFragment = new CameraFragment();
