@@ -83,6 +83,7 @@ public class CameraFragment extends Fragment {
     private File galleryFolder;
     private ImageReader imageReader;
     private ImageReader.OnImageAvailableListener onImageAvailableListener;
+    private int desiredCameraFacing;
 
     private static class ImageSaver implements Runnable {
 
@@ -123,6 +124,7 @@ public class CameraFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         createImageGallery();
+        desiredCameraFacing = CameraCharacteristics.LENS_FACING_BACK;
 
         surfaceTextureListener = initSurfaceTextureListener();
         stateCallback = initStateCallback();
@@ -254,7 +256,7 @@ public class CameraFragment extends Fragment {
             for (String cameraId : cameraManager.getCameraIdList()) {
                 CameraCharacteristics cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraId);
                 if (cameraCharacteristics.get(CameraCharacteristics.LENS_FACING) ==
-                        CameraCharacteristics.LENS_FACING_BACK) {
+                        desiredCameraFacing) {
 
                     StreamConfigurationMap streamConfigurationMap = cameraCharacteristics.get(
                             CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
