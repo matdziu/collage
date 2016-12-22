@@ -23,6 +23,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -66,6 +67,7 @@ public class CameraFragment extends Fragment {
     }
 
     private static final int CAMERA_FRAGMENT_PERMISSIONS_CODE = 0;
+    private static final String DESIRED_CAMERA_FACING_BUNDLE_KEY = "desired_camera";
 
     private static File imageFile;
 
@@ -124,12 +126,19 @@ public class CameraFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         createImageGallery();
-        desiredCameraFacing = CameraCharacteristics.LENS_FACING_BACK;
 
         surfaceTextureListener = initSurfaceTextureListener();
         stateCallback = initStateCallback();
         captureCallback = initCaptureCallback();
         onImageAvailableListener = initOnImageAvailableListener();
+    }
+
+    private void setDesiredCameraFacing() {
+        if (getArguments() != null) {
+            desiredCameraFacing = getArguments().getInt(DESIRED_CAMERA_FACING_BUNDLE_KEY);
+        } else {
+            desiredCameraFacing = CameraCharacteristics.LENS_FACING_BACK;
+        }
     }
 
     @Nullable
@@ -251,6 +260,7 @@ public class CameraFragment extends Fragment {
     }
 
     private void setUpCamera(int width, int height) {
+        setDesiredCameraFacing();
         CameraManager cameraManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
         try {
             for (String cameraId : cameraManager.getCameraIdList()) {
@@ -474,7 +484,18 @@ public class CameraFragment extends Fragment {
 
     @OnClick(R.id.fab_switch_camera)
     public void switchCamera() {
+        Fragment newCameraFragment = new CameraFragment();
+        Bundle bundle = new Bundle();
+        if (desiredCameraFacing == CameraCharacteristics.LENS_FACING_FRONT) {
+            bundle.putInt(DESIRED_CAMERA_FACING_BUNDLE_KEY, CameraCharacteristics.LENS_FACING_BACK);
+        } else if (desiredCameraFacing == CameraCharacteristics.LENS_FACING_BACK) {
+            bundle.putInt(DESIRED_CAMERA_FACING_BUNDLE_KEY, CameraCharacteristics.LENS_FACING_FRONT);
+        }
+        newCameraFragment.setArguments(bundle);
 
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_camera, newCameraFragment);
+        fragmentTransaction.commit();
     }
 
 }
