@@ -126,6 +126,7 @@ public class CameraFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         createImageGallery();
+        setDesiredCameraFacing();
 
         surfaceTextureListener = initSurfaceTextureListener();
         stateCallback = initStateCallback();
@@ -260,7 +261,6 @@ public class CameraFragment extends Fragment {
     }
 
     private void setUpCamera(int width, int height) {
-        setDesiredCameraFacing();
         CameraManager cameraManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
         try {
             for (String cameraId : cameraManager.getCameraIdList()) {
@@ -484,6 +484,8 @@ public class CameraFragment extends Fragment {
 
     @OnClick(R.id.fab_switch_camera)
     public void switchCamera() {
+        closeCamera();
+        closeBackgroundThread();
         Fragment newCameraFragment = new CameraFragment();
         Bundle bundle = new Bundle();
         if (desiredCameraFacing == CameraCharacteristics.LENS_FACING_FRONT) {
