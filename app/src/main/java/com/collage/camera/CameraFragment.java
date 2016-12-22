@@ -254,28 +254,28 @@ public class CameraFragment extends Fragment {
             for (String cameraId : cameraManager.getCameraIdList()) {
                 CameraCharacteristics cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraId);
                 if (cameraCharacteristics.get(CameraCharacteristics.LENS_FACING) ==
-                        CameraCharacteristics.LENS_FACING_FRONT) {
-                    continue;
+                        CameraCharacteristics.LENS_FACING_BACK) {
+
+                    StreamConfigurationMap streamConfigurationMap = cameraCharacteristics.get(
+                            CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+
+                    Size largestImageSize = Collections.max(Arrays.asList(
+                            streamConfigurationMap.getOutputSizes(ImageFormat.JPEG)), new Comparator<Size>() {
+                        @Override
+                        public int compare(Size lhs, Size rhs) {
+                            return Long.signum(lhs.getWidth() * lhs.getHeight() -
+                                    rhs.getWidth() * rhs.getHeight());
+                        }
+                    });
+                    imageReader = ImageReader.newInstance(largestImageSize.getWidth(),
+                            largestImageSize.getHeight(), ImageFormat.JPEG, 1);
+                    imageReader.setOnImageAvailableListener(onImageAvailableListener, backgroundHandler);
+
+                    previewSize = getPreferredPreviewSize(streamConfigurationMap.getOutputSizes(SurfaceTexture.class),
+                            width, height);
+                    this.cameraId = cameraId;
+                    return;
                 }
-                StreamConfigurationMap streamConfigurationMap = cameraCharacteristics.get(
-                        CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-
-                Size largestImageSize = Collections.max(Arrays.asList(
-                        streamConfigurationMap.getOutputSizes(ImageFormat.JPEG)), new Comparator<Size>() {
-                    @Override
-                    public int compare(Size lhs, Size rhs) {
-                        return Long.signum(lhs.getWidth() * lhs.getHeight() -
-                                rhs.getWidth() * rhs.getHeight());
-                    }
-                });
-                imageReader = ImageReader.newInstance(largestImageSize.getWidth(),
-                        largestImageSize.getHeight(), ImageFormat.JPEG, 1);
-                imageReader.setOnImageAvailableListener(onImageAvailableListener, backgroundHandler);
-
-                previewSize = getPreferredPreviewSize(streamConfigurationMap.getOutputSizes(SurfaceTexture.class),
-                        width, height);
-                this.cameraId = cameraId;
-                return;
             }
 
         } catch (CameraAccessException e) {
@@ -468,6 +468,11 @@ public class CameraFragment extends Fragment {
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    @OnClick(R.id.fab_switch_camera)
+    public void switchCamera() {
+
     }
 
 }
