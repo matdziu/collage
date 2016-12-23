@@ -20,14 +20,4 @@
         android:src="@drawable/ic_camera"
         app:backgroundTint="@color/colorPrimary" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_switch_camera"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/ic_switch_camera"
-        app:backgroundTint="@color/colorPrimary" />
-
 </RelativeLayout>

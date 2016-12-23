@@ -23,7 +23,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -60,14 +59,13 @@ public class CameraFragment extends Fragment {
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
 
     static {
-        ORIENTATIONS.append(Surface.ROTATION_0, 90);
-        ORIENTATIONS.append(Surface.ROTATION_90, 0);
-        ORIENTATIONS.append(Surface.ROTATION_180, 270);
-        ORIENTATIONS.append(Surface.ROTATION_270, 180);
+        ORIENTATIONS.append(Surface.ROTATION_0, 270);
+        ORIENTATIONS.append(Surface.ROTATION_90, 180);
+        ORIENTATIONS.append(Surface.ROTATION_180, 90);
+        ORIENTATIONS.append(Surface.ROTATION_270, 0);
     }
 
     private static final int CAMERA_FRAGMENT_PERMISSIONS_CODE = 0;
-    private static final String DESIRED_CAMERA_FACING_BUNDLE_KEY = "desired_camera";
 
     private static File imageFile;
 
@@ -85,7 +83,6 @@ public class CameraFragment extends Fragment {
     private File galleryFolder;
     private ImageReader imageReader;
     private ImageReader.OnImageAvailableListener onImageAvailableListener;
-    private int desiredCameraFacing;
 
     private static class ImageSaver implements Runnable {
 
@@ -126,20 +123,11 @@ public class CameraFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         createImageGallery();
-        setDesiredCameraFacing();
 
         surfaceTextureListener = initSurfaceTextureListener();
         stateCallback = initStateCallback();
         captureCallback = initCaptureCallback();
         onImageAvailableListener = initOnImageAvailableListener();
-    }
-
-    private void setDesiredCameraFacing() {
-        if (getArguments() != null) {
-            desiredCameraFacing = getArguments().getInt(DESIRED_CAMERA_FACING_BUNDLE_KEY);
-        } else {
-            desiredCameraFacing = CameraCharacteristics.LENS_FACING_BACK;
-        }
     }
 
     @Nullable
@@ -266,7 +254,7 @@ public class CameraFragment extends Fragment {
             for (String cameraId : cameraManager.getCameraIdList()) {
                 CameraCharacteristics cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraId);
                 if (cameraCharacteristics.get(CameraCharacteristics.LENS_FACING) ==
-                        desiredCameraFacing) {
+                        CameraCharacteristics.LENS_FACING_FRONT) {
 
                     StreamConfigurationMap streamConfigurationMap = cameraCharacteristics.get(
                             CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
@@ -481,25 +469,4 @@ public class CameraFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
-    @OnClick(R.id.fab_switch_camera)
-    public void switchCamera() {
-        // for some reason it doesn't work
-        // refactor into activity
-        closeCamera();
-        closeBackgroundThread();
-        Fragment newCameraFragment = new CameraFragment();
-        Bundle bundle = new Bundle();
-        if (desiredCameraFacing == CameraCharacteristics.LENS_FACING_FRONT) {
-            bundle.putInt(DESIRED_CAMERA_FACING_BUNDLE_KEY, CameraCharacteristics.LENS_FACING_BACK);
-        } else if (desiredCameraFacing == CameraCharacteristics.LENS_FACING_BACK) {
-            bundle.putInt(DESIRED_CAMERA_FACING_BUNDLE_KEY, CameraCharacteristics.LENS_FACING_FRONT);
-        }
-        newCameraFragment.setArguments(bundle);
-
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_camera, newCameraFragment);
-        fragmentTransaction.commit();
-    }
-
 }
