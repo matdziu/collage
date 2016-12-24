@@ -382,13 +382,15 @@ public class CameraFragment extends Fragment {
     }
 
     private void closeBackgroundThread() {
-        backgroundThread.quitSafely();
-        try {
-            backgroundThread.join();
-            backgroundThread = null;
-            backgroundHandler = null;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if (backgroundHandler != null) {
+            backgroundThread.quitSafely();
+            try {
+                backgroundThread.join();
+                backgroundThread = null;
+                backgroundHandler = null;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -468,5 +470,11 @@ public class CameraFragment extends Fragment {
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    @OnClick(R.id.fab_switch_camera)
+    public void switchCamera() {
+        closeCamera();
+        closeBackgroundThread();
     }
 }
