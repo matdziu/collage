@@ -58,13 +58,6 @@ public class CameraFragment extends Fragment {
 
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
 
-    static {
-        ORIENTATIONS.append(Surface.ROTATION_0, 270);
-        ORIENTATIONS.append(Surface.ROTATION_90, 180);
-        ORIENTATIONS.append(Surface.ROTATION_180, 90);
-        ORIENTATIONS.append(Surface.ROTATION_270, 0);
-    }
-
     private static final int CAMERA_FRAGMENT_PERMISSIONS_CODE = 0;
 
     private static File imageFile;
@@ -83,6 +76,7 @@ public class CameraFragment extends Fragment {
     private File galleryFolder;
     private ImageReader imageReader;
     private ImageReader.OnImageAvailableListener onImageAvailableListener;
+    private int cameraFacing;
 
     private static class ImageSaver implements Runnable {
 
@@ -123,6 +117,9 @@ public class CameraFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         createImageGallery();
+
+        cameraFacing = CameraCharacteristics.LENS_FACING_FRONT;
+        setProperOrientation(cameraFacing);
 
         surfaceTextureListener = initSurfaceTextureListener();
         stateCallback = initStateCallback();
@@ -168,6 +165,21 @@ public class CameraFragment extends Fragment {
         return getActivity()
                 .getWindow()
                 .getDecorView();
+    }
+
+    private void setProperOrientation(int cameraFacing) {
+        ORIENTATIONS.clear();
+        if (cameraFacing == CameraCharacteristics.LENS_FACING_BACK) {
+            ORIENTATIONS.append(Surface.ROTATION_0, 90);
+            ORIENTATIONS.append(Surface.ROTATION_90, 0);
+            ORIENTATIONS.append(Surface.ROTATION_180, 270);
+            ORIENTATIONS.append(Surface.ROTATION_270, 180);
+        } else if (cameraFacing == CameraCharacteristics.LENS_FACING_FRONT) {
+            ORIENTATIONS.append(Surface.ROTATION_0, 270);
+            ORIENTATIONS.append(Surface.ROTATION_90, 180);
+            ORIENTATIONS.append(Surface.ROTATION_180, 90);
+            ORIENTATIONS.append(Surface.ROTATION_270, 0);
+        }
     }
 
     private void requestPermissions() {
@@ -254,7 +266,7 @@ public class CameraFragment extends Fragment {
             for (String cameraId : cameraManager.getCameraIdList()) {
                 CameraCharacteristics cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraId);
                 if (cameraCharacteristics.get(CameraCharacteristics.LENS_FACING) ==
-                        CameraCharacteristics.LENS_FACING_FRONT) {
+                        cameraFacing) {
 
                     StreamConfigurationMap streamConfigurationMap = cameraCharacteristics.get(
                             CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
@@ -475,6 +487,18 @@ public class CameraFragment extends Fragment {
     @OnClick(R.id.fab_switch_camera)
     public void switchCamera() {
         closeCamera();
-        closeBackgroundThread();
+        if (cameraFacing == CameraCharacteristics.LENS_FACING_BACK) {
+            cameraFacing = CameraCharacteristics.LENS_FACING_FRONT;
+        } else if (cameraFacing == CameraCharacteristics.LENS_FACING_FRONT) {
+            cameraFacing = CameraCharacteristics.LENS_FACING_BACK;
+        }
+        setProperOrientation(cameraFacing);
+
+        if (textureView.isAvailable()) {
+            setUpCamera(textureView.getWidth(), textureView.getHeight());
+            openCamera();
+        } else {
+            textureView.setSurfaceTextureListener(surfaceTextureListener);
+        }
     }
 }
