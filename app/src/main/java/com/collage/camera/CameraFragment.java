@@ -2,6 +2,7 @@ package com.collage.camera;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
@@ -145,6 +146,9 @@ public class CameraFragment extends Fragment {
         super.onResume();
         hideSystemUI();
         openBackgroundThread();
+        if (getActivity() != null) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
         if (textureView.isAvailable()) {
             setUpCamera(textureView.getWidth(), textureView.getHeight());
@@ -159,6 +163,9 @@ public class CameraFragment extends Fragment {
         super.onStop();
         closeCamera();
         closeBackgroundThread();
+        if (getActivity() != null) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+        }
     }
 
     private View getDecorView() {
