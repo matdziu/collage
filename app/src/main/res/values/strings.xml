@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Collage</string>
-    <string name="username">Username</string>
+    <string name="email">Email</string>
     <string name="password">Password</string>
 </resources>
