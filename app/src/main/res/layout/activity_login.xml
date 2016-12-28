@@ -1,28 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
 
-    <EditText
-        android:id="@+id/edit_text_username"
-        style="@style/Base.V7.Widget.AppCompat.EditText"
-        android:layout_width="300dp"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/text_input_layout_username"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:backgroundTint="@color/colorPrimary"
-        android:hint="@string/username"
-        android:textCursorDrawable="@null" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp">
 
-    <EditText
-        android:id="@+id/edit_text_password"
-        style="@style/Base.V7.Widget.AppCompat.EditText"
-        android:layout_width="300dp"
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edit_text_username"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/username"
+            android:textCursorDrawable="@null" />
+
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/text_input_layout_password"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/edit_text_username"
-        android:layout_below="@+id/edit_text_username"
-        android:backgroundTint="@color/colorPrimary"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        android:textCursorDrawable="@null" />
+        android:layout_alignLeft="@+id/text_input_layout_username"
+        android:layout_below="@+id/text_input_layout_username"
+        app:passwordToggleEnabled="true">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edit_text_password"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:textCursorDrawable="@null" />
+    </android.support.design.widget.TextInputLayout>
 
 </RelativeLayout>
