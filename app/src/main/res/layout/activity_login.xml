@@ -18,6 +18,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:hint="@string/username"
+            android:inputType="textWebEmailAddress"
             android:textCursorDrawable="@null" />
 
 
