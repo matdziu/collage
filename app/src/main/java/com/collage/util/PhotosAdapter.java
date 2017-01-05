@@ -9,10 +9,7 @@ import android.widget.ImageView;
 import com.collage.R;
 import com.collage.model.Photo;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,11 +54,8 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
 
     private void setImageViewBounds(ImageView imageView, int height, int width) {
         ViewGroup.LayoutParams params = imageView.getLayoutParams();
-        List<Integer> corrections = new ArrayList<>(Arrays.asList
-                (-width / 2, width / 2, -width / 3, width / 3, -width / 4, width / 4));
-
         params.width = width;
-        params.height = height + corrections.get(new Random().nextInt(corrections.size()));
+        params.height = height;
         imageView.setLayoutParams(params);
     }
 }
