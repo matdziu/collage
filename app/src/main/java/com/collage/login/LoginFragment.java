@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.collage.R;
+import com.collage.signup.SignUpFragment;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;

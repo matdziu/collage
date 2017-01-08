@@ -1,4 +1,4 @@
-package com.collage.login;
+package com.collage.signup;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
