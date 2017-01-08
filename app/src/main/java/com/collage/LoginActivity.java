@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.collage.R;
+import com.collage.camera.CameraFragment;
 import com.collage.login.LoginFragment;
 
 import butterknife.ButterKnife;
@@ -20,10 +21,9 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        LoginFragment loginFragment = new LoginFragment();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        transaction.replace(R.id.linear_layout_activity_login, loginFragment);
+        transaction.replace(R.id.linear_layout_activity_login, new CameraFragment());
         transaction.commit();
     }
 }

@@ -57,27 +57,33 @@ public class CameraFragment extends Fragment {
     @BindView(R.id.texture_view)
     TextureView textureView;
 
-    private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
-
     private static final int CAMERA_FRAGMENT_PERMISSIONS_CODE = 0;
-
-    private static File imageFile;
+    private int cameraFacing;
 
     private Size previewSize;
     private String cameraId;
-    private CameraDevice cameraDevice;
+
+    private static File imageFile;
+    private File galleryFolder;
+
     private TextureView.SurfaceTextureListener surfaceTextureListener;
+
+    private CameraDevice cameraDevice;
     private CameraDevice.StateCallback stateCallback;
+
     private CaptureRequest captureRequest;
     private CaptureRequest.Builder captureRequestBuilder;
+
     private CameraCaptureSession cameraCaptureSession;
     private CameraCaptureSession.CaptureCallback captureCallback;
-    private HandlerThread backgroundThread;
+
     private Handler backgroundHandler;
-    private File galleryFolder;
+    private HandlerThread backgroundThread;
+
     private ImageReader imageReader;
     private ImageReader.OnImageAvailableListener onImageAvailableListener;
-    private int cameraFacing;
+
+    private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
 
     private static class ImageSaver implements Runnable {
 
@@ -144,8 +150,10 @@ public class CameraFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
         hideSystemUI();
         openBackgroundThread();
+
         if (getActivity() != null) {
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
@@ -161,8 +169,10 @@ public class CameraFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+
         closeCamera();
         closeBackgroundThread();
+
         if (getActivity() != null) {
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
         }
@@ -207,6 +217,7 @@ public class CameraFragment extends Fragment {
 
     private TextureView.SurfaceTextureListener initSurfaceTextureListener() {
         return new TextureView.SurfaceTextureListener() {
+
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
                 setUpCamera(width, height);
@@ -248,13 +259,13 @@ public class CameraFragment extends Fragment {
             public void onError(@NonNull CameraDevice cameraDevice, int error) {
                 cameraDevice.close();
                 CameraFragment.this.cameraDevice = null;
-
             }
         };
     }
 
     private CameraCaptureSession.CaptureCallback initCaptureCallback() {
         return new CameraCaptureSession.CaptureCallback() {
+            // override appropriate methods if needed
         };
     }
 
