@@ -1,4 +1,4 @@
-package com.collage.model;
+package com.collage.util.model;
 
 public class Friend {
 

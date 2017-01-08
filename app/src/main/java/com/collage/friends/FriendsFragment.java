@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.collage.R;
-import com.collage.model.Friend;
+import com.collage.util.model.Friend;
 import com.collage.util.FriendsAdapter;
 
 import java.util.ArrayList;

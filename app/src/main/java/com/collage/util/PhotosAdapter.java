@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.collage.R;
-import com.collage.model.Photo;
+import com.collage.util.model.Photo;
 
 import java.util.List;
 

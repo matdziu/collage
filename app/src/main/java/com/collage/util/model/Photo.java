@@ -1,4 +1,4 @@
-package com.collage.model;
+package com.collage.util.model;
 
 import android.graphics.drawable.Drawable;
 

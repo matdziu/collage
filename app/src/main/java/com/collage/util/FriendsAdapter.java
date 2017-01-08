@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.collage.R;
-import com.collage.model.Friend;
+import com.collage.util.model.Friend;
 
 import java.util.List;
 
