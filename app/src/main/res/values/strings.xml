@@ -6,4 +6,8 @@
     <string name="sign_up">Sign up</string>
     <string name="full_name">Full name</string>
     <string name="create_account">Create account</string>
+    <string name="full_name_error">Please tell us your name</string>
+    <string name="email_error">This email is invalid</string>
+    <string name="password_error">Password should contain at least 6 characters and no empty spaces</string>
+    <string name="account_creation_successful">Account created successfully</string>
 </resources>

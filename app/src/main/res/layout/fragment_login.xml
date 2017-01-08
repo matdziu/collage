@@ -7,14 +7,14 @@
     android:focusableInTouchMode="true">
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/text_input_layout_username"
+        android:id="@+id/text_input_layout_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/edit_text_username"
+            android:id="@+id/edit_text_email"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:hint="@string/email"
@@ -27,8 +27,8 @@
         android:id="@+id/text_input_layout_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/text_input_layout_username"
-        android:layout_below="@+id/text_input_layout_username"
+        android:layout_alignLeft="@+id/text_input_layout_email"
+        android:layout_below="@+id/text_input_layout_email"
         app:passwordToggleDrawable="@drawable/asl_password_visibility"
         app:passwordToggleEnabled="true">
 
