@@ -39,20 +39,19 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class CameraFragment extends Fragment {
+
+    private CameraPresenter cameraPresenter;
 
     @BindView(R.id.texture_view)
     TextureView textureView;
@@ -63,7 +62,6 @@ public class CameraFragment extends Fragment {
     private Size previewSize;
     private String cameraId;
 
-    private static File imageFile;
     private File galleryFolder;
 
     private TextureView.SurfaceTextureListener surfaceTextureListener;
@@ -85,7 +83,7 @@ public class CameraFragment extends Fragment {
 
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
 
-    private static class ImageSaver implements Runnable {
+    private class ImageSaver implements Runnable {
 
         private final Image image;
 
@@ -101,7 +99,7 @@ public class CameraFragment extends Fragment {
 
             FileOutputStream fileOutputStream = null;
             try {
-                fileOutputStream = new FileOutputStream(imageFile);
+                fileOutputStream = new FileOutputStream(cameraPresenter.getImageFile());
                 fileOutputStream.write(bytes);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -123,6 +121,8 @@ public class CameraFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        cameraPresenter = new CameraPresenter();
+
         createImageGallery();
 
         cameraFacing = CameraCharacteristics.LENS_FACING_FRONT;
@@ -141,10 +141,20 @@ public class CameraFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
         ButterKnife.bind(this, view);
 
-        // TODO: this is not in a proper place
-        requestPermissions();
+        requestPermissions(new String[]{Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                CameraFragment.CAMERA_FRAGMENT_PERMISSIONS_CODE);
 
         return view;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        for (int grantResult : grantResults) {
+            if (grantResult == PackageManager.PERMISSION_DENIED) {
+                getActivity().finish();
+            }
+        }
     }
 
     @Override
@@ -197,12 +207,6 @@ public class CameraFragment extends Fragment {
             ORIENTATIONS.append(Surface.ROTATION_180, 90);
             ORIENTATIONS.append(Surface.ROTATION_270, 0);
         }
-    }
-
-    private void requestPermissions() {
-        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                CameraFragment.CAMERA_FRAGMENT_PERMISSIONS_CODE);
     }
 
     private void hideSystemUI() {
@@ -454,12 +458,6 @@ public class CameraFragment extends Fragment {
 
     }
 
-    private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String imageFileName = "image_" + timeStamp + "_";
-        return File.createTempFile(imageFileName, ".jpg", galleryFolder);
-    }
-
     @OnClick(R.id.fab_camera)
     public void captureImage() {
         try {
@@ -481,7 +479,7 @@ public class CameraFragment extends Fragment {
                                              @NonNull CaptureRequest request, long timestamp, long frameNumber) {
                     super.onCaptureStarted(session, request, timestamp, frameNumber);
                     try {
-                        imageFile = createImageFile();
+                        cameraPresenter.createImageFile(galleryFolder);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
