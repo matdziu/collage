@@ -1,5 +1,6 @@
 package com.collage.login;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -10,10 +11,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.collage.FirebaseInteractor;
 import com.collage.R;
+import com.collage.display.DisplayFragment;
 import com.collage.signup.SignUpFragment;
 
 import butterknife.BindView;
@@ -53,10 +56,9 @@ public class LoginFragment extends Fragment implements LoginView, LoginResultLis
     @OnClick(R.id.button_sign_up)
     public void signUp() {
         FragmentManager fragmentManager = getFragmentManager();
-        SignUpFragment signUpFragment = new SignUpFragment();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        transaction.replace(R.id.linear_layout_activity_login, signUpFragment);
+        transaction.replace(R.id.linear_layout_activity_login, new SignUpFragment());
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -90,10 +92,28 @@ public class LoginFragment extends Fragment implements LoginView, LoginResultLis
     @Override
     public void onLoginSuccess() {
         Toast.makeText(getContext(), R.string.login_success, Toast.LENGTH_SHORT).show();
+        closeSoftKeyboard();
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        transaction.replace(R.id.linear_layout_activity_login, new DisplayFragment());
+        transaction.commit();
     }
 
     @Override
     public void onLoginFailure() {
         Toast.makeText(getContext(), R.string.login_failure, Toast.LENGTH_SHORT).show();
+    }
+
+    public void closeSoftKeyboard() {
+        View focusedView = getActivity()
+                .getWindow()
+                .getCurrentFocus();
+        if (focusedView != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getContext()
+                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
+        }
     }
 }
