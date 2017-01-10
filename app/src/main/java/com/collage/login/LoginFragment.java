@@ -44,11 +44,13 @@ public class LoginFragment extends BaseFragment implements LoginView, LoginResul
     RelativeLayout loginContentView;
 
     private LoginPresenter loginPresenter;
+    private FirebaseInteractor firebaseInteractor;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loginPresenter = new LoginPresenter(this, new FirebaseInteractor(this));
+        firebaseInteractor = new FirebaseInteractor(this);
+        loginPresenter = new LoginPresenter(this, firebaseInteractor);
     }
 
     @Nullable
@@ -57,6 +59,18 @@ public class LoginFragment extends BaseFragment implements LoginView, LoginResul
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, view);
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        firebaseInteractor.addAuthStateListener();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        firebaseInteractor.removeAuthStateListener();
     }
 
     @OnClick(R.id.button_sign_up)

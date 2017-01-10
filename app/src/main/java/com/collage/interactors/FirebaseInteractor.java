@@ -9,10 +9,21 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class FirebaseInteractor {
 
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
+        @Override
+        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user != null) {
+                loginResultListener.onLoginSuccess();
+            }
+        }
+    };
+
     private LoginResultListener loginResultListener;
     private SignUpResultListener signUpResultListener;
 
@@ -60,5 +71,13 @@ public class FirebaseInteractor {
 
     public void signOut() {
         firebaseAuth.signOut();
+    }
+
+    public void addAuthStateListener() {
+        firebaseAuth.addAuthStateListener(authStateListener);
+    }
+
+    public void removeAuthStateListener() {
+        firebaseAuth.removeAuthStateListener(authStateListener);
     }
 }
