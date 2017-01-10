@@ -3,13 +3,17 @@ package com.collage.signup;
 
 import android.util.Patterns;
 
+import com.collage.FirebaseInteractor;
+
 class SignUpPresenter {
 
     private SignUpView signUpView;
+    private FirebaseInteractor firebaseInteractor;
 
 
-    SignUpPresenter(SignUpView signUpView) {
+    SignUpPresenter(SignUpView signUpView, FirebaseInteractor firebaseInteractor) {
         this.signUpView = signUpView;
+        this.firebaseInteractor = firebaseInteractor;
     }
 
     void validateSignUpUserData(String fullName,
@@ -46,7 +50,7 @@ class SignUpPresenter {
         }
 
         if (isEmailValid && isFullNameValid && isPasswordValid) {
-            signUpView.createAccount(email, password);
+            firebaseInteractor.createAccount(email, password);
         }
     }
 }

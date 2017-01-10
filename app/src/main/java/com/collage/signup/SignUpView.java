@@ -9,8 +9,6 @@ interface SignUpView {
 
     void showInvalidPasswordError();
 
-    void createAccount(String email, String password);
-
     void hideEmptyFullNameError();
 
     void hideInvalidEmailError();

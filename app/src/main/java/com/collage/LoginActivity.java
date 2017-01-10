@@ -10,7 +10,7 @@ import com.collage.login.LoginFragment;
 
 import butterknife.ButterKnife;
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

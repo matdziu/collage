@@ -8,15 +8,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.collage.BaseActivity;
+import com.collage.FirebaseInteractor;
 import com.collage.R;
+import com.collage.login.LoginResultListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SignUpFragment extends Fragment implements SignUpView {
+public class SignUpFragment extends Fragment implements SignUpView, SignUpResultListener, LoginResultListener {
 
     @BindView(R.id.edit_text_full_name)
     TextInputEditText editTextFullName;
@@ -41,7 +43,7 @@ public class SignUpFragment extends Fragment implements SignUpView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        signUpPresenter = new SignUpPresenter(this);
+        signUpPresenter = new SignUpPresenter(this, new FirebaseInteractor(this, this));
     }
 
     @Nullable
@@ -75,12 +77,6 @@ public class SignUpFragment extends Fragment implements SignUpView {
     }
 
     @Override
-    public void createAccount(String email, String password) {
-        BaseActivity baseActivity = (BaseActivity) getActivity();
-        baseActivity.createAccount(email, password);
-    }
-
-    @Override
     public void hideEmptyFullNameError() {
         textInputLayoutFullName.setError(null);
     }
@@ -93,5 +89,25 @@ public class SignUpFragment extends Fragment implements SignUpView {
     @Override
     public void hideInvalidPasswordError() {
         textInputLayoutPassword.setError(null);
+    }
+
+    @Override
+    public void onLoginSuccess() {
+        Toast.makeText(getContext(), R.string.login_successful, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLoginFailure() {
+        Toast.makeText(getContext(), R.string.login_failure, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSignUpSuccess() {
+        Toast.makeText(getContext(), R.string.sign_up_success, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSignUpFailure() {
+        Toast.makeText(getContext(), R.string.sign_up_failure, Toast.LENGTH_SHORT).show();
     }
 }
