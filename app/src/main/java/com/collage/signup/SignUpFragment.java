@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.collage.BaseFragment;
@@ -39,6 +41,12 @@ public class SignUpFragment extends BaseFragment implements SignUpView, SignUpRe
 
     @BindView(R.id.text_input_layout_password)
     TextInputLayout textInputLayoutPassword;
+
+    @BindView(R.id.sign_up_content_view)
+    RelativeLayout signUpContectView;
+
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
 
     private SignUpPresenter signUpPresenter;
 
@@ -94,9 +102,17 @@ public class SignUpFragment extends BaseFragment implements SignUpView, SignUpRe
     }
 
     @Override
-    public void onSignUpSuccess() {
-        Toast.makeText(getContext(), R.string.sign_up_success, Toast.LENGTH_SHORT).show();
+    public void onSignUpStart() {
         closeSoftKeyboard();
+        progressBar.setVisibility(View.VISIBLE);
+        signUpContectView.setVisibility(View.GONE);
+
+    }
+
+    @Override
+    public void onSignUpSuccess() {
+        progressBar.setVisibility(View.GONE);
+        Toast.makeText(getContext(), R.string.sign_up_success, Toast.LENGTH_SHORT).show();
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -107,6 +123,8 @@ public class SignUpFragment extends BaseFragment implements SignUpView, SignUpRe
 
     @Override
     public void onSignUpFailure() {
+        progressBar.setVisibility(View.GONE);
+        signUpContectView.setVisibility(View.VISIBLE);
         Toast.makeText(getContext(), R.string.sign_up_failure, Toast.LENGTH_SHORT).show();
     }
 

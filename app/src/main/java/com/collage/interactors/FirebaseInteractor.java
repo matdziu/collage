@@ -25,6 +25,7 @@ public class FirebaseInteractor {
     }
 
     public void createAccount(String email, String password) {
+        signUpResultListener.onSignUpStart();
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -41,6 +42,7 @@ public class FirebaseInteractor {
     }
 
     public void signIn(String email, String password) {
+        loginResultListener.onLoginStart();
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override

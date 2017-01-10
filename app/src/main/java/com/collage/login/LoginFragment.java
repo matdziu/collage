@@ -1,6 +1,5 @@
 package com.collage.login;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -10,7 +9,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.collage.BaseFragment;
@@ -36,6 +36,12 @@ public class LoginFragment extends BaseFragment implements LoginView, LoginResul
 
     @BindView(R.id.text_input_layout_password)
     TextInputLayout textInputLayoutPassword;
+
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
+
+    @BindView(R.id.login_content_view)
+    RelativeLayout loginContentView;
 
     private LoginPresenter loginPresenter;
 
@@ -90,9 +96,16 @@ public class LoginFragment extends BaseFragment implements LoginView, LoginResul
     }
 
     @Override
-    public void onLoginSuccess() {
-        Toast.makeText(getContext(), R.string.login_success, Toast.LENGTH_SHORT).show();
+    public void onLoginStart() {
         closeSoftKeyboard();
+        progressBar.setVisibility(View.VISIBLE);
+        loginContentView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onLoginSuccess() {
+        progressBar.setVisibility(View.GONE);
+        Toast.makeText(getContext(), R.string.login_success, Toast.LENGTH_SHORT).show();
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -103,17 +116,8 @@ public class LoginFragment extends BaseFragment implements LoginView, LoginResul
 
     @Override
     public void onLoginFailure() {
+        progressBar.setVisibility(View.GONE);
+        loginContentView.setVisibility(View.VISIBLE);
         Toast.makeText(getContext(), R.string.login_failure, Toast.LENGTH_SHORT).show();
-    }
-
-    public void closeSoftKeyboard() {
-        View focusedView = getActivity()
-                .getWindow()
-                .getCurrentFocus();
-        if (focusedView != null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getContext()
-                    .getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
-        }
     }
 }
