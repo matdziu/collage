@@ -8,8 +8,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.collage.BaseActivity;
 import com.collage.R;
 
 import butterknife.BindView;
@@ -53,7 +53,7 @@ public class SignUpFragment extends Fragment implements SignUpView {
     }
 
     @OnClick(R.id.button_create_account)
-    public void createAccount() {
+    public void validateSignUpUserData() {
         signUpPresenter.validateSignUpUserData(editTextFullName.getText().toString(),
                 editTextEmail.getText().toString(),
                 editTextPassword.getText().toString());
@@ -75,9 +75,9 @@ public class SignUpFragment extends Fragment implements SignUpView {
     }
 
     @Override
-    public void showAccountCreationSuccessful() {
-        Toast.makeText(getContext(),
-                R.string.account_creation_successful, Toast.LENGTH_SHORT).show();
+    public void createAccount(String email, String password) {
+        BaseActivity baseActivity = (BaseActivity) getActivity();
+        baseActivity.createAccount(email, password);
     }
 
     @Override

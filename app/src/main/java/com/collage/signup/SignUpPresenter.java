@@ -46,7 +46,7 @@ class SignUpPresenter {
         }
 
         if (isEmailValid && isFullNameValid && isPasswordValid) {
-            signUpView.showAccountCreationSuccessful();
+            signUpView.createAccount(email, password);
         }
     }
 }

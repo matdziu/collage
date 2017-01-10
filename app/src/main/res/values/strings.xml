@@ -11,4 +11,6 @@
     <string name="password_error">Password should contain at least 6 characters and no empty spaces</string>
     <string name="account_creation_successful">Account created successfully</string>
     <string name="login_successful">Login successful</string>
+    <string name="sign_in_failure">Failed to sign in</string>
+    <string name="create_account_failure">Failed to create account</string>
 </resources>
