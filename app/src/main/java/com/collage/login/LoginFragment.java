@@ -14,9 +14,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.collage.BaseFragment;
-import com.collage.interactors.FirebaseInteractor;
 import com.collage.R;
-import com.collage.display.DisplayFragment;
+import com.collage.camera.CameraFragment;
+import com.collage.interactors.FirebaseInteractor;
 import com.collage.signup.SignUpFragment;
 
 import butterknife.BindView;
@@ -97,7 +97,7 @@ public class LoginFragment extends BaseFragment implements LoginView, LoginResul
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        transaction.replace(R.id.linear_layout_activity_login, new DisplayFragment());
+        transaction.replace(R.id.linear_layout_activity_login, new CameraFragment());
         transaction.commit();
     }
 
