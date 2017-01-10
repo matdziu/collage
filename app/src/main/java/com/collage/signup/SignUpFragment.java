@@ -12,13 +12,12 @@ import android.widget.Toast;
 
 import com.collage.FirebaseInteractor;
 import com.collage.R;
-import com.collage.login.LoginResultListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SignUpFragment extends Fragment implements SignUpView, SignUpResultListener, LoginResultListener {
+public class SignUpFragment extends Fragment implements SignUpView, SignUpResultListener {
 
     @BindView(R.id.edit_text_full_name)
     TextInputEditText editTextFullName;
@@ -43,7 +42,7 @@ public class SignUpFragment extends Fragment implements SignUpView, SignUpResult
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        signUpPresenter = new SignUpPresenter(this, new FirebaseInteractor(this, this));
+        signUpPresenter = new SignUpPresenter(this, new FirebaseInteractor(this));
     }
 
     @Nullable
@@ -55,7 +54,7 @@ public class SignUpFragment extends Fragment implements SignUpView, SignUpResult
     }
 
     @OnClick(R.id.button_create_account)
-    public void validateSignUpUserData() {
+    public void createAccount() {
         signUpPresenter.validateSignUpUserData(editTextFullName.getText().toString(),
                 editTextEmail.getText().toString(),
                 editTextPassword.getText().toString());
@@ -89,16 +88,6 @@ public class SignUpFragment extends Fragment implements SignUpView, SignUpResult
     @Override
     public void hideInvalidPasswordError() {
         textInputLayoutPassword.setError(null);
-    }
-
-    @Override
-    public void onLoginSuccess() {
-        Toast.makeText(getContext(), R.string.login_successful, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onLoginFailure() {
-        Toast.makeText(getContext(), R.string.login_failure, Toast.LENGTH_SHORT).show();
     }
 
     @Override

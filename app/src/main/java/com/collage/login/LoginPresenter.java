@@ -2,13 +2,17 @@ package com.collage.login;
 
 import android.util.Patterns;
 
+import com.collage.FirebaseInteractor;
+
 
 class LoginPresenter {
 
     private LoginView loginView;
+    private FirebaseInteractor firebaseInteractor;
 
-    LoginPresenter(LoginView loginView) {
+    LoginPresenter(LoginView loginView, FirebaseInteractor firebaseInteractor) {
         this.loginView = loginView;
+        this.firebaseInteractor = firebaseInteractor;
     }
 
     void validateLoginUserData(String email,
@@ -35,7 +39,7 @@ class LoginPresenter {
         }
 
         if (isEmailValid && isPasswordValid) {
-            loginView.showLoginSuccessful();
+            firebaseInteractor.signIn(email, password);
         }
     }
 

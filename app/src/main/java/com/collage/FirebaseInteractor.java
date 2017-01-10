@@ -12,14 +12,15 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class FirebaseInteractor {
 
-    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private LoginResultListener loginResultListener;
     private SignUpResultListener signUpResultListener;
 
-    public FirebaseInteractor(LoginResultListener loginResultListener,
-                              SignUpResultListener signUpResultListener) {
-        firebaseAuth = FirebaseAuth.getInstance();
+    public FirebaseInteractor(LoginResultListener loginResultListener) {
         this.loginResultListener = loginResultListener;
+    }
+
+    public FirebaseInteractor(SignUpResultListener signUpResultListener) {
         this.signUpResultListener = signUpResultListener;
     }
 

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.collage.FirebaseInteractor;
 import com.collage.R;
 import com.collage.signup.SignUpFragment;
 
@@ -19,7 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginFragment extends Fragment implements LoginView {
+public class LoginFragment extends Fragment implements LoginView, LoginResultListener {
 
     @BindView(R.id.edit_text_email)
     TextInputEditText editTextEmail;
@@ -38,7 +39,7 @@ public class LoginFragment extends Fragment implements LoginView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loginPresenter = new LoginPresenter(this);
+        loginPresenter = new LoginPresenter(this, new FirebaseInteractor(this));
     }
 
     @Nullable
@@ -77,12 +78,6 @@ public class LoginFragment extends Fragment implements LoginView {
     }
 
     @Override
-    public void showLoginSuccessful() {
-        Toast.makeText(getContext(), R.string.login_successful,
-                Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void hideInvalidEmailError() {
         textInputLayoutEmail.setError(null);
     }
@@ -90,5 +85,15 @@ public class LoginFragment extends Fragment implements LoginView {
     @Override
     public void hideInvalidPasswordError() {
         textInputLayoutPassword.setError(null);
+    }
+
+    @Override
+    public void onLoginSuccess() {
+        Toast.makeText(getContext(), R.string.login_success, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLoginFailure() {
+        Toast.makeText(getContext(), R.string.login_failure, Toast.LENGTH_SHORT).show();
     }
 }

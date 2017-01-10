@@ -7,8 +7,6 @@ interface LoginView {
 
     void showInvalidPasswordError();
 
-    void showLoginSuccessful();
-
     void hideInvalidEmailError();
 
     void hideInvalidPasswordError();
