@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -14,7 +13,8 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.collage.FirebaseInteractor;
+import com.collage.BaseFragment;
+import com.collage.interactors.FirebaseInteractor;
 import com.collage.R;
 import com.collage.display.DisplayFragment;
 import com.collage.signup.SignUpFragment;
@@ -23,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginFragment extends Fragment implements LoginView, LoginResultListener {
+public class LoginFragment extends BaseFragment implements LoginView, LoginResultListener {
 
     @BindView(R.id.edit_text_email)
     TextInputEditText editTextEmail;

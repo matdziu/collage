@@ -3,7 +3,7 @@ package com.collage.signup;
 
 import android.util.Patterns;
 
-import com.collage.FirebaseInteractor;
+import com.collage.interactors.FirebaseInteractor;
 
 class SignUpPresenter {
 

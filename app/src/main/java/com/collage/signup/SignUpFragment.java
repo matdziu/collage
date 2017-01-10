@@ -4,20 +4,23 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.collage.FirebaseInteractor;
+import com.collage.BaseFragment;
+import com.collage.interactors.FirebaseInteractor;
 import com.collage.R;
+import com.collage.display.DisplayFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SignUpFragment extends Fragment implements SignUpView, SignUpResultListener {
+public class SignUpFragment extends BaseFragment implements SignUpView, SignUpResultListener {
 
     @BindView(R.id.edit_text_full_name)
     TextInputEditText editTextFullName;
@@ -93,10 +96,18 @@ public class SignUpFragment extends Fragment implements SignUpView, SignUpResult
     @Override
     public void onSignUpSuccess() {
         Toast.makeText(getContext(), R.string.sign_up_success, Toast.LENGTH_SHORT).show();
+        closeSoftKeyboard();
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        transaction.replace(R.id.linear_layout_activity_login, new DisplayFragment());
+        transaction.commit();
     }
 
     @Override
     public void onSignUpFailure() {
         Toast.makeText(getContext(), R.string.sign_up_failure, Toast.LENGTH_SHORT).show();
     }
+
 }

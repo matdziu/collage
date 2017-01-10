@@ -1,4 +1,4 @@
-package com.collage;
+package com.collage.interactors;
 
 
 import android.support.annotation.NonNull;
