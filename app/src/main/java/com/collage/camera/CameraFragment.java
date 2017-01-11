@@ -265,6 +265,7 @@ public class CameraFragment extends Fragment {
         };
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void setUpCamera(int width, int height) {
         CameraManager cameraManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
         try {

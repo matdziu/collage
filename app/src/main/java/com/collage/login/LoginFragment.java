@@ -1,5 +1,6 @@
 package com.collage.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -14,8 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.collage.BaseFragment;
+import com.collage.MainActivity;
 import com.collage.R;
-import com.collage.camera.CameraFragment;
 import com.collage.interactors.FirebaseInteractor;
 import com.collage.signup.SignUpFragment;
 
@@ -119,12 +120,7 @@ public class LoginFragment extends BaseFragment implements LoginView, LoginResul
     @Override
     public void onLoginSuccess() {
         progressBar.setVisibility(View.GONE);
-
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        transaction.replace(R.id.linear_layout_activity_login, new CameraFragment());
-        transaction.commit();
+        startActivity(new Intent(getActivity(), MainActivity.class));
     }
 
     @Override
