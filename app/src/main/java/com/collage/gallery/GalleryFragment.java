@@ -3,7 +3,6 @@ package com.collage.gallery;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -12,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.collage.BaseFragment;
+import com.collage.HomeActivity;
 import com.collage.R;
 import com.collage.util.PhotosAdapter;
 import com.collage.util.model.Photo;
@@ -22,7 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class GalleryFragment extends Fragment {
+public class GalleryFragment extends BaseFragment {
 
     @BindView(R.id.gallery_recycler_view)
     RecyclerView recyclerView;
@@ -67,4 +68,15 @@ public class GalleryFragment extends Fragment {
         return (size.x / 3);
     }
 
+    @Override
+    public void setMenuVisibility(boolean fragmentVisible) {
+        super.setMenuVisibility(fragmentVisible);
+        HomeActivity homeActivity = (HomeActivity) getActivity();
+        if (homeActivity != null) {
+            if (fragmentVisible) {
+                showSystemUI();
+                homeActivity.showHomeNavigation();
+            }
+        }
+    }
 }

@@ -2,7 +2,6 @@ package com.collage.friends;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,9 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.collage.BaseFragment;
+import com.collage.HomeActivity;
 import com.collage.R;
-import com.collage.util.model.Friend;
 import com.collage.util.FriendsAdapter;
+import com.collage.util.model.Friend;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FriendsFragment extends Fragment {
+public class FriendsFragment extends BaseFragment {
 
     @BindView(R.id.friends_recycler_view)
     RecyclerView recyclerView;
@@ -55,5 +56,17 @@ public class FriendsFragment extends Fragment {
         recyclerView.setAdapter(new FriendsAdapter(friendList));
 
         return view;
+    }
+
+    @Override
+    public void setMenuVisibility(boolean fragmentVisible) {
+        super.setMenuVisibility(fragmentVisible);
+        HomeActivity homeActivity = (HomeActivity) getActivity();
+        if (homeActivity != null) {
+            if (fragmentVisible) {
+                showSystemUI();
+                homeActivity.showHomeNavigation();
+            }
+        }
     }
 }

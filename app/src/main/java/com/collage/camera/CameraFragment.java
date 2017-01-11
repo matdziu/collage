@@ -23,7 +23,6 @@ import android.os.HandlerThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -33,6 +32,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.collage.BaseFragment;
 import com.collage.HomeActivity;
 import com.collage.R;
 
@@ -50,7 +50,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CameraFragment extends Fragment {
+public class CameraFragment extends BaseFragment {
 
     private CameraPresenter cameraPresenter;
 
@@ -59,6 +59,7 @@ public class CameraFragment extends Fragment {
 
     private static final int CAMERA_FRAGMENT_PERMISSIONS_CODE = 0;
     private int cameraFacing;
+    private boolean fragmentVisible;
 
     private Size previewSize;
     private String cameraId;
@@ -160,6 +161,9 @@ public class CameraFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (fragmentVisible) {
+            hideSystemUI();
+        }
 
         openBackgroundThread();
 
@@ -187,40 +191,15 @@ public class CameraFragment extends Fragment {
         }
     }
 
-    private View getDecorView() {
-        return getActivity()
-                .getWindow()
-                .getDecorView();
-    }
-
-    private void hideSystemUI() {
-        getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-    }
-
-    private void showSystemUI() {
-        getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-    }
-
     @Override
     public void setMenuVisibility(boolean fragmentVisible) {
         super.setMenuVisibility(fragmentVisible);
+        this.fragmentVisible = fragmentVisible;
         HomeActivity homeActivity = (HomeActivity) getActivity();
         if (homeActivity != null) {
             if (fragmentVisible) {
                 hideSystemUI();
                 homeActivity.hideHomeNavigation();
-            } else {
-                showSystemUI();
-                homeActivity.showHomeNavigation();
             }
         }
     }
