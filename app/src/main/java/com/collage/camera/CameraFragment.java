@@ -33,6 +33,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.collage.HomeActivity;
 import com.collage.R;
 
 import java.io.File;
@@ -116,7 +117,6 @@ public class CameraFragment extends Fragment {
         }
     }
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -184,6 +184,19 @@ public class CameraFragment extends Fragment {
 
         if (getActivity() != null) {
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+        }
+    }
+
+    @Override
+    public void setMenuVisibility(boolean fragmentVisible) {
+        super.setMenuVisibility(fragmentVisible);
+        HomeActivity homeActivity = (HomeActivity) getActivity();
+        if (homeActivity != null) {
+            if (fragmentVisible) {
+                homeActivity.hideHomeNavigation();
+            } else {
+                homeActivity.showHomeNavigation();
+            }
         }
     }
 

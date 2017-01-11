@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.collage.util.HomeFragmentPagerAdapter;
 
@@ -36,5 +37,15 @@ public class HomeActivity extends AppCompatActivity {
         homeTabLayout.setupWithViewPager(homeViewPager);
         homeFragmentPagerAdapter.setUpTabIcons(homeTabLayout);
 
+    }
+
+    public void hideHomeNavigation() {
+        homeToolbar.setVisibility(View.GONE);
+        homeTabLayout.setVisibility(View.GONE);
+    }
+
+    public void showHomeNavigation() {
+        homeToolbar.setVisibility(View.VISIBLE);
+        homeTabLayout.setVisibility(View.VISIBLE);
     }
 }
