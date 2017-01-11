@@ -9,8 +9,6 @@
     <string name="full_name_error">Please tell us your name</string>
     <string name="email_error">This email is invalid</string>
     <string name="password_error">Password should contain at least 6 characters and no empty spaces</string>
-    <string name="login_success">Login successful</string>
     <string name="login_failure">Login failure</string>
-    <string name="sign_up_success">Account created successfully</string>
     <string name="sign_up_failure">Account creation failed</string>
 </resources>

@@ -119,7 +119,6 @@ public class LoginFragment extends BaseFragment implements LoginView, LoginResul
     @Override
     public void onLoginSuccess() {
         progressBar.setVisibility(View.GONE);
-        Toast.makeText(getContext(), R.string.login_success, Toast.LENGTH_SHORT).show();
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();

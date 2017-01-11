@@ -112,7 +112,6 @@ public class SignUpFragment extends BaseFragment implements SignUpView, SignUpRe
     @Override
     public void onSignUpSuccess() {
         progressBar.setVisibility(View.GONE);
-        Toast.makeText(getContext(), R.string.sign_up_success, Toast.LENGTH_SHORT).show();
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
