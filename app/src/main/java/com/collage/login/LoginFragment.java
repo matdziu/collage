@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.collage.BaseFragment;
-import com.collage.MainActivity;
+import com.collage.HomeActivity;
 import com.collage.R;
 import com.collage.interactors.FirebaseInteractor;
 import com.collage.signup.SignUpFragment;
@@ -120,7 +120,7 @@ public class LoginFragment extends BaseFragment implements LoginView, LoginResul
     @Override
     public void onLoginSuccess() {
         progressBar.setVisibility(View.GONE);
-        startActivity(new Intent(getActivity(), MainActivity.class));
+        startActivity(new Intent(getActivity(), HomeActivity.class));
     }
 
     @Override

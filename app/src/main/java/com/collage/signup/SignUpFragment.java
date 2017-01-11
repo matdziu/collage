@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.collage.BaseFragment;
-import com.collage.MainActivity;
+import com.collage.HomeActivity;
 import com.collage.R;
 import com.collage.interactors.FirebaseInteractor;
 
@@ -111,7 +111,7 @@ public class SignUpFragment extends BaseFragment implements SignUpView, SignUpRe
     @Override
     public void onSignUpSuccess() {
         progressBar.setVisibility(View.GONE);
-        startActivity(new Intent(getActivity(), MainActivity.class));
+        startActivity(new Intent(getActivity(), HomeActivity.class));
     }
 
     @Override

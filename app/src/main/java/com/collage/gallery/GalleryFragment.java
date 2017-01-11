@@ -1,4 +1,4 @@
-package com.collage.display;
+package com.collage.gallery;
 
 import android.graphics.Point;
 import android.os.Bundle;
@@ -22,15 +22,15 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DisplayFragment extends Fragment {
+public class GalleryFragment extends Fragment {
 
-    @BindView(R.id.photos_recycler_view)
+    @BindView(R.id.gallery_recycler_view)
     RecyclerView recyclerView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_display, container, false);
+        View view = inflater.inflate(R.layout.fragment_gallery, container, false);
         ButterKnife.bind(this, view);
 
         List<Photo> photoList = new ArrayList<>();

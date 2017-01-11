@@ -8,10 +8,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.collage.R;
 import com.collage.camera.CameraFragment;
-import com.collage.display.DisplayFragment;
+import com.collage.gallery.GalleryFragment;
 import com.collage.friends.FriendsFragment;
 
-public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
+public class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private int[] tabImageResId = {
             R.drawable.ic_friends,
@@ -19,7 +19,7 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
             R.drawable.ic_camera
     };
 
-    public MainFragmentPagerAdapter(FragmentManager fm) {
+    public HomeFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
@@ -29,7 +29,7 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return new FriendsFragment();
             case 1:
-                return new DisplayFragment();
+                return new GalleryFragment();
             case 2:
                 return new CameraFragment();
             default:
