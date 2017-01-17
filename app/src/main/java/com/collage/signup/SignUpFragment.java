@@ -16,6 +16,7 @@ import com.collage.BaseFragment;
 import com.collage.HomeActivity;
 import com.collage.R;
 import com.collage.interactors.FirebaseAuthInteractor;
+import com.collage.interactors.FirebaseDatabaseInteractor;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,7 +53,8 @@ public class SignUpFragment extends BaseFragment implements SignUpView, SignUpRe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        signUpPresenter = new SignUpPresenter(this, new FirebaseAuthInteractor(this));
+        signUpPresenter = new SignUpPresenter(this, new FirebaseAuthInteractor(this),
+                new FirebaseDatabaseInteractor());
     }
 
     @Nullable
@@ -111,6 +113,8 @@ public class SignUpFragment extends BaseFragment implements SignUpView, SignUpRe
     @Override
     public void onSignUpSuccess() {
         progressBar.setVisibility(View.GONE);
+        signUpPresenter.createUserDatabaseEntry(editTextFullName.getText().toString(),
+                editTextEmail.getText().toString());
         startActivity(new Intent(getActivity(), HomeActivity.class));
     }
 
