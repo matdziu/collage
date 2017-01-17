@@ -14,8 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.collage.BaseFragment;
-import com.collage.HomeActivity;
+import com.collage.base.BaseFragment;
+import com.collage.base.HomeActivity;
 import com.collage.R;
 import com.collage.interactors.FirebaseAuthInteractor;
 import com.collage.signup.SignUpFragment;

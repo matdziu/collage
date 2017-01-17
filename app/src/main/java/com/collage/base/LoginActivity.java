@@ -1,4 +1,4 @@
-package com.collage;
+package com.collage.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import com.collage.R;
 import com.collage.login.LoginFragment;
 
 import butterknife.ButterKnife;

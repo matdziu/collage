@@ -11,8 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.collage.BaseFragment;
-import com.collage.HomeActivity;
+import com.collage.base.BaseFragment;
+import com.collage.base.HomeActivity;
 import com.collage.R;
 import com.collage.util.PhotosAdapter;
 import com.collage.util.model.Photo;

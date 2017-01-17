@@ -1,4 +1,4 @@
-package com.collage;
+package com.collage.base;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.collage.R;
 import com.collage.util.HomeFragmentPagerAdapter;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
