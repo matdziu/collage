@@ -11,7 +11,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class FirebaseInteractor {
+public class FirebaseAuthInteractor {
 
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
@@ -27,11 +27,11 @@ public class FirebaseInteractor {
     private LoginResultListener loginResultListener;
     private SignUpResultListener signUpResultListener;
 
-    public FirebaseInteractor(LoginResultListener loginResultListener) {
+    public FirebaseAuthInteractor(LoginResultListener loginResultListener) {
         this.loginResultListener = loginResultListener;
     }
 
-    public FirebaseInteractor(SignUpResultListener signUpResultListener) {
+    public FirebaseAuthInteractor(SignUpResultListener signUpResultListener) {
         this.signUpResultListener = signUpResultListener;
     }
 

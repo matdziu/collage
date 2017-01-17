@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.collage.BaseFragment;
 import com.collage.HomeActivity;
 import com.collage.R;
-import com.collage.interactors.FirebaseInteractor;
+import com.collage.interactors.FirebaseAuthInteractor;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,7 +52,7 @@ public class SignUpFragment extends BaseFragment implements SignUpView, SignUpRe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        signUpPresenter = new SignUpPresenter(this, new FirebaseInteractor(this));
+        signUpPresenter = new SignUpPresenter(this, new FirebaseAuthInteractor(this));
     }
 
     @Nullable

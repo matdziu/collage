@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.collage.BaseFragment;
 import com.collage.HomeActivity;
 import com.collage.R;
-import com.collage.interactors.FirebaseInteractor;
+import com.collage.interactors.FirebaseAuthInteractor;
 import com.collage.signup.SignUpFragment;
 
 import butterknife.BindView;
@@ -45,13 +45,13 @@ public class LoginFragment extends BaseFragment implements LoginView, LoginResul
     RelativeLayout loginContentView;
 
     private LoginPresenter loginPresenter;
-    private FirebaseInteractor firebaseInteractor;
+    private FirebaseAuthInteractor firebaseAuthInteractor;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        firebaseInteractor = new FirebaseInteractor(this);
-        loginPresenter = new LoginPresenter(this, firebaseInteractor);
+        firebaseAuthInteractor = new FirebaseAuthInteractor(this);
+        loginPresenter = new LoginPresenter(this, firebaseAuthInteractor);
     }
 
     @Nullable
@@ -65,13 +65,13 @@ public class LoginFragment extends BaseFragment implements LoginView, LoginResul
     @Override
     public void onStart() {
         super.onStart();
-        firebaseInteractor.addAuthStateListener();
+        firebaseAuthInteractor.addAuthStateListener();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        firebaseInteractor.removeAuthStateListener();
+        firebaseAuthInteractor.removeAuthStateListener();
     }
 
     @OnClick(R.id.button_sign_up)
