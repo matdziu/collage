@@ -29,6 +29,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
 
+        homeToolbar.setPadding(0, getStatusBarHeight(), 0, 0);
         setSupportActionBar(homeToolbar);
 
         HomeFragmentPagerAdapter homeFragmentPagerAdapter = new HomeFragmentPagerAdapter(getSupportFragmentManager());
@@ -47,5 +48,14 @@ public class HomeActivity extends AppCompatActivity {
     public void showHomeNavigation() {
         homeToolbar.setVisibility(View.VISIBLE);
         homeTabLayout.setVisibility(View.VISIBLE);
+    }
+
+    private int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 }

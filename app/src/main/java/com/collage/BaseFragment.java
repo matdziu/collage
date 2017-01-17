@@ -37,5 +37,6 @@ public class BaseFragment extends Fragment {
     protected void showSystemUI() {
         getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+
     }
 }
