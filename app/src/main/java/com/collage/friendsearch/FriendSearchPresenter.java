@@ -1,13 +1,13 @@
-package com.collage.friends;
+package com.collage.friendsearch;
 
 
 import com.collage.interactors.FirebaseDatabaseInteractor;
 
-class FriendsPresenter {
+class FriendSearchPresenter {
 
     private FirebaseDatabaseInteractor firebaseDatabaseInteractor;
 
-    FriendsPresenter(FirebaseDatabaseInteractor firebaseDatabaseInteractor) {
+    FriendSearchPresenter(FirebaseDatabaseInteractor firebaseDatabaseInteractor) {
         this.firebaseDatabaseInteractor = firebaseDatabaseInteractor;
     }
 

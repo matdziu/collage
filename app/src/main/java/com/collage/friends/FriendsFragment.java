@@ -2,18 +2,19 @@ package com.collage.friends;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.collage.R;
 import com.collage.base.BaseFragment;
 import com.collage.base.HomeActivity;
-import com.collage.interactors.FirebaseDatabaseInteractor;
+import com.collage.friendsearch.FriendSearchFragment;
 import com.collage.util.FriendsAdapter;
 import com.collage.util.model.Friend;
 
@@ -24,18 +25,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FriendsFragment extends BaseFragment implements FriendsResultListener {
+public class FriendsFragment extends BaseFragment {
 
     @BindView(R.id.friends_recycler_view)
     RecyclerView recyclerView;
-
-    private FriendsPresenter friendsPresenter;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        friendsPresenter = new FriendsPresenter(new FirebaseDatabaseInteractor(this));
-    }
 
     @Nullable
     @Override
@@ -83,16 +76,10 @@ public class FriendsFragment extends BaseFragment implements FriendsResultListen
 
     @OnClick(R.id.fab_add_friend)
     public void onAddFriendClicked() {
-        friendsPresenter.searchForFriend("ttt@ow.po");
-    }
+        FragmentManager fragmentManager = getChildFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-    @Override
-    public void onFriendFound() {
-        Toast.makeText(getContext(), "Friend Found", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onFriendNotFound() {
-        Toast.makeText(getContext(), "Friend NOT found", Toast.LENGTH_SHORT).show();
+        transaction.replace(R.id.friends_content_view, new FriendSearchFragment());
+        transaction.commit();
     }
 }

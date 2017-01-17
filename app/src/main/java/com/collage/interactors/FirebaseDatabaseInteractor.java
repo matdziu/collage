@@ -3,7 +3,7 @@ package com.collage.interactors;
 
 import android.util.Log;
 
-import com.collage.friends.FriendsResultListener;
+import com.collage.friendsearch.FriendSearchResultListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -17,13 +17,13 @@ public class FirebaseDatabaseInteractor {
 
     private DatabaseReference databaseReference =
             FirebaseDatabase.getInstance().getReference();
-    private FriendsResultListener friendsResultListener;
+    private FriendSearchResultListener friendsResultListener;
 
     public FirebaseDatabaseInteractor() {
         // default constructor
     }
 
-    public FirebaseDatabaseInteractor(FriendsResultListener friendsResultListener) {
+    public FirebaseDatabaseInteractor(FriendSearchResultListener friendsResultListener) {
         this.friendsResultListener = friendsResultListener;
     }
 
