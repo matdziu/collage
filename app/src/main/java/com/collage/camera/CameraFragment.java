@@ -126,7 +126,7 @@ public class CameraFragment extends BaseFragment {
 
         createImageGallery();
 
-        cameraFacing = CameraCharacteristics.LENS_FACING_FRONT;
+        cameraFacing = CameraCharacteristics.LENS_FACING_BACK;
         setProperOrientation(cameraFacing);
 
         surfaceTextureListener = initSurfaceTextureListener();
