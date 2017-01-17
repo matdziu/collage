@@ -14,9 +14,9 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.collage.R;
 import com.collage.base.BaseFragment;
 import com.collage.base.HomeActivity;
-import com.collage.R;
 import com.collage.interactors.FirebaseAuthInteractor;
 import com.collage.signup.SignUpFragment;
 
@@ -45,13 +45,11 @@ public class LoginFragment extends BaseFragment implements LoginView, LoginResul
     RelativeLayout loginContentView;
 
     private LoginPresenter loginPresenter;
-    private FirebaseAuthInteractor firebaseAuthInteractor;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        firebaseAuthInteractor = new FirebaseAuthInteractor(this);
-        loginPresenter = new LoginPresenter(this, firebaseAuthInteractor);
+        loginPresenter = new LoginPresenter(this, new FirebaseAuthInteractor(this));
     }
 
     @Nullable
@@ -65,13 +63,13 @@ public class LoginFragment extends BaseFragment implements LoginView, LoginResul
     @Override
     public void onStart() {
         super.onStart();
-        firebaseAuthInteractor.addAuthStateListener();
+        loginPresenter.addAuthStateListener();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        firebaseAuthInteractor.removeAuthStateListener();
+        loginPresenter.removeAuthStateListener();
     }
 
     @OnClick(R.id.button_sign_up)

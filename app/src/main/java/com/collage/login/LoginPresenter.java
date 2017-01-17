@@ -43,4 +43,12 @@ class LoginPresenter {
         }
     }
 
+    void addAuthStateListener() {
+        firebaseAuthInteractor.addAuthStateListener();
+    }
+
+    void removeAuthStateListener() {
+        firebaseAuthInteractor.removeAuthStateListener();
+    }
+
 }
