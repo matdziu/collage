@@ -66,7 +66,7 @@ public class SignUpFragment extends BaseFragment implements SignUpView, SignUpRe
     }
 
     @OnClick(R.id.button_create_account)
-    public void createAccount() {
+    public void onCreateAccountButtonClicked() {
         signUpPresenter.validateSignUpUserData(editTextFullName.getText().toString(),
                 editTextEmail.getText().toString(),
                 editTextPassword.getText().toString());

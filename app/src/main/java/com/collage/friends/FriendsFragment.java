@@ -20,6 +20,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class FriendsFragment extends BaseFragment {
 
@@ -68,5 +69,10 @@ public class FriendsFragment extends BaseFragment {
                 homeActivity.showHomeNavigation();
             }
         }
+    }
+
+    @OnClick(R.id.fab_add_friend)
+    public void onAddFriendClicked() {
+
     }
 }

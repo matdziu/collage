@@ -75,7 +75,7 @@ public class LoginFragment extends BaseFragment implements LoginView, LoginResul
     }
 
     @OnClick(R.id.button_sign_up)
-    public void signUp() {
+    public void onSignUpButtonClicked() {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
@@ -85,7 +85,7 @@ public class LoginFragment extends BaseFragment implements LoginView, LoginResul
     }
 
     @OnClick(R.id.button_login)
-    public void login() {
+    public void onLoginButtonClicked() {
         loginPresenter.validateLoginUserData(editTextEmail.getText().toString(),
                 editTextPassword.getText().toString());
     }
