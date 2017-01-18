@@ -32,9 +32,9 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.collage.R;
 import com.collage.base.BaseFragment;
 import com.collage.base.HomeActivity;
-import com.collage.R;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -70,6 +70,7 @@ public class CameraFragment extends BaseFragment {
 
     private CameraDevice cameraDevice;
     private CameraDevice.StateCallback stateCallback;
+    private CameraManager cameraManager;
 
     private CaptureRequest captureRequest;
     private CaptureRequest.Builder captureRequestBuilder;
@@ -133,6 +134,8 @@ public class CameraFragment extends BaseFragment {
         stateCallback = initStateCallback();
         captureCallback = initCaptureCallback();
         onImageAvailableListener = initOnImageAvailableListener();
+
+        cameraManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
     }
 
     @Nullable
@@ -284,7 +287,6 @@ public class CameraFragment extends BaseFragment {
 
     @SuppressWarnings("ConstantConditions")
     private void setUpCamera(int width, int height) {
-        CameraManager cameraManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
         try {
             for (String cameraId : cameraManager.getCameraIdList()) {
                 CameraCharacteristics cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraId);
@@ -382,7 +384,6 @@ public class CameraFragment extends BaseFragment {
     }
 
     private void openCamera() {
-        CameraManager cameraManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
         try {
             if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.CAMERA)
                     == PackageManager.PERMISSION_GRANTED) {
