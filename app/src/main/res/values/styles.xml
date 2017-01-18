@@ -12,6 +12,7 @@
 
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/sample_window_background</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
 </resources>
