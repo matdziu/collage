@@ -24,6 +24,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.util.Range;
 import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
@@ -327,6 +328,20 @@ public class CameraFragment extends BaseFragment {
             Surface previewSurface = new Surface(surfaceTexture);
             captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             captureRequestBuilder.addTarget(previewSurface);
+
+            Range<Integer>[] autoExposureFPSRanges = cameraManager
+                    .getCameraCharacteristics(cameraId)
+                    .get(CameraCharacteristics.CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES);
+
+            if (autoExposureFPSRanges != null) {
+                for (Range<Integer> autoExposureRange : autoExposureFPSRanges) {
+                    if (autoExposureRange.equals(Range.create(15, 30))) {
+                        captureRequestBuilder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE,
+                                Range.create(15, 30));
+                    }
+                }
+            }
+
             cameraDevice.createCaptureSession(Arrays.asList(previewSurface, imageReader.getSurface()),
                     new CameraCaptureSession.StateCallback() {
                         @Override
