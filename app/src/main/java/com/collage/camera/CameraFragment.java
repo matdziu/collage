@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
@@ -12,7 +13,6 @@ import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
-import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
@@ -477,43 +477,24 @@ public class CameraFragment extends BaseFragment {
 
     @OnClick(R.id.fab_camera)
     public void captureImage() {
+        lock();
+        FileOutputStream outputPhoto = null;
         try {
-            lock();
-            CaptureRequest.Builder captureRequestBuilder =
-                    cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
-            captureRequestBuilder.addTarget(imageReader.getSurface());
-
-            int rotation = getActivity()
-                    .getWindowManager()
-                    .getDefaultDisplay()
-                    .getRotation();
-            captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION,
-                    ORIENTATIONS.get(rotation));
-
-            CameraCaptureSession.CaptureCallback captureCallback = new CameraCaptureSession.CaptureCallback() {
-                @Override
-                public void onCaptureStarted(@NonNull CameraCaptureSession session,
-                                             @NonNull CaptureRequest request, long timestamp, long frameNumber) {
-                    super.onCaptureStarted(session, request, timestamp, frameNumber);
-                    try {
-                        cameraPresenter.createImageFile(galleryFolder);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onCaptureCompleted(@NonNull CameraCaptureSession session,
-                                               @NonNull CaptureRequest request,
-                                               @NonNull TotalCaptureResult result) {
-                    super.onCaptureCompleted(session, request, result);
-                    unlock();
-                }
-            };
-            cameraCaptureSession.stopRepeating();
-            cameraCaptureSession.capture(captureRequestBuilder.build(), captureCallback, null);
-        } catch (CameraAccessException e) {
+            cameraPresenter.createImageFile(galleryFolder);
+            outputPhoto = new FileOutputStream(cameraPresenter.getImageFile());
+            textureView.getBitmap()
+                    .compress(Bitmap.CompressFormat.PNG, 100, outputPhoto);
+        } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            unlock();
+            try {
+                if (outputPhoto != null) {
+                    outputPhoto.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
