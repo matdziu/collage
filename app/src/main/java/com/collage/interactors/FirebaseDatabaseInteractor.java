@@ -17,6 +17,8 @@ public class FirebaseDatabaseInteractor {
 
     private DatabaseReference databaseReference =
             FirebaseDatabase.getInstance().getReference();
+    private FirebaseUser user = FirebaseAuth.getInstance()
+            .getCurrentUser();
     private FriendSearchResultListener friendsResultListener;
 
     public FirebaseDatabaseInteractor() {
@@ -28,8 +30,6 @@ public class FirebaseDatabaseInteractor {
     }
 
     public void createUserDatabaseEntry(String fullName, String email) {
-        FirebaseUser user = FirebaseAuth.getInstance()
-                .getCurrentUser();
         if (user != null) {
             databaseReference
                     .child("users")
@@ -54,6 +54,20 @@ public class FirebaseDatabaseInteractor {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     friendsResultListener.onFriendFound();
+
+                    String friendUid = dataSnapshot
+                            .getChildren()
+                            .iterator()
+                            .next()
+                            .getKey();
+
+                    databaseReference
+                            .child("users")
+                            .child(friendUid)
+                            .child("friends")
+                            .child(user.getUid())
+                            .setValue(false);
+
                 } else {
                     friendsResultListener.onFriendNotFound();
                 }
