@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.collage.R;
 import com.collage.base.BaseFragment;
-import com.collage.base.HomeActivity;
+import com.collage.home.HomeActivity;
 import com.collage.friendsearch.FriendSearchFragment;
 import com.collage.util.FriendsAdapter;
 import com.collage.util.model.Friend;

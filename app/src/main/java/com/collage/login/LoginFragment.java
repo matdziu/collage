@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.collage.R;
 import com.collage.base.BaseFragment;
-import com.collage.base.HomeActivity;
+import com.collage.home.HomeActivity;
 import com.collage.interactors.FirebaseAuthInteractor;
 import com.collage.signup.SignUpFragment;
 

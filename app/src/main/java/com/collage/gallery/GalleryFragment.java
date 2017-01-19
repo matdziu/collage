@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.collage.base.BaseFragment;
-import com.collage.base.HomeActivity;
+import com.collage.home.HomeActivity;
 import com.collage.R;
 import com.collage.util.PhotosAdapter;
 import com.collage.util.model.Photo;

@@ -27,6 +27,10 @@ public class FirebaseAuthInteractor {
     private LoginResultListener loginResultListener;
     private SignUpResultListener signUpResultListener;
 
+    public FirebaseAuthInteractor() {
+        // default constructor
+    }
+
     public FirebaseAuthInteractor(LoginResultListener loginResultListener) {
         this.loginResultListener = loginResultListener;
     }

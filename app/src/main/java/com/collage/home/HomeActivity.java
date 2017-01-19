@@ -1,4 +1,4 @@
-package com.collage.base;
+package com.collage.home;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -6,9 +6,12 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.collage.R;
+import com.collage.interactors.FirebaseAuthInteractor;
 import com.collage.util.HomeFragmentPagerAdapter;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
@@ -27,12 +30,15 @@ public class HomeActivity extends AppCompatActivity {
     Toolbar homeToolbar;
 
     private SystemBarTintManager tintManager;
+    private HomePresenter homePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
+
+        homePresenter = new HomePresenter(new FirebaseAuthInteractor());
 
         tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
@@ -48,6 +54,24 @@ public class HomeActivity extends AppCompatActivity {
         homeTabLayout.setupWithViewPager(homeViewPager);
         homeFragmentPagerAdapter.setUpTabIcons(homeTabLayout);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_sign_out:
+                homePresenter.signOut();
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void hideHomeNavigation() {

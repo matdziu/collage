@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".base.SplashActivity"
+            android:name=".splash.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,8 +23,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".base.HomeActivity" />
-        <activity android:name=".base.LoginActivity" />
+        <activity android:name=".home.HomeActivity" />
+        <activity android:name=".login.LoginActivity" />
     </application>
 
 </manifest>

@@ -35,7 +35,7 @@ import android.view.ViewGroup;
 
 import com.collage.R;
 import com.collage.base.BaseFragment;
-import com.collage.base.HomeActivity;
+import com.collage.home.HomeActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
