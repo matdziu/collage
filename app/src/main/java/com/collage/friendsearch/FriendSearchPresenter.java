@@ -18,6 +18,6 @@ class FriendSearchPresenter {
     }
 
     void populatePendingList(List<String> pendingList) {
-        firebaseDatabaseInteractor.populatePendingList(pendingList);
+        firebaseDatabaseInteractor.fetchPendingList(pendingList);
     }
 }

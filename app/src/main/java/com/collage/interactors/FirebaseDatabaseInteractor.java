@@ -84,7 +84,7 @@ public class FirebaseDatabaseInteractor {
         });
     }
 
-    public void populatePendingList(final List<String> pendingList) {
+    public void fetchPendingList(final List<String> pendingList) {
         friendSearchListener.onPendingListFetchingStarted();
         databaseReference
                 .child("users")
