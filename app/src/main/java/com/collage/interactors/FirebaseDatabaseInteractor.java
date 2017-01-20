@@ -85,11 +85,12 @@ public class FirebaseDatabaseInteractor {
     }
 
     public void populatePendingList(final List<String> pendingList) {
+        friendSearchListener.onPendingListFetchingStarted();
         databaseReference
                 .child("users")
                 .child(user.getUid())
                 .child("friends")
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         pendingList.clear();

@@ -56,4 +56,12 @@
         android:layout_height="match_parent"
         android:layout_marginTop="8dp" />
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:visibility="gone" />
+
 </LinearLayout>

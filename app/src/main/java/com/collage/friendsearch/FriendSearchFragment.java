@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.collage.R;
@@ -31,6 +32,9 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchLi
 
     @BindView(R.id.edit_text_friend_search)
     EditText editText;
+
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
 
     private FriendSearchPresenter friendSearchPresenter;
     private List<String> pendingList = new ArrayList<>();
@@ -79,9 +83,17 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchLi
     }
 
     @Override
+    public void onPendingListFetchingStarted() {
+        recyclerView.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void onPendingListFetched(List<String> pendingList) {
         this.pendingList = pendingList;
         recyclerView.getAdapter().notifyDataSetChanged();
+        recyclerView.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
     }
 
     @OnClick(R.id.button_friend_search)

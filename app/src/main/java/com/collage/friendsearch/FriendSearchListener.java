@@ -11,5 +11,7 @@ public interface FriendSearchListener {
 
     void onInvitationAccepted(int position);
 
+    void onPendingListFetchingStarted();
+
     void onPendingListFetched(List<String> pendingList);
 }
