@@ -30,6 +30,8 @@ public class FirebaseDatabaseInteractor {
     }
 
     public void createUserDatabaseEntry(String fullName, String email) {
+        user = FirebaseAuth.getInstance()
+                .getCurrentUser();
         if (user != null) {
             databaseReference
                     .child("users")
