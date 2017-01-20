@@ -16,7 +16,6 @@ import com.collage.R;
 import com.collage.base.BaseFragment;
 import com.collage.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.PendingInvitationsAdapter;
-import com.collage.util.PendingInvitationsListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FriendSearchFragment extends BaseFragment implements FriendSearchResultListener,
-        PendingInvitationsListener {
+public class FriendSearchFragment extends BaseFragment implements FriendSearchListener {
 
     @BindView(R.id.pending_recycler_view)
     RecyclerView recyclerView;
@@ -49,10 +47,7 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchRe
         View view = inflater.inflate(R.layout.fragment_friend_search, container, false);
         ButterKnife.bind(this, view);
 
-        pendingList.add("Marcin");
-        pendingList.add("Marek");
-        pendingList.add("Maciek");
-        pendingList.add("Ania");
+        friendSearchPresenter.populatePendingList(pendingList);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         DividerItemDecoration dividerItemDecoration =
@@ -77,6 +72,18 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchRe
         Toast.makeText(getContext(), "Friend not found", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onInvitationAccepted(int position) {
+        pendingList.remove(position);
+        recyclerView.getAdapter().notifyItemRemoved(position);
+    }
+
+    @Override
+    public void onPendingListFetched(List<String> pendingList) {
+        this.pendingList = pendingList;
+        recyclerView.getAdapter().notifyDataSetChanged();
+    }
+
     @OnClick(R.id.button_friend_search)
     public void onInviteButtonClicked() {
         friendSearchPresenter.searchForFriend(
@@ -84,11 +91,5 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchRe
                         .toString()
                         .toLowerCase()
                         .trim());
-    }
-
-    @Override
-    public void onInvitationAccepted(int position) {
-        pendingList.remove(position);
-        recyclerView.getAdapter().notifyItemRemoved(position);
     }
 }

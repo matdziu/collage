@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.collage.R;
+import com.collage.friendsearch.FriendSearchListener;
 
 import java.util.List;
 
@@ -17,12 +18,12 @@ import butterknife.ButterKnife;
 public class PendingInvitationsAdapter extends RecyclerView.Adapter<PendingInvitationsAdapter.ViewHolder> {
 
     private List<String> pendingInvitationsList;
-    private PendingInvitationsListener pendingInvitationsListener;
+    private FriendSearchListener friendSearchListener;
 
     public PendingInvitationsAdapter(List<String> pendingInvitationsList,
-                                     PendingInvitationsListener pendingInvitationsListener) {
+                                     FriendSearchListener friendSearchListener) {
         this.pendingInvitationsList = pendingInvitationsList;
-        this.pendingInvitationsListener = pendingInvitationsListener;
+        this.friendSearchListener = friendSearchListener;
     }
 
     @Override
@@ -38,7 +39,7 @@ public class PendingInvitationsAdapter extends RecyclerView.Adapter<PendingInvit
         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pendingInvitationsListener.onInvitationAccepted(holder.getAdapterPosition());
+                friendSearchListener.onInvitationAccepted(holder.getAdapterPosition());
             }
         });
     }

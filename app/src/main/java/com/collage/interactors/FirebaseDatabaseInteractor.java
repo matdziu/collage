@@ -3,7 +3,7 @@ package com.collage.interactors;
 
 import android.util.Log;
 
-import com.collage.friendsearch.FriendSearchResultListener;
+import com.collage.friendsearch.FriendSearchListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -13,20 +13,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
+
 public class FirebaseDatabaseInteractor {
 
     private DatabaseReference databaseReference =
             FirebaseDatabase.getInstance().getReference();
     private FirebaseUser user = FirebaseAuth.getInstance()
             .getCurrentUser();
-    private FriendSearchResultListener friendsResultListener;
+    private FriendSearchListener friendSearchListener;
 
     public FirebaseDatabaseInteractor() {
         // default constructor
     }
 
-    public FirebaseDatabaseInteractor(FriendSearchResultListener friendsResultListener) {
-        this.friendsResultListener = friendsResultListener;
+    public FirebaseDatabaseInteractor(FriendSearchListener friendSearchListener) {
+        this.friendSearchListener = friendSearchListener;
     }
 
     public void createUserDatabaseEntry(String fullName, String email) {
@@ -55,7 +57,7 @@ public class FirebaseDatabaseInteractor {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    friendsResultListener.onFriendFound();
+                    friendSearchListener.onFriendFound();
 
                     String friendUid = dataSnapshot
                             .getChildren()
@@ -71,7 +73,7 @@ public class FirebaseDatabaseInteractor {
                             .setValue(false);
 
                 } else {
-                    friendsResultListener.onFriendNotFound();
+                    friendSearchListener.onFriendNotFound();
                 }
             }
 
@@ -80,5 +82,26 @@ public class FirebaseDatabaseInteractor {
                 Log.e("friendSearch", databaseError.getMessage());
             }
         });
+    }
+
+    public void populatePendingList(final List<String> pendingList) {
+        databaseReference
+                .child("users")
+                .child(user.getUid())
+                .child("friends")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot dataItem : dataSnapshot.getChildren()) {
+                            pendingList.add(dataItem.getKey());
+                        }
+                        friendSearchListener.onPendingListFetched(pendingList);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e("friendSearch", databaseError.getMessage());
+                    }
+                });
     }
 }
