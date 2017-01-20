@@ -16,6 +16,7 @@ import com.collage.R;
 import com.collage.base.BaseFragment;
 import com.collage.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.PendingInvitationsAdapter;
+import com.collage.util.PendingInvitationsListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FriendSearchFragment extends BaseFragment implements FriendSearchResultListener {
+public class FriendSearchFragment extends BaseFragment implements FriendSearchResultListener,
+        PendingInvitationsListener {
 
     @BindView(R.id.pending_recycler_view)
     RecyclerView recyclerView;
@@ -33,6 +35,7 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchRe
     EditText editText;
 
     private FriendSearchPresenter friendSearchPresenter;
+    private List<String> pendingList = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,7 +49,6 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchRe
         View view = inflater.inflate(R.layout.fragment_friend_search, container, false);
         ButterKnife.bind(this, view);
 
-        List<String> pendingList = new ArrayList<>();
         pendingList.add("Marcin");
         pendingList.add("Marek");
         pendingList.add("Maciek");
@@ -59,7 +61,7 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchRe
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(dividerItemDecoration);
-        recyclerView.setAdapter(new PendingInvitationsAdapter(pendingList));
+        recyclerView.setAdapter(new PendingInvitationsAdapter(pendingList, this));
 
         return view;
     }
@@ -82,5 +84,11 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchRe
                         .toString()
                         .toLowerCase()
                         .trim());
+    }
+
+    @Override
+    public void onInvitationAccepted(int position) {
+        pendingList.remove(position);
+        recyclerView.getAdapter().notifyItemRemoved(position);
     }
 }

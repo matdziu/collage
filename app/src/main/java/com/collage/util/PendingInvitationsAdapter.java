@@ -17,9 +17,12 @@ import butterknife.ButterKnife;
 public class PendingInvitationsAdapter extends RecyclerView.Adapter<PendingInvitationsAdapter.ViewHolder> {
 
     private List<String> pendingInvitationsList;
+    private PendingInvitationsListener pendingInvitationsListener;
 
-    public PendingInvitationsAdapter(List<String> pendingInvitationsList) {
+    public PendingInvitationsAdapter(List<String> pendingInvitationsList,
+                                     PendingInvitationsListener pendingInvitationsListener) {
         this.pendingInvitationsList = pendingInvitationsList;
+        this.pendingInvitationsListener = pendingInvitationsListener;
     }
 
     @Override
@@ -30,8 +33,14 @@ public class PendingInvitationsAdapter extends RecyclerView.Adapter<PendingInvit
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.textView.setText(pendingInvitationsList.get(position));
+        holder.button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pendingInvitationsListener.onInvitationAccepted(holder.getAdapterPosition());
+            }
+        });
     }
 
     @Override
