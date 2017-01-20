@@ -1,5 +1,6 @@
 package com.collage.home;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -12,6 +13,7 @@ import android.view.View;
 
 import com.collage.R;
 import com.collage.interactors.FirebaseAuthInteractor;
+import com.collage.login.LoginActivity;
 import com.collage.util.HomeFragmentPagerAdapter;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
@@ -67,6 +69,7 @@ public class HomeActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.menu_sign_out:
                 homePresenter.signOut();
+                startActivity(new Intent(this, LoginActivity.class));
                 finish();
                 return true;
             default:

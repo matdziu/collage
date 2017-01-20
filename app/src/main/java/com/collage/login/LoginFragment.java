@@ -119,6 +119,7 @@ public class LoginFragment extends BaseFragment implements LoginView, LoginResul
     public void onLoginSuccess() {
         progressBar.setVisibility(View.GONE);
         startActivity(new Intent(getActivity(), HomeActivity.class));
+        getActivity().finish();
     }
 
     @Override

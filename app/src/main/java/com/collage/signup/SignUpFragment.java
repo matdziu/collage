@@ -116,6 +116,7 @@ public class SignUpFragment extends BaseFragment implements SignUpView, SignUpRe
         signUpPresenter.createUserDatabaseEntry(editTextFullName.getText().toString(),
                 editTextEmail.getText().toString());
         startActivity(new Intent(getActivity(), HomeActivity.class));
+        getActivity().finish();
     }
 
     @Override
