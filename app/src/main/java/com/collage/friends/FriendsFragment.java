@@ -1,9 +1,8 @@
 package com.collage.friends;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +12,8 @@ import android.view.ViewGroup;
 
 import com.collage.R;
 import com.collage.base.BaseFragment;
+import com.collage.friendsearch.FriendSearchActivity;
 import com.collage.home.HomeActivity;
-import com.collage.friendsearch.FriendSearchFragment;
 import com.collage.util.FriendsAdapter;
 import com.collage.util.model.Friend;
 
@@ -76,10 +75,6 @@ public class FriendsFragment extends BaseFragment {
 
     @OnClick(R.id.fab_add_friend)
     public void onAddFriendClicked() {
-        FragmentManager fragmentManager = getChildFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        transaction.replace(R.id.friends_content_view, new FriendSearchFragment());
-        transaction.commit();
+        startActivity(new Intent(getActivity(), FriendSearchActivity.class));
     }
 }

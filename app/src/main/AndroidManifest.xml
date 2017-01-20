@@ -23,8 +23,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".home.HomeActivity" />
+        <activity
+            android:name=".home.HomeActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".login.LoginActivity" />
+        <activity android:name=".friendsearch.FriendSearchActivity" />
     </application>
 
 </manifest>

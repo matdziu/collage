@@ -1,13 +1,13 @@
-package com.collage.home;
+package com.collage.base;
 
 
 import com.collage.interactors.FirebaseAuthInteractor;
 
-class HomePresenter {
+class BasePresenter {
 
     private FirebaseAuthInteractor firebaseAuthInteractor;
 
-    HomePresenter(FirebaseAuthInteractor firebaseAuthInteractor) {
+    BasePresenter(FirebaseAuthInteractor firebaseAuthInteractor) {
         this.firebaseAuthInteractor = firebaseAuthInteractor;
     }
 

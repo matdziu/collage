@@ -12,9 +12,9 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.collage.R;
 import com.collage.base.BaseFragment;
 import com.collage.home.HomeActivity;
-import com.collage.R;
 import com.collage.interactors.FirebaseAuthInteractor;
 import com.collage.interactors.FirebaseDatabaseInteractor;
 
