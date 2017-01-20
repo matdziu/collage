@@ -92,6 +92,7 @@ public class FirebaseDatabaseInteractor {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        pendingList.clear();
                         for (DataSnapshot dataItem : dataSnapshot.getChildren()) {
                             pendingList.add(dataItem.getKey());
                         }
