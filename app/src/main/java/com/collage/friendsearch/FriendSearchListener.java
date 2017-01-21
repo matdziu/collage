@@ -1,6 +1,8 @@
 package com.collage.friendsearch;
 
 
+import com.collage.util.model.User;
+
 import java.util.List;
 
 public interface FriendSearchListener {
@@ -9,9 +11,9 @@ public interface FriendSearchListener {
 
     void onFriendNotFound();
 
-    void onInvitationAccepted(int position);
+    void onInvitationAccepted(int position, User friend);
 
     void onPendingListFetchingStarted();
 
-    void onPendingListFetched(List<String> pendingList);
+    void onPendingListFetched(List<User> pendingList);
 }

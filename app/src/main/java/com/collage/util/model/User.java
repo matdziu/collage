@@ -1,13 +1,13 @@
 package com.collage.util.model;
 
 
-@SuppressWarnings("ALL")
 public class User {
 
     public String fullName;
     public String email;
     public String uid;
 
+    @SuppressWarnings("unused")
     public User() {
         // default constructor for Firebase
     }

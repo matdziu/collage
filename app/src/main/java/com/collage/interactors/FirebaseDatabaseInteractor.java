@@ -4,6 +4,7 @@ package com.collage.interactors;
 import android.util.Log;
 
 import com.collage.friendsearch.FriendSearchListener;
+import com.collage.util.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -19,7 +20,7 @@ public class FirebaseDatabaseInteractor {
 
     private DatabaseReference databaseReference =
             FirebaseDatabase.getInstance().getReference();
-    private FirebaseUser user = FirebaseAuth.getInstance()
+    private FirebaseUser firebaseUser = FirebaseAuth.getInstance()
             .getCurrentUser();
     private FriendSearchListener friendSearchListener;
 
@@ -32,19 +33,13 @@ public class FirebaseDatabaseInteractor {
     }
 
     public void createUserDatabaseEntry(String fullName, String email) {
-        user = FirebaseAuth.getInstance()
+        firebaseUser = FirebaseAuth.getInstance()
                 .getCurrentUser();
-        if (user != null) {
+        if (firebaseUser != null) {
             databaseReference
                     .child("users")
-                    .child(user.getUid())
-                    .child("fullName")
-                    .setValue(fullName);
-            databaseReference
-                    .child("users")
-                    .child(user.getUid())
-                    .child("email")
-                    .setValue(email);
+                    .child(firebaseUser.getUid())
+                    .setValue(new User(fullName, email, firebaseUser.getUid()));
         }
     }
 
@@ -67,26 +62,17 @@ public class FirebaseDatabaseInteractor {
 
                     databaseReference
                             .child("users")
-                            .child(friendUid)
-                            .child("friends")
-                            .child(user.getUid())
-                            .child("isAccepted")
-                            .setValue(false);
-
-                    databaseReference
-                            .child("users")
-                            .child(user.getUid())
-                            .child("fullName")
+                            .child(firebaseUser.getUid())
                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
+                                    User collageUser = dataSnapshot.getValue(User.class);
                                     databaseReference
                                             .child("users")
                                             .child(friendUid)
-                                            .child("friends")
-                                            .child(user.getUid())
-                                            .child("fullName")
-                                            .setValue(dataSnapshot.getValue());
+                                            .child("pendingFriends")
+                                            .child(collageUser.uid)
+                                            .setValue(collageUser);
                                 }
 
                                 @Override
@@ -106,18 +92,18 @@ public class FirebaseDatabaseInteractor {
         });
     }
 
-    public void fetchPendingList(final List<String> pendingList) {
+    public void fetchPendingList(final List<User> pendingList) {
         friendSearchListener.onPendingListFetchingStarted();
         databaseReference
                 .child("users")
-                .child(user.getUid())
-                .child("friends")
+                .child(firebaseUser.getUid())
+                .child("pendingFriends")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         pendingList.clear();
                         for (DataSnapshot dataItem : dataSnapshot.getChildren()) {
-                            pendingList.add(dataItem.child("fullName").getValue(String.class));
+                            pendingList.add(dataItem.getValue(User.class));
                         }
                         friendSearchListener.onPendingListFetched(pendingList);
                     }
@@ -127,5 +113,42 @@ public class FirebaseDatabaseInteractor {
                         Log.e("friendSearch", databaseError.getMessage());
                     }
                 });
+    }
+
+    public void addFriend(final User friend) {
+        databaseReference
+                .child("users")
+                .child(firebaseUser.getUid())
+                .child("acceptedFriends")
+                .child(friend.uid)
+                .setValue(friend);
+
+        databaseReference
+                .child("users")
+                .child(firebaseUser.getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        User collageUser = dataSnapshot.getValue(User.class);
+                        databaseReference
+                                .child("users")
+                                .child(friend.uid)
+                                .child("acceptedFriends")
+                                .child(firebaseUser.getUid())
+                                .setValue(collageUser);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e("friendSearch", databaseError.getMessage());
+                    }
+                });
+
+        databaseReference
+                .child("users")
+                .child(firebaseUser.getUid())
+                .child("pendingFriends")
+                .child(friend.uid)
+                .removeValue();
     }
 }

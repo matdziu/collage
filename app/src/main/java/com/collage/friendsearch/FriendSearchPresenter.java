@@ -2,6 +2,7 @@ package com.collage.friendsearch;
 
 
 import com.collage.interactors.FirebaseDatabaseInteractor;
+import com.collage.util.model.User;
 
 import java.util.List;
 
@@ -17,7 +18,11 @@ class FriendSearchPresenter {
         firebaseDatabaseInteractor.searchForFriend(email);
     }
 
-    void populatePendingList(List<String> pendingList) {
+    void populatePendingList(List<User> pendingList) {
         firebaseDatabaseInteractor.fetchPendingList(pendingList);
+    }
+
+    void addFriend(User friend) {
+        firebaseDatabaseInteractor.addFriend(friend);
     }
 }

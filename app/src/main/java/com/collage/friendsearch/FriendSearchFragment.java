@@ -17,6 +17,7 @@ import com.collage.R;
 import com.collage.base.BaseFragment;
 import com.collage.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.PendingInvitationsAdapter;
+import com.collage.util.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchLi
     ProgressBar progressBar;
 
     private FriendSearchPresenter friendSearchPresenter;
-    private List<String> pendingList = new ArrayList<>();
+    private List<User> pendingList = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,9 +78,10 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchLi
     }
 
     @Override
-    public void onInvitationAccepted(int position) {
+    public void onInvitationAccepted(int position, User friend) {
         pendingList.remove(position);
         recyclerView.getAdapter().notifyItemRemoved(position);
+        friendSearchPresenter.addFriend(friend);
     }
 
     @Override
@@ -89,7 +91,7 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchLi
     }
 
     @Override
-    public void onPendingListFetched(List<String> pendingList) {
+    public void onPendingListFetched(List<User> pendingList) {
         this.pendingList = pendingList;
         recyclerView.getAdapter().notifyDataSetChanged();
         recyclerView.setVisibility(View.VISIBLE);
