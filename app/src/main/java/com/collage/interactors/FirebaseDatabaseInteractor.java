@@ -59,7 +59,7 @@ public class FirebaseDatabaseInteractor {
                 if (dataSnapshot.exists()) {
                     friendSearchListener.onFriendFound();
 
-                    String friendUid = dataSnapshot
+                    final String friendUid = dataSnapshot
                             .getChildren()
                             .iterator()
                             .next()
@@ -70,8 +70,30 @@ public class FirebaseDatabaseInteractor {
                             .child(friendUid)
                             .child("friends")
                             .child(user.getUid())
+                            .child("isAccepted")
                             .setValue(false);
 
+                    databaseReference
+                            .child("users")
+                            .child(user.getUid())
+                            .child("fullName")
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    databaseReference
+                                            .child("users")
+                                            .child(friendUid)
+                                            .child("friends")
+                                            .child(user.getUid())
+                                            .child("fullName")
+                                            .setValue(dataSnapshot.getValue());
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.e("friendSearch", databaseError.getMessage());
+                                }
+                            });
                 } else {
                     friendSearchListener.onFriendNotFound();
                 }
@@ -95,7 +117,7 @@ public class FirebaseDatabaseInteractor {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         pendingList.clear();
                         for (DataSnapshot dataItem : dataSnapshot.getChildren()) {
-                            pendingList.add(dataItem.getKey());
+                            pendingList.add(dataItem.child("fullName").getValue(String.class));
                         }
                         friendSearchListener.onPendingListFetched(pendingList);
                     }
