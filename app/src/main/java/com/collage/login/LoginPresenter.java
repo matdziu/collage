@@ -5,7 +5,7 @@ import android.util.Patterns;
 import com.collage.interactors.FirebaseAuthInteractor;
 
 
-class LoginPresenter {
+class LoginPresenter implements LoginListener {
 
     private LoginView loginView;
     private FirebaseAuthInteractor firebaseAuthInteractor;
@@ -13,6 +13,7 @@ class LoginPresenter {
     LoginPresenter(LoginView loginView, FirebaseAuthInteractor firebaseAuthInteractor) {
         this.loginView = loginView;
         this.firebaseAuthInteractor = firebaseAuthInteractor;
+        firebaseAuthInteractor.initAuthStateListener(this);
     }
 
     void validateLoginUserData(String email,
@@ -39,7 +40,7 @@ class LoginPresenter {
         }
 
         if (isEmailValid && isPasswordValid) {
-            firebaseAuthInteractor.signIn(email, password);
+            firebaseAuthInteractor.signIn(email, password, this);
         }
     }
 
@@ -51,4 +52,18 @@ class LoginPresenter {
         firebaseAuthInteractor.removeAuthStateListener();
     }
 
+    @Override
+    public void onLoginStart() {
+        loginView.showProgressBar();
+    }
+
+    @Override
+    public void onLoginSuccess() {
+        loginView.navigateToHome();
+    }
+
+    @Override
+    public void onLoginFailure() {
+        loginView.showLoginError();
+    }
 }

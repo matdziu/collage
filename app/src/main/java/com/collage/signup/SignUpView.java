@@ -14,4 +14,14 @@ interface SignUpView {
     void hideInvalidEmailError();
 
     void hideInvalidPasswordError();
+
+    void showProgressBar();
+
+    void navigateToHome();
+
+    void showSignUpError();
+
+    String getFullName();
+
+    String getEmail();
 }

@@ -10,4 +10,10 @@ interface LoginView {
     void hideInvalidEmailError();
 
     void hideInvalidPasswordError();
+
+    void showProgressBar();
+
+    void navigateToHome();
+
+    void showLoginError();
 }

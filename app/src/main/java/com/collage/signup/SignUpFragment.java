@@ -22,7 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SignUpFragment extends BaseFragment implements SignUpView, SignUpResultListener {
+public class SignUpFragment extends BaseFragment implements SignUpView {
 
     @BindView(R.id.edit_text_full_name)
     TextInputEditText editTextFullName;
@@ -53,7 +53,7 @@ public class SignUpFragment extends BaseFragment implements SignUpView, SignUpRe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        signUpPresenter = new SignUpPresenter(this, new FirebaseAuthInteractor(this),
+        signUpPresenter = new SignUpPresenter(this, new FirebaseAuthInteractor(),
                 new FirebaseDatabaseInteractor());
     }
 
@@ -103,27 +103,37 @@ public class SignUpFragment extends BaseFragment implements SignUpView, SignUpRe
     }
 
     @Override
-    public void onSignUpStart() {
+    public void showProgressBar() {
         closeSoftKeyboard();
         progressBar.setVisibility(View.VISIBLE);
         signUpContectView.setVisibility(View.GONE);
-
     }
 
     @Override
-    public void onSignUpSuccess() {
+    public void navigateToHome() {
         progressBar.setVisibility(View.GONE);
-        signUpPresenter.createUserDatabaseEntry(editTextFullName.getText().toString(),
-                editTextEmail.getText().toString());
         startActivity(new Intent(getActivity(), HomeActivity.class));
         getActivity().finish();
     }
 
     @Override
-    public void onSignUpFailure() {
+    public void showSignUpError() {
         progressBar.setVisibility(View.GONE);
         signUpContectView.setVisibility(View.VISIBLE);
         Toast.makeText(getContext(), R.string.sign_up_failure, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public String getFullName() {
+        return editTextFullName
+                .getText()
+                .toString();
+    }
+
+    @Override
+    public String getEmail() {
+        return editTextEmail
+                .getText()
+                .toString();
+    }
 }

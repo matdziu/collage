@@ -24,7 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginFragment extends BaseFragment implements LoginView, LoginResultListener {
+public class LoginFragment extends BaseFragment implements LoginView {
 
     @BindView(R.id.edit_text_email)
     TextInputEditText editTextEmail;
@@ -49,7 +49,7 @@ public class LoginFragment extends BaseFragment implements LoginView, LoginResul
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loginPresenter = new LoginPresenter(this, new FirebaseAuthInteractor(this));
+        loginPresenter = new LoginPresenter(this, new FirebaseAuthInteractor());
     }
 
     @Nullable
@@ -109,21 +109,21 @@ public class LoginFragment extends BaseFragment implements LoginView, LoginResul
     }
 
     @Override
-    public void onLoginStart() {
+    public void showProgressBar() {
         closeSoftKeyboard();
         progressBar.setVisibility(View.VISIBLE);
         loginContentView.setVisibility(View.GONE);
     }
 
     @Override
-    public void onLoginSuccess() {
+    public void navigateToHome() {
         progressBar.setVisibility(View.GONE);
         startActivity(new Intent(getActivity(), HomeActivity.class));
         getActivity().finish();
     }
 
     @Override
-    public void onLoginFailure() {
+    public void showLoginError() {
         progressBar.setVisibility(View.GONE);
         loginContentView.setVisibility(View.VISIBLE);
         Toast.makeText(getContext(), R.string.login_failure, Toast.LENGTH_SHORT).show();

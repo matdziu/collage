@@ -1,6 +1,6 @@
 package com.collage.signup;
 
-public interface SignUpResultListener {
+public interface SignUpListener {
 
     void onSignUpStart();
 

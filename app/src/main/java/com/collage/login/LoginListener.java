@@ -1,6 +1,6 @@
 package com.collage.login;
 
-public interface LoginResultListener {
+public interface LoginListener {
 
     void onLoginStart();
 

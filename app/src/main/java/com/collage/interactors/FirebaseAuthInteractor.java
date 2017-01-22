@@ -3,8 +3,8 @@ package com.collage.interactors;
 
 import android.support.annotation.NonNull;
 
-import com.collage.login.LoginResultListener;
-import com.collage.signup.SignUpResultListener;
+import com.collage.login.LoginListener;
+import com.collage.signup.SignUpListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -14,61 +14,39 @@ import com.google.firebase.auth.FirebaseUser;
 public class FirebaseAuthInteractor {
 
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
-        @Override
-        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-            if (firebaseUser != null) {
-                loginResultListener.onLoginSuccess();
-            }
-        }
-    };
+    private FirebaseAuth.AuthStateListener authStateListener;
 
-    private LoginResultListener loginResultListener;
-    private SignUpResultListener signUpResultListener;
-
-    public FirebaseAuthInteractor() {
-        // default constructor
-    }
-
-    public FirebaseAuthInteractor(LoginResultListener loginResultListener) {
-        this.loginResultListener = loginResultListener;
-    }
-
-    public FirebaseAuthInteractor(SignUpResultListener signUpResultListener) {
-        this.signUpResultListener = signUpResultListener;
-    }
-
-    public void createAccount(String email, String password) {
-        signUpResultListener.onSignUpStart();
+    public void createAccount(String email, String password,
+                              final SignUpListener signUpListener) {
+        signUpListener.onSignUpStart();
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        signUpResultListener.onSignUpFailure();
+                        signUpListener.onSignUpFailure();
                     }
                 })
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        signUpResultListener.onSignUpSuccess();
+                        signUpListener.onSignUpSuccess();
                     }
                 });
     }
 
-    public void signIn(String email, String password) {
-        loginResultListener.onLoginStart();
+    public void signIn(String email, String password, final LoginListener loginListener) {
+        loginListener.onLoginStart();
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        loginResultListener.onLoginFailure();
+                        loginListener.onLoginFailure();
                     }
                 })
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        loginResultListener.onLoginSuccess();
+                        loginListener.onLoginSuccess();
                     }
                 });
     }
@@ -83,5 +61,17 @@ public class FirebaseAuthInteractor {
 
     public void removeAuthStateListener() {
         firebaseAuth.removeAuthStateListener(authStateListener);
+    }
+
+    public void initAuthStateListener(final LoginListener loginListener) {
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                if (firebaseUser != null) {
+                    loginListener.onLoginSuccess();
+                }
+            }
+        };
     }
 }

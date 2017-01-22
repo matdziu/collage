@@ -6,7 +6,7 @@ import android.util.Patterns;
 import com.collage.interactors.FirebaseAuthInteractor;
 import com.collage.interactors.FirebaseDatabaseInteractor;
 
-class SignUpPresenter {
+class SignUpPresenter implements SignUpListener {
 
     private SignUpView signUpView;
     private FirebaseAuthInteractor firebaseAuthInteractor;
@@ -54,11 +54,24 @@ class SignUpPresenter {
         }
 
         if (isEmailValid && isFullNameValid && isPasswordValid) {
-            firebaseAuthInteractor.createAccount(email, password);
+            firebaseAuthInteractor.createAccount(email, password, this);
         }
     }
 
-    void createUserDatabaseEntry(String fullName, String email) {
-        firebaseDatabaseInteractor.createUserDatabaseEntry(fullName, email);
+    @Override
+    public void onSignUpStart() {
+        signUpView.showProgressBar();
+    }
+
+    @Override
+    public void onSignUpSuccess() {
+        firebaseDatabaseInteractor.createUserDatabaseEntry(signUpView.getFullName(),
+                signUpView.getEmail());
+        signUpView.navigateToHome();
+    }
+
+    @Override
+    public void onSignUpFailure() {
+        signUpView.showSignUpError();
     }
 }
