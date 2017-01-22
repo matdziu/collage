@@ -15,6 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FirebaseDatabaseInteractor {
@@ -24,7 +25,6 @@ public class FirebaseDatabaseInteractor {
     private FirebaseUser firebaseUser = FirebaseAuth.getInstance()
             .getCurrentUser();
     private FriendSearchListener friendSearchListener;
-    private FriendsListener friendsListener;
 
     public FirebaseDatabaseInteractor() {
         // default constructor
@@ -32,10 +32,6 @@ public class FirebaseDatabaseInteractor {
 
     public FirebaseDatabaseInteractor(FriendSearchListener friendSearchListener) {
         this.friendSearchListener = friendSearchListener;
-    }
-
-    public FirebaseDatabaseInteractor(FriendsListener friendsListener) {
-        this.friendsListener = friendsListener;
     }
 
     public void createUserDatabaseEntry(String fullName, String email) {
@@ -158,7 +154,7 @@ public class FirebaseDatabaseInteractor {
                 .removeValue();
     }
 
-    public void fetchFriendsList(final List<User> friendsList) {
+    public void fetchFriendsList(final FriendsListener friendsListener) {
         friendsListener.onFriendsListFetchingStarted();
         databaseReference
                 .child("users")
@@ -167,7 +163,7 @@ public class FirebaseDatabaseInteractor {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        friendsList.clear();
+                        List<User> friendsList = new ArrayList<>();
                         for (DataSnapshot dataItem : dataSnapshot.getChildren()) {
                             friendsList.add(dataItem.getValue(User.class));
                         }

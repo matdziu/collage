@@ -19,14 +19,13 @@ import com.collage.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.FriendsAdapter;
 import com.collage.util.model.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FriendsFragment extends BaseFragment implements FriendsListener {
+public class FriendsFragment extends BaseFragment implements FriendsView {
 
     @BindView(R.id.friends_recycler_view)
     RecyclerView recyclerView;
@@ -35,12 +34,11 @@ public class FriendsFragment extends BaseFragment implements FriendsListener {
     ProgressBar progressBar;
 
     private FriendsPresenter friendsPresenter;
-    private List<User> friendsList = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        friendsPresenter = new FriendsPresenter(new FirebaseDatabaseInteractor(this));
+        friendsPresenter = new FriendsPresenter(this, new FirebaseDatabaseInteractor());
     }
 
     @Nullable
@@ -49,7 +47,7 @@ public class FriendsFragment extends BaseFragment implements FriendsListener {
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
         ButterKnife.bind(this, view);
 
-        friendsPresenter.populateFriendsList(friendsList);
+        friendsPresenter.populateFriendsList();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         DividerItemDecoration dividerItemDecoration =
@@ -58,7 +56,6 @@ public class FriendsFragment extends BaseFragment implements FriendsListener {
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(dividerItemDecoration);
-        recyclerView.setAdapter(new FriendsAdapter(friendsList));
 
         return view;
     }
@@ -81,16 +78,19 @@ public class FriendsFragment extends BaseFragment implements FriendsListener {
     }
 
     @Override
-    public void onFriendsListFetchingStarted() {
+    public void showProgressBar() {
         recyclerView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void onFriendsListFetched(List<User> friendsList) {
-        this.friendsList = friendsList;
-        recyclerView.getAdapter().notifyDataSetChanged();
+    public void hideProgressBar() {
         recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void updateRecyclerView(List<User> friendsList) {
+        recyclerView.setAdapter(new FriendsAdapter(friendsList));
     }
 }
