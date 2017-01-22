@@ -20,6 +20,11 @@ import timber.log.Timber;
 
 public class FirebaseDatabaseInteractor {
 
+    private final static String USERS = "users";
+    private final static String EMAIL = "email";
+    private final static String PENDING_FRIENDS = "pendingFriends";
+    private final static String ACCEPTED_FRIENDS = "acceptedFriends";
+
     private DatabaseReference databaseReference =
             FirebaseDatabase.getInstance().getReference();
     private FirebaseUser firebaseUser = FirebaseAuth.getInstance()
@@ -30,7 +35,7 @@ public class FirebaseDatabaseInteractor {
                 .getCurrentUser();
         if (firebaseUser != null) {
             databaseReference
-                    .child("users")
+                    .child(USERS)
                     .child(firebaseUser.getUid())
                     .setValue(new User(fullName, email, firebaseUser.getUid()));
         }
@@ -38,8 +43,8 @@ public class FirebaseDatabaseInteractor {
 
     public void searchForFriend(String email, final FriendSearchListener friendSearchListener) {
         Query friendQuery = databaseReference
-                .child("users")
-                .orderByChild("email")
+                .child(USERS)
+                .orderByChild(EMAIL)
                 .equalTo(email);
         friendQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -54,16 +59,16 @@ public class FirebaseDatabaseInteractor {
                             .getKey();
 
                     databaseReference
-                            .child("users")
+                            .child(USERS)
                             .child(firebaseUser.getUid())
                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     User collageUser = dataSnapshot.getValue(User.class);
                                     databaseReference
-                                            .child("users")
+                                            .child(USERS)
                                             .child(friendUid)
-                                            .child("pendingFriends")
+                                            .child(PENDING_FRIENDS)
                                             .child(collageUser.uid)
                                             .setValue(collageUser);
                                 }
@@ -88,9 +93,9 @@ public class FirebaseDatabaseInteractor {
     public void fetchPendingList(final FriendSearchListener friendSearchListener) {
         friendSearchListener.onPendingListFetchingStarted();
         databaseReference
-                .child("users")
+                .child(USERS)
                 .child(firebaseUser.getUid())
-                .child("pendingFriends")
+                .child(PENDING_FRIENDS)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -110,23 +115,23 @@ public class FirebaseDatabaseInteractor {
 
     public void addFriend(final User friend) {
         databaseReference
-                .child("users")
+                .child(USERS)
                 .child(firebaseUser.getUid())
-                .child("acceptedFriends")
+                .child(ACCEPTED_FRIENDS)
                 .child(friend.uid)
                 .setValue(friend);
 
         databaseReference
-                .child("users")
+                .child(USERS)
                 .child(firebaseUser.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         User collageUser = dataSnapshot.getValue(User.class);
                         databaseReference
-                                .child("users")
+                                .child(USERS)
                                 .child(friend.uid)
-                                .child("acceptedFriends")
+                                .child(ACCEPTED_FRIENDS)
                                 .child(firebaseUser.getUid())
                                 .setValue(collageUser);
                     }
@@ -138,9 +143,9 @@ public class FirebaseDatabaseInteractor {
                 });
 
         databaseReference
-                .child("users")
+                .child(USERS)
                 .child(firebaseUser.getUid())
-                .child("pendingFriends")
+                .child(PENDING_FRIENDS)
                 .child(friend.uid)
                 .removeValue();
     }
@@ -148,9 +153,9 @@ public class FirebaseDatabaseInteractor {
     public void fetchFriendsList(final FriendsListener friendsListener) {
         friendsListener.onFriendsListFetchingStarted();
         databaseReference
-                .child("users")
+                .child(USERS)
                 .child(firebaseUser.getUid())
-                .child("acceptedFriends")
+                .child(ACCEPTED_FRIENDS)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
