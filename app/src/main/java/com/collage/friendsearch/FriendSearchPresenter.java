@@ -6,23 +6,49 @@ import com.collage.util.model.User;
 
 import java.util.List;
 
-class FriendSearchPresenter {
+class FriendSearchPresenter implements FriendSearchListener {
 
+    private FriendSearchView friendSearchView;
     private FirebaseDatabaseInteractor firebaseDatabaseInteractor;
 
-    FriendSearchPresenter(FirebaseDatabaseInteractor firebaseDatabaseInteractor) {
+    FriendSearchPresenter(FriendSearchView friendSearchView,
+                          FirebaseDatabaseInteractor firebaseDatabaseInteractor) {
+        this.friendSearchView = friendSearchView;
         this.firebaseDatabaseInteractor = firebaseDatabaseInteractor;
     }
 
     void searchForFriend(String email) {
-        firebaseDatabaseInteractor.searchForFriend(email);
+        firebaseDatabaseInteractor.searchForFriend(email, this);
     }
 
-    void populatePendingList(List<User> pendingList) {
-        firebaseDatabaseInteractor.fetchPendingList(pendingList);
+    void populatePendingList() {
+        firebaseDatabaseInteractor.fetchPendingList(this);
     }
 
-    void addFriend(User friend) {
+    @Override
+    public void onFriendFound() {
+        friendSearchView.showFriendFound();
+    }
+
+    @Override
+    public void onFriendNotFound() {
+        friendSearchView.showFriendNotFound();
+    }
+
+    @Override
+    public void onInvitationAccepted(int position, User friend) {
+        friendSearchView.removeFromRecyclerView(position);
         firebaseDatabaseInteractor.addFriend(friend);
+    }
+
+    @Override
+    public void onPendingListFetchingStarted() {
+        friendSearchView.showProgressBar();
+    }
+
+    @Override
+    public void onPendingListFetched(List<User> pendingList) {
+        friendSearchView.hideProgressBar();
+        friendSearchView.updateRecyclerView(pendingList);
     }
 }

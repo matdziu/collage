@@ -24,15 +24,6 @@ public class FirebaseDatabaseInteractor {
             FirebaseDatabase.getInstance().getReference();
     private FirebaseUser firebaseUser = FirebaseAuth.getInstance()
             .getCurrentUser();
-    private FriendSearchListener friendSearchListener;
-
-    public FirebaseDatabaseInteractor() {
-        // default constructor
-    }
-
-    public FirebaseDatabaseInteractor(FriendSearchListener friendSearchListener) {
-        this.friendSearchListener = friendSearchListener;
-    }
 
     public void createUserDatabaseEntry(String fullName, String email) {
         firebaseUser = FirebaseAuth.getInstance()
@@ -45,7 +36,7 @@ public class FirebaseDatabaseInteractor {
         }
     }
 
-    public void searchForFriend(String email) {
+    public void searchForFriend(String email, final FriendSearchListener friendSearchListener) {
         Query friendQuery = databaseReference
                 .child("users")
                 .orderByChild("email")
@@ -94,7 +85,7 @@ public class FirebaseDatabaseInteractor {
         });
     }
 
-    public void fetchPendingList(final List<User> pendingList) {
+    public void fetchPendingList(final FriendSearchListener friendSearchListener) {
         friendSearchListener.onPendingListFetchingStarted();
         databaseReference
                 .child("users")
@@ -103,7 +94,7 @@ public class FirebaseDatabaseInteractor {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        pendingList.clear();
+                        List<User> pendingList = new ArrayList<>();
                         for (DataSnapshot dataItem : dataSnapshot.getChildren()) {
                             pendingList.add(dataItem.getValue(User.class));
                         }

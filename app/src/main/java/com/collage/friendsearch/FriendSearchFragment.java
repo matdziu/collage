@@ -19,14 +19,13 @@ import com.collage.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.PendingInvitationsAdapter;
 import com.collage.util.model.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FriendSearchFragment extends BaseFragment implements FriendSearchListener {
+public class FriendSearchFragment extends BaseFragment implements FriendSearchView {
 
     @BindView(R.id.pending_recycler_view)
     RecyclerView recyclerView;
@@ -38,12 +37,12 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchLi
     ProgressBar progressBar;
 
     private FriendSearchPresenter friendSearchPresenter;
-    private List<User> pendingList = new ArrayList<>();
+    private List<User> pendingList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        friendSearchPresenter = new FriendSearchPresenter(new FirebaseDatabaseInteractor(this));
+        friendSearchPresenter = new FriendSearchPresenter(this, new FirebaseDatabaseInteractor());
     }
 
     @Nullable
@@ -52,7 +51,7 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchLi
         View view = inflater.inflate(R.layout.fragment_friend_search, container, false);
         ButterKnife.bind(this, view);
 
-        friendSearchPresenter.populatePendingList(pendingList);
+        friendSearchPresenter.populatePendingList();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         DividerItemDecoration dividerItemDecoration =
@@ -61,41 +60,8 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchLi
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(dividerItemDecoration);
-        recyclerView.setAdapter(new PendingInvitationsAdapter(pendingList, this));
 
         return view;
-    }
-
-    @Override
-    public void onFriendFound() {
-        Toast.makeText(getContext(), "Invitation sent", Toast.LENGTH_SHORT).show();
-        editText.setText("");
-    }
-
-    @Override
-    public void onFriendNotFound() {
-        Toast.makeText(getContext(), "Friend not found", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onInvitationAccepted(int position, User friend) {
-        pendingList.remove(position);
-        recyclerView.getAdapter().notifyItemRemoved(position);
-        friendSearchPresenter.addFriend(friend);
-    }
-
-    @Override
-    public void onPendingListFetchingStarted() {
-        recyclerView.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onPendingListFetched(List<User> pendingList) {
-        this.pendingList = pendingList;
-        recyclerView.getAdapter().notifyDataSetChanged();
-        recyclerView.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.GONE);
     }
 
     @OnClick(R.id.button_friend_search)
@@ -105,5 +71,40 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchLi
                         .toString()
                         .toLowerCase()
                         .trim());
+    }
+
+    @Override
+    public void showProgressBar() {
+        recyclerView.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        recyclerView.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void updateRecyclerView(List<User> pendingList) {
+        this.pendingList = pendingList;
+        recyclerView.setAdapter(new PendingInvitationsAdapter(pendingList, friendSearchPresenter));
+    }
+
+    @Override
+    public void showFriendFound() {
+        Toast.makeText(getContext(), "Invitation sent", Toast.LENGTH_SHORT).show();
+        editText.setText("");
+    }
+
+    @Override
+    public void showFriendNotFound() {
+        Toast.makeText(getContext(), "Friend not found", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void removeFromRecyclerView(int position) {
+        pendingList.remove(position);
+        recyclerView.getAdapter().notifyItemRemoved(position);
     }
 }
