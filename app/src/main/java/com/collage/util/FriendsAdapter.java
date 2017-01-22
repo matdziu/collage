@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.collage.R;
-import com.collage.util.model.Friend;
+import com.collage.util.model.User;
 
 import java.util.List;
 
@@ -16,9 +16,9 @@ import butterknife.ButterKnife;
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
 
-    private List<Friend> friendList;
+    private List<User> friendList;
 
-    public FriendsAdapter(List<Friend> friendList) {
+    public FriendsAdapter(List<User> friendList) {
         this.friendList = friendList;
     }
 
@@ -31,7 +31,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.textView.setText(friendList.get(position).getName());
+        holder.textView.setText(friendList.get(position).fullName);
     }
 
     @Override

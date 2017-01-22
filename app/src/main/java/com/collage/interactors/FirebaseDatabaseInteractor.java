@@ -3,6 +3,7 @@ package com.collage.interactors;
 
 import android.util.Log;
 
+import com.collage.friends.FriendsListener;
 import com.collage.friendsearch.FriendSearchListener;
 import com.collage.util.model.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,6 +24,7 @@ public class FirebaseDatabaseInteractor {
     private FirebaseUser firebaseUser = FirebaseAuth.getInstance()
             .getCurrentUser();
     private FriendSearchListener friendSearchListener;
+    private FriendsListener friendsListener;
 
     public FirebaseDatabaseInteractor() {
         // default constructor
@@ -30,6 +32,10 @@ public class FirebaseDatabaseInteractor {
 
     public FirebaseDatabaseInteractor(FriendSearchListener friendSearchListener) {
         this.friendSearchListener = friendSearchListener;
+    }
+
+    public FirebaseDatabaseInteractor(FriendsListener friendsListener) {
+        this.friendsListener = friendsListener;
     }
 
     public void createUserDatabaseEntry(String fullName, String email) {
@@ -150,5 +156,28 @@ public class FirebaseDatabaseInteractor {
                 .child("pendingFriends")
                 .child(friend.uid)
                 .removeValue();
+    }
+
+    public void fetchFriendsList(final List<User> friendsList) {
+        friendsListener.onFriendsListFetchingStarted();
+        databaseReference
+                .child("users")
+                .child(firebaseUser.getUid())
+                .child("acceptedFriends")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        friendsList.clear();
+                        for (DataSnapshot dataItem : dataSnapshot.getChildren()) {
+                            friendsList.add(dataItem.getValue(User.class));
+                        }
+                        friendsListener.onFriendsListFetched(friendsList);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e("friendSearch", databaseError.getMessage());
+                    }
+                });
     }
 }
