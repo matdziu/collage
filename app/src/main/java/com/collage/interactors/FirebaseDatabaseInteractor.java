@@ -1,8 +1,6 @@
 package com.collage.interactors;
 
 
-import android.util.Log;
-
 import com.collage.friends.FriendsListener;
 import com.collage.friendsearch.FriendSearchListener;
 import com.collage.util.model.User;
@@ -17,6 +15,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class FirebaseDatabaseInteractor {
 
@@ -70,7 +70,7 @@ public class FirebaseDatabaseInteractor {
 
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
-                                    Log.e("friendSearch", databaseError.getMessage());
+                                    Timber.e(databaseError.getMessage());
                                 }
                             });
                 } else {
@@ -80,7 +80,7 @@ public class FirebaseDatabaseInteractor {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.e("friendSearch", databaseError.getMessage());
+                Timber.e(databaseError.getMessage());
             }
         });
     }
@@ -103,7 +103,7 @@ public class FirebaseDatabaseInteractor {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        Log.e("friendSearch", databaseError.getMessage());
+                        Timber.e(databaseError.getMessage());
                     }
                 });
     }
@@ -133,7 +133,7 @@ public class FirebaseDatabaseInteractor {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        Log.e("friendSearch", databaseError.getMessage());
+                        Timber.e(databaseError.getMessage());
                     }
                 });
 
@@ -163,7 +163,7 @@ public class FirebaseDatabaseInteractor {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        Log.e("friendSearch", databaseError.getMessage());
+                        Timber.e(databaseError.getMessage());
                     }
                 });
     }
