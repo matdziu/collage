@@ -37,8 +37,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -95,7 +98,7 @@ public class CameraFragment extends BaseFragment {
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture,
                                                   int width, int height) {
-                setUpCamera();
+                setUpCamera(width, height);
                 openCamera();
             }
 
@@ -201,7 +204,7 @@ public class CameraFragment extends BaseFragment {
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void setUpCamera() {
+    private void setUpCamera(int width, int height) {
         try {
             for (String cameraId : cameraManager.getCameraIdList()) {
                 CameraCharacteristics cameraCharacteristics =
@@ -210,7 +213,9 @@ public class CameraFragment extends BaseFragment {
                         cameraFacing) {
                     StreamConfigurationMap streamConfigurationMap = cameraCharacteristics.get(
                             CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-                    previewSize = streamConfigurationMap.getOutputSizes(SurfaceTexture.class)[0];
+//                    previewSize = streamConfigurationMap.getOutputSizes(SurfaceTexture.class)[0];
+                    previewSize = fixWrongAspectRatio(streamConfigurationMap
+                            .getOutputSizes(SurfaceTexture.class), width, height);
                     this.cameraId = cameraId;
                     return;
                 }
@@ -304,7 +309,7 @@ public class CameraFragment extends BaseFragment {
 
     private void startOpeningCamera() {
         if (textureView.isAvailable()) {
-            setUpCamera();
+            setUpCamera(textureView.getWidth(), textureView.getHeight());
             openCamera();
         } else {
             textureView.setSurfaceTextureListener(surfaceTextureListener);
@@ -395,5 +400,34 @@ public class CameraFragment extends BaseFragment {
                 }
             }
         }
+    }
+
+    // this method is supposed to fix improper width and height of stretched preview
+    private Size fixWrongAspectRatio(Size[] mapSizes, int width, int height) {
+        List<Size> collectorSizes = new ArrayList<>();
+        for (Size option : mapSizes) {
+            if (width > height) {
+                if (option.getWidth() > width &&
+                        option.getHeight() > height) {
+                    collectorSizes.add(option);
+                }
+            } else {
+                if (option.getWidth() > height &&
+                        option.getHeight() > width) {
+                    collectorSizes.add(option);
+                }
+            }
+        }
+
+        if (collectorSizes.size() > 0) {
+            return Collections.min(collectorSizes, new Comparator<Size>() {
+                @Override
+                public int compare(Size lhs, Size rhs) {
+                    return Long.signum(lhs.getWidth() * lhs.getHeight() -
+                            rhs.getWidth() * rhs.getHeight());
+                }
+            });
+        }
+        return mapSizes[0];
     }
 }
