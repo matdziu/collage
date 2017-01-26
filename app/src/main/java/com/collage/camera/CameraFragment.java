@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.util.Range;
 import android.util.Size;
@@ -27,6 +28,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.collage.R;
@@ -52,6 +54,18 @@ public class CameraFragment extends BaseFragment {
 
     @BindView(R.id.texture_view)
     TextureView textureView;
+
+    @BindView(R.id.image_view)
+    ImageView imageView;
+
+    @BindView(R.id.fab_take_picture)
+    FloatingActionButton takePictureButton;
+
+    @BindView(R.id.fab_switch_camera)
+    FloatingActionButton switchCameraButton;
+
+    @BindView(R.id.fab_upload_photo)
+    FloatingActionButton uploadPhotoButton;
 
     private static final int CAMERA_FRAGMENT_PERMISSIONS_CODE = 0;
     private int cameraFacing;
@@ -311,22 +325,26 @@ public class CameraFragment extends BaseFragment {
         }
     }
 
-    private void lock() {
-        try {
-            cameraCaptureSession.capture(captureRequestBuilder.build(),
-                    null, backgroundHandler);
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
+    private void lock(Bitmap previewImage) {
+        imageView.setVisibility(View.VISIBLE);
+        textureView.setVisibility(View.GONE);
+        takePictureButton.setVisibility(View.GONE);
+        switchCameraButton.setVisibility(View.GONE);
+        uploadPhotoButton.setVisibility(View.VISIBLE);
+        imageView.setImageBitmap(previewImage);
     }
 
     private void unlock() {
-        try {
-            cameraCaptureSession.setRepeatingRequest(captureRequestBuilder.build(),
-                    null, backgroundHandler);
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
+        imageView.setVisibility(View.GONE);
+        textureView.setVisibility(View.VISIBLE);
+        takePictureButton.setVisibility(View.VISIBLE);
+        switchCameraButton.setVisibility(View.VISIBLE);
+        uploadPhotoButton.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.fab_upload_photo)
+    public void onUploadButtonClicked() {
+        unlock();
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -348,7 +366,7 @@ public class CameraFragment extends BaseFragment {
 
     @OnClick(R.id.fab_take_picture)
     public void captureImage() {
-        lock();
+        lock(textureView.getBitmap());
         FileOutputStream outputPhoto = null;
         try {
             outputPhoto = new FileOutputStream(createImageFile(galleryFolder));
@@ -357,7 +375,6 @@ public class CameraFragment extends BaseFragment {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            unlock();
             try {
                 if (outputPhoto != null) {
                     outputPhoto.close();
