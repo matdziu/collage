@@ -291,13 +291,8 @@ public class CameraFragment extends BaseFragment {
     private void closeBackgroundThread() {
         if (backgroundHandler != null) {
             backgroundThread.quitSafely();
-            try {
-                backgroundThread.join();
-                backgroundThread = null;
-                backgroundHandler = null;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            backgroundThread = null;
+            backgroundHandler = null;
         }
     }
 
