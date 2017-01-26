@@ -15,6 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import timber.log.Timber;
 
@@ -114,6 +115,9 @@ public class FirebaseDatabaseInteractor {
     }
 
     public void addFriend(final User friend) {
+        final String albumStorageId = UUID.randomUUID().toString();
+        friend.albumStorageId = albumStorageId;
+
         databaseReference
                 .child(USERS)
                 .child(firebaseUser.getUid())
@@ -128,6 +132,7 @@ public class FirebaseDatabaseInteractor {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         User collageUser = dataSnapshot.getValue(User.class);
+                        collageUser.albumStorageId = albumStorageId;
                         databaseReference
                                 .child(USERS)
                                 .child(friend.uid)

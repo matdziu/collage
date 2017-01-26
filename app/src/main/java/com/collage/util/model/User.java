@@ -6,6 +6,7 @@ public class User {
     public String fullName;
     public String email;
     public String uid;
+    public String albumStorageId;
 
     @SuppressWarnings("unused")
     public User() {
