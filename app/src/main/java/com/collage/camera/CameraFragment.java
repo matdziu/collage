@@ -367,22 +367,28 @@ public class CameraFragment extends BaseFragment {
     @OnClick(R.id.fab_take_picture)
     public void captureImage() {
         lock(textureView.getBitmap());
-        FileOutputStream outputPhoto = null;
-        try {
-            outputPhoto = new FileOutputStream(createImageFile(galleryFolder));
-            textureView.getBitmap()
-                    .compress(Bitmap.CompressFormat.PNG, 100, outputPhoto);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (outputPhoto != null) {
-                    outputPhoto.close();
+        backgroundHandler.post(new Runnable() {
+            FileOutputStream outputPhoto = null;
+
+            @Override
+            public void run() {
+                try {
+                    outputPhoto = new FileOutputStream(createImageFile(galleryFolder));
+                    textureView.getBitmap()
+                            .compress(Bitmap.CompressFormat.PNG, 100, outputPhoto);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if (outputPhoto != null) {
+                            outputPhoto.close();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-        }
+        });
     }
 
     @OnClick(R.id.fab_switch_camera)
