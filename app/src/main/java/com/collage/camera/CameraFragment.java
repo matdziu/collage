@@ -2,6 +2,7 @@ package com.collage.camera;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -34,6 +35,7 @@ import android.widget.Toast;
 import com.collage.R;
 import com.collage.base.BaseFragment;
 import com.collage.home.HomeActivity;
+import com.collage.sendimage.SendImageActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -344,7 +346,7 @@ public class CameraFragment extends BaseFragment {
 
     @OnClick(R.id.fab_upload_photo)
     public void onUploadButtonClicked() {
-        unlock();
+        startActivity(new Intent(getContext(), SendImageActivity.class));
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

@@ -28,6 +28,7 @@
             android:launchMode="singleTask" />
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".friendsearch.FriendSearchActivity" />
+        <activity android:name=".sendimage.SendImageActivity" />
     </application>
 
 </manifest>
