@@ -11,5 +11,9 @@ interface SendImageView {
 
     void hideProgressBar();
 
+    void showItemProgressBar(int position);
+
+    void hideItemProgressBar(int position);
+
     void updateRecyclerView(List<User> friendsList);
 }

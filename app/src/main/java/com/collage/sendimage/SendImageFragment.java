@@ -76,6 +76,16 @@ public class SendImageFragment extends BaseFragment implements SendImageView {
     }
 
     @Override
+    public void showItemProgressBar(int position) {
+
+    }
+
+    @Override
+    public void hideItemProgressBar(int position) {
+
+    }
+
+    @Override
     public void updateRecyclerView(List<User> friendsList) {
         recyclerView.setAdapter(new SendImageAdapter(friendsList, sendImagePresenter));
     }

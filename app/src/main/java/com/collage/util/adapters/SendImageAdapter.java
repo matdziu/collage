@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.collage.R;
@@ -40,8 +41,9 @@ public class SendImageAdapter extends RecyclerView.Adapter<SendImageAdapter.View
         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendImageListener.onSendButtonClicked(friendsList
-                        .get(holder.getAdapterPosition()).albumStorageId);
+                sendImageListener.onImageUploadStarted(friendsList
+                        .get(holder.getAdapterPosition()).albumStorageId,
+                        holder.getAdapterPosition());
             }
         });
     }
@@ -58,6 +60,9 @@ public class SendImageAdapter extends RecyclerView.Adapter<SendImageAdapter.View
 
         @BindView(R.id.item_send_image_button)
         Button button;
+
+        @BindView(R.id.item_send_progress_bar)
+        ProgressBar progressBar;
 
         ViewHolder(View itemView) {
             super(itemView);

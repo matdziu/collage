@@ -43,7 +43,14 @@ class SendImagePresenter implements SendImageListener {
     }
 
     @Override
-    public void onSendButtonClicked(String albumStorageId) {
-        firebaseStorageInteractor.uploadImage(albumStorageId, imageFilePath, imageFileName);
+    public void onImageUploadStarted(String albumStorageId, int position) {
+        sendImageView.showItemProgressBar(position);
+        firebaseStorageInteractor.uploadImage(albumStorageId, imageFilePath,
+                imageFileName, position, this);
+    }
+
+    @Override
+    public void onImageUploadFinished(int position) {
+        sendImageView.hideItemProgressBar(position);
     }
 }
