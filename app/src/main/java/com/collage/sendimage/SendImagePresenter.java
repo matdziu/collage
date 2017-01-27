@@ -23,12 +23,12 @@ class SendImagePresenter implements SendImageListener {
     }
 
     @Override
-    public void onFriendsListFetchingStarted() {
+    public void onUsersListFetchingStarted() {
         sendImageView.showProgressBar();
     }
 
     @Override
-    public void onFriendsListFetched(List<User> friendsList) {
+    public void onUsersListFetched(List<User> friendsList) {
         sendImageView.hideProgressBar();
         sendImageView.updateRecyclerView(friendsList);
     }

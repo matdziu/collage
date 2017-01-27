@@ -10,5 +10,5 @@ interface FriendsView {
 
     void hideProgressBar();
 
-    void updateRecyclerView(List<User> friendsList);
+    void updateRecyclerView(List<User> usersList);
 }

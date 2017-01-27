@@ -33,12 +33,12 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
 
-    private FriendsPresenter friendsPresenter;
+    private UsersPresenter friendsPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        friendsPresenter = new FriendsPresenter(this, new FirebaseDatabaseInteractor());
+        friendsPresenter = new UsersPresenter(this, new FirebaseDatabaseInteractor());
     }
 
     @Nullable
@@ -90,7 +90,7 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
     }
 
     @Override
-    public void updateRecyclerView(List<User> friendsList) {
-        recyclerView.setAdapter(new FriendsAdapter(friendsList));
+    public void updateRecyclerView(List<User> usersList) {
+        recyclerView.setAdapter(new FriendsAdapter(usersList));
     }
 }

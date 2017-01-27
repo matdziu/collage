@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.collage.R;
 import com.collage.base.BaseFragment;
@@ -27,6 +28,9 @@ public class SendImageFragment extends BaseFragment implements SendImageView {
 
     @BindView(R.id.send_image_recycler_view)
     RecyclerView recyclerView;
+
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,12 +59,14 @@ public class SendImageFragment extends BaseFragment implements SendImageView {
 
     @Override
     public void showProgressBar() {
-
+        recyclerView.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgressBar() {
-
+        recyclerView.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

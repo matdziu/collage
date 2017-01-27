@@ -42,12 +42,12 @@ class FriendSearchPresenter implements FriendSearchListener {
     }
 
     @Override
-    public void onPendingListFetchingStarted() {
+    public void onUsersListFetchingStarted() {
         friendSearchView.showProgressBar();
     }
 
     @Override
-    public void onPendingListFetched(List<User> pendingList) {
+    public void onUsersListFetched(List<User> pendingList) {
         friendSearchView.hideProgressBar();
         friendSearchView.updateRecyclerView(pendingList);
     }

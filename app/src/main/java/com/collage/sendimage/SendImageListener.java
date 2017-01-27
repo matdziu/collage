@@ -1,8 +1,8 @@
 package com.collage.sendimage;
 
-import com.collage.base.BaseFriendsListener;
+import com.collage.base.BaseUsersListener;
 
-public interface SendImageListener extends BaseFriendsListener {
+public interface SendImageListener extends BaseUsersListener {
 
     void onSendButtonClicked();
 }

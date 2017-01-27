@@ -1,7 +1,7 @@
 package com.collage.interactors;
 
 
-import com.collage.base.BaseFriendsListener;
+import com.collage.base.BaseUsersListener;
 import com.collage.friendsearch.FriendSearchListener;
 import com.collage.util.model.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -91,8 +91,8 @@ public class FirebaseDatabaseInteractor {
         });
     }
 
-    public void fetchPendingList(final FriendSearchListener friendSearchListener) {
-        friendSearchListener.onPendingListFetchingStarted();
+    public void fetchPendingList(final BaseUsersListener baseUsersListener) {
+        baseUsersListener.onUsersListFetchingStarted();
         databaseReference
                 .child(USERS)
                 .child(firebaseUser.getUid())
@@ -104,7 +104,7 @@ public class FirebaseDatabaseInteractor {
                         for (DataSnapshot dataItem : dataSnapshot.getChildren()) {
                             pendingList.add(dataItem.getValue(User.class));
                         }
-                        friendSearchListener.onPendingListFetched(pendingList);
+                        baseUsersListener.onUsersListFetched(pendingList);
                     }
 
                     @Override
@@ -155,8 +155,8 @@ public class FirebaseDatabaseInteractor {
                 .removeValue();
     }
 
-    public void fetchFriendsList(final BaseFriendsListener baseFriendsListener) {
-        baseFriendsListener.onFriendsListFetchingStarted();
+    public void fetchFriendsList(final BaseUsersListener baseUsersListener) {
+        baseUsersListener.onUsersListFetchingStarted();
         databaseReference
                 .child(USERS)
                 .child(firebaseUser.getUid())
@@ -168,7 +168,7 @@ public class FirebaseDatabaseInteractor {
                         for (DataSnapshot dataItem : dataSnapshot.getChildren()) {
                             friendsList.add(dataItem.getValue(User.class));
                         }
-                        baseFriendsListener.onFriendsListFetched(friendsList);
+                        baseUsersListener.onUsersListFetched(friendsList);
                     }
 
                     @Override
