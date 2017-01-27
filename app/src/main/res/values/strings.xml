@@ -16,4 +16,5 @@
     <string name="pending_invitations">Pending invitations:</string>
     <string name="accept_pending_invite">Accept</string>
     <string name="sign_out">Sign out</string>
+    <string name="send_image">Send</string>
 </resources>

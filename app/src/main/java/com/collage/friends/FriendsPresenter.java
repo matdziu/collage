@@ -1,11 +1,12 @@
 package com.collage.friends;
 
+import com.collage.base.BaseFriendsListener;
 import com.collage.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.model.User;
 
 import java.util.List;
 
-class FriendsPresenter implements FriendsListener {
+class FriendsPresenter implements BaseFriendsListener {
 
     private FriendsView friendsView;
     private FirebaseDatabaseInteractor firebaseDatabaseInteractor;

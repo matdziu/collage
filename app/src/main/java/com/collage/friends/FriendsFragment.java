@@ -16,7 +16,7 @@ import com.collage.base.BaseFragment;
 import com.collage.friendsearch.FriendSearchActivity;
 import com.collage.home.HomeActivity;
 import com.collage.interactors.FirebaseDatabaseInteractor;
-import com.collage.util.FriendsAdapter;
+import com.collage.util.adapters.FriendsAdapter;
 import com.collage.util.model.User;
 
 import java.util.List;

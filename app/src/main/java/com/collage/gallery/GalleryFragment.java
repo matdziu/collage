@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import com.collage.base.BaseFragment;
 import com.collage.home.HomeActivity;
 import com.collage.R;
-import com.collage.util.PhotosAdapter;
+import com.collage.util.adapters.PhotosAdapter;
 import com.collage.util.model.Photo;
 
 import java.util.ArrayList;

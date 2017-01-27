@@ -1,7 +1,7 @@
 package com.collage.interactors;
 
 
-import com.collage.friends.FriendsListener;
+import com.collage.base.BaseFriendsListener;
 import com.collage.friendsearch.FriendSearchListener;
 import com.collage.util.model.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -155,8 +155,8 @@ public class FirebaseDatabaseInteractor {
                 .removeValue();
     }
 
-    public void fetchFriendsList(final FriendsListener friendsListener) {
-        friendsListener.onFriendsListFetchingStarted();
+    public void fetchFriendsList(final BaseFriendsListener baseFriendsListener) {
+        baseFriendsListener.onFriendsListFetchingStarted();
         databaseReference
                 .child(USERS)
                 .child(firebaseUser.getUid())
@@ -168,7 +168,7 @@ public class FirebaseDatabaseInteractor {
                         for (DataSnapshot dataItem : dataSnapshot.getChildren()) {
                             friendsList.add(dataItem.getValue(User.class));
                         }
-                        friendsListener.onFriendsListFetched(friendsList);
+                        baseFriendsListener.onFriendsListFetched(friendsList);
                     }
 
                     @Override

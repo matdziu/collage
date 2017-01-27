@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.collage.R;
 import com.collage.base.BaseActivity;
-import com.collage.util.HomeFragmentPagerAdapter;
+import com.collage.util.adapters.HomeFragmentPagerAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

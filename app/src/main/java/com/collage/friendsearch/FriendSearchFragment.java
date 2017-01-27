@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.collage.R;
 import com.collage.base.BaseFragment;
 import com.collage.interactors.FirebaseDatabaseInteractor;
-import com.collage.util.PendingInvitationsAdapter;
+import com.collage.util.adapters.PendingInvitationsAdapter;
 import com.collage.util.model.User;
 
 import java.util.List;

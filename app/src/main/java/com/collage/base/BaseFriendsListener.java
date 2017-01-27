@@ -1,10 +1,10 @@
-package com.collage.friends;
+package com.collage.base;
 
 import com.collage.util.model.User;
 
 import java.util.List;
 
-public interface FriendsListener {
+public interface BaseFriendsListener {
 
     void onFriendsListFetchingStarted();
 

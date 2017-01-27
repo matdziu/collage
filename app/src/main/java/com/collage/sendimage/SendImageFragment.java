@@ -3,22 +3,68 @@ package com.collage.sendimage;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.collage.R;
 import com.collage.base.BaseFragment;
+import com.collage.interactors.FirebaseDatabaseInteractor;
+import com.collage.util.adapters.SendImageAdapter;
+import com.collage.util.model.User;
 
+import java.util.List;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SendImageFragment extends BaseFragment {
+public class SendImageFragment extends BaseFragment implements SendImageView {
+
+    private SendImagePresenter sendImagePresenter;
+
+    @BindView(R.id.send_image_recycler_view)
+    RecyclerView recyclerView;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        sendImagePresenter = new SendImagePresenter(this, new FirebaseDatabaseInteractor());
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_send_image, container, false);
         ButterKnife.bind(this, view);
+
+        sendImagePresenter.populatePendingList();
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        DividerItemDecoration dividerItemDecoration =
+                new DividerItemDecoration(recyclerView.getContext(),
+                        layoutManager.getOrientation());
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
         return view;
+    }
+
+    @Override
+    public void showProgressBar() {
+
+    }
+
+    @Override
+    public void hideProgressBar() {
+
+    }
+
+    @Override
+    public void updateRecyclerView(List<User> friendsList) {
+        recyclerView.setAdapter(new SendImageAdapter(friendsList, sendImagePresenter));
     }
 }

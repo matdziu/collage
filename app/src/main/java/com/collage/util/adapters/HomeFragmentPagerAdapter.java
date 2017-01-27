@@ -1,4 +1,4 @@
-package com.collage.util;
+package com.collage.util.adapters;
 
 
 import android.support.design.widget.TabLayout;
