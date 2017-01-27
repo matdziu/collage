@@ -23,6 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.collage.camera.CameraFragment.IMAGE_FILE_NAME;
 import static com.collage.camera.CameraFragment.IMAGE_FILE_PATH;
 
 public class SendImageFragment extends BaseFragment implements SendImageView {
@@ -39,7 +40,8 @@ public class SendImageFragment extends BaseFragment implements SendImageView {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sendImagePresenter = new SendImagePresenter(this, new FirebaseDatabaseInteractor(),
-                new FirebaseStorageInteractor(), getArguments().getString(IMAGE_FILE_PATH));
+                new FirebaseStorageInteractor(), getArguments().getString(IMAGE_FILE_PATH),
+                getArguments().getString(IMAGE_FILE_NAME));
     }
 
     @Nullable

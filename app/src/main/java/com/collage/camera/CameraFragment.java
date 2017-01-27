@@ -70,6 +70,8 @@ public class CameraFragment extends BaseFragment {
     FloatingActionButton uploadPhotoButton;
 
     public static final String IMAGE_FILE_PATH = "imageFilePath";
+    public static final String IMAGE_FILE_NAME = "imageFileName";
+
     private static final int CAMERA_FRAGMENT_PERMISSIONS_CODE = 0;
     private int cameraFacing;
     private boolean fragmentVisible;
@@ -79,6 +81,7 @@ public class CameraFragment extends BaseFragment {
 
     private File galleryFolder;
     private File imageFile;
+    private String imageFileName;
 
     private TextureView.SurfaceTextureListener surfaceTextureListener;
 
@@ -350,6 +353,7 @@ public class CameraFragment extends BaseFragment {
     public void onUploadButtonClicked() {
         Intent intent = new Intent(getContext(), SendImageActivity.class);
         intent.putExtra(IMAGE_FILE_PATH, imageFile.getPath());
+        intent.putExtra(IMAGE_FILE_NAME, imageFileName);
         startActivity(intent);
     }
 
@@ -366,7 +370,7 @@ public class CameraFragment extends BaseFragment {
     private File createImageFile(File galleryFolder) throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
                 Locale.getDefault()).format(new Date());
-        String imageFileName = "image_" + timeStamp + "_";
+        imageFileName = "image_" + timeStamp + "_";
         return File.createTempFile(imageFileName, ".jpg", galleryFolder);
     }
 

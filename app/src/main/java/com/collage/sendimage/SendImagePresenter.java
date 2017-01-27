@@ -13,15 +13,17 @@ class SendImagePresenter implements SendImageListener {
     private FirebaseDatabaseInteractor firebaseDatabaseInteractor;
     private FirebaseStorageInteractor firebaseStorageInteractor;
     private String imageFilePath;
+    private String imageFileName;
 
     SendImagePresenter(SendImageView sendImageView,
                        FirebaseDatabaseInteractor firebaseDatabaseInteractor,
                        FirebaseStorageInteractor firebaseStorageInteractor,
-                       String imageFilePath) {
+                       String imageFilePath, String imageFileName) {
         this.sendImageView = sendImageView;
         this.firebaseDatabaseInteractor = firebaseDatabaseInteractor;
         this.firebaseStorageInteractor = firebaseStorageInteractor;
         this.imageFilePath = imageFilePath;
+        this.imageFileName = imageFileName;
     }
 
 
@@ -42,6 +44,6 @@ class SendImagePresenter implements SendImageListener {
 
     @Override
     public void onSendButtonClicked(String albumStorageId) {
-        firebaseStorageInteractor.uploadImage(albumStorageId, imageFilePath);
+        firebaseStorageInteractor.uploadImage(albumStorageId, imageFilePath, imageFileName);
     }
 }
