@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import com.collage.R;
 import com.collage.base.BaseFragment;
 import com.collage.interactors.FirebaseDatabaseInteractor;
+import com.collage.interactors.FirebaseStorageInteractor;
 import com.collage.util.adapters.SendImageAdapter;
 import com.collage.util.model.User;
 
@@ -35,7 +36,8 @@ public class SendImageFragment extends BaseFragment implements SendImageView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sendImagePresenter = new SendImagePresenter(this, new FirebaseDatabaseInteractor());
+        sendImagePresenter = new SendImagePresenter(this, new FirebaseDatabaseInteractor(),
+                new FirebaseStorageInteractor());
     }
 
     @Nullable

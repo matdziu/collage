@@ -2,6 +2,7 @@ package com.collage.sendimage;
 
 
 import com.collage.interactors.FirebaseDatabaseInteractor;
+import com.collage.interactors.FirebaseStorageInteractor;
 import com.collage.util.model.User;
 
 import java.util.List;
@@ -10,11 +11,14 @@ class SendImagePresenter implements SendImageListener {
 
     private SendImageView sendImageView;
     private FirebaseDatabaseInteractor firebaseDatabaseInteractor;
+    private FirebaseStorageInteractor firebaseStorageInteractor;
 
     SendImagePresenter(SendImageView sendImageView,
-                       FirebaseDatabaseInteractor firebaseDatabaseInteractor) {
-        this.firebaseDatabaseInteractor = firebaseDatabaseInteractor;
+                       FirebaseDatabaseInteractor firebaseDatabaseInteractor,
+                       FirebaseStorageInteractor firebaseStorageInteractor) {
         this.sendImageView = sendImageView;
+        this.firebaseDatabaseInteractor = firebaseDatabaseInteractor;
+        this.firebaseStorageInteractor = firebaseStorageInteractor;
     }
 
 
