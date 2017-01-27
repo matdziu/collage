@@ -4,5 +4,5 @@ import com.collage.base.BaseUsersListener;
 
 public interface SendImageListener extends BaseUsersListener {
 
-    void onSendButtonClicked();
+    void onSendButtonClicked(String albumStorageId);
 }

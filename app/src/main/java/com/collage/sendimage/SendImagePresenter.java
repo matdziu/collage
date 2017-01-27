@@ -34,7 +34,7 @@ class SendImagePresenter implements SendImageListener {
     }
 
     @Override
-    public void onSendButtonClicked() {
+    public void onSendButtonClicked(String albumStorageId) {
 
     }
 }

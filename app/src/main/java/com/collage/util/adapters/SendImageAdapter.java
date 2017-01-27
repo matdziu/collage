@@ -35,12 +35,13 @@ public class SendImageAdapter extends RecyclerView.Adapter<SendImageAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.textView.setText(friendsList.get(position).fullName);
         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendImageListener.onSendButtonClicked();
+                sendImageListener.onSendButtonClicked(friendsList
+                        .get(holder.getAdapterPosition()).albumStorageId);
             }
         });
     }
