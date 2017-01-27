@@ -2,6 +2,7 @@ package com.collage.sendimage;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
@@ -17,7 +18,11 @@ public class SendImageActivity extends BaseActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        transaction.replace(R.id.linear_layout_activity_send_image, new SendImageFragment());
+        Fragment sendImageFragment = new SendImageFragment();
+        Bundle arguments = getIntent().getExtras();
+        sendImageFragment.setArguments(arguments);
+
+        transaction.replace(R.id.linear_layout_activity_send_image, sendImageFragment);
         transaction.commit();
     }
 

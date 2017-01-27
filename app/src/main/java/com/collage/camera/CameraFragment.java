@@ -69,6 +69,7 @@ public class CameraFragment extends BaseFragment {
     @BindView(R.id.fab_upload_photo)
     FloatingActionButton uploadPhotoButton;
 
+    public static final String IMAGE_FILE_PATH = "imageFilePath";
     private static final int CAMERA_FRAGMENT_PERMISSIONS_CODE = 0;
     private int cameraFacing;
     private boolean fragmentVisible;
@@ -77,6 +78,7 @@ public class CameraFragment extends BaseFragment {
     private String cameraId;
 
     private File galleryFolder;
+    private File imageFile;
 
     private TextureView.SurfaceTextureListener surfaceTextureListener;
 
@@ -346,7 +348,9 @@ public class CameraFragment extends BaseFragment {
 
     @OnClick(R.id.fab_upload_photo)
     public void onUploadButtonClicked() {
-        startActivity(new Intent(getContext(), SendImageActivity.class));
+        Intent intent = new Intent(getContext(), SendImageActivity.class);
+        intent.putExtra(IMAGE_FILE_PATH, imageFile.getPath());
+        startActivity(intent);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -368,6 +372,11 @@ public class CameraFragment extends BaseFragment {
 
     @OnClick(R.id.fab_take_picture)
     public void captureImage() {
+        try {
+            imageFile = createImageFile(galleryFolder);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         lock(textureView.getBitmap());
         backgroundHandler.post(new Runnable() {
             FileOutputStream outputPhoto = null;
@@ -375,10 +384,10 @@ public class CameraFragment extends BaseFragment {
             @Override
             public void run() {
                 try {
-                    outputPhoto = new FileOutputStream(createImageFile(galleryFolder));
+                    outputPhoto = new FileOutputStream(imageFile);
                     textureView.getBitmap()
                             .compress(Bitmap.CompressFormat.PNG, 100, outputPhoto);
-                } catch (Exception e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
                     try {
