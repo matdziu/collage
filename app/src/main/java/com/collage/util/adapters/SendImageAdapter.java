@@ -53,16 +53,16 @@ public class SendImageAdapter extends RecyclerView.Adapter<SendImageAdapter.View
         return friendsList.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.item_send_image_text_view)
         TextView textView;
 
         @BindView(R.id.item_send_image_button)
-        Button button;
+        public Button button;
 
         @BindView(R.id.item_send_progress_bar)
-        ProgressBar progressBar;
+        public ProgressBar progressBar;
 
         ViewHolder(View itemView) {
             super(itemView);
