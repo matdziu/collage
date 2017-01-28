@@ -6,12 +6,12 @@ import com.collage.util.model.User;
 
 import java.util.List;
 
-class UsersPresenter implements BaseUsersListener {
+class FriendsPresenter implements BaseUsersListener {
 
     private FriendsView friendsView;
     private FirebaseDatabaseInteractor firebaseDatabaseInteractor;
 
-    UsersPresenter(FriendsView friendsView, FirebaseDatabaseInteractor firebaseDatabaseInteractor) {
+    FriendsPresenter(FriendsView friendsView, FirebaseDatabaseInteractor firebaseDatabaseInteractor) {
         this.friendsView = friendsView;
         this.firebaseDatabaseInteractor = firebaseDatabaseInteractor;
     }
