@@ -29,6 +29,7 @@ import static com.collage.camera.CameraFragment.IMAGE_FILE_PATH;
 public class SendImageFragment extends BaseFragment implements SendImageView {
 
     private SendImagePresenter sendImagePresenter;
+    public static final int RESULT_PICTURE_SENT = 1;
 
     @BindView(R.id.send_image_recycler_view)
     RecyclerView recyclerView;
@@ -93,5 +94,10 @@ public class SendImageFragment extends BaseFragment implements SendImageView {
     @Override
     public void updateRecyclerView(List<User> friendsList) {
         recyclerView.setAdapter(new SendImageAdapter(friendsList, sendImagePresenter));
+    }
+
+    @Override
+    public void setPictureSentResult() {
+        getActivity().setResult(RESULT_PICTURE_SENT);
     }
 }

@@ -52,5 +52,6 @@ class SendImagePresenter implements SendImageListener {
     @Override
     public void onImageUploadFinished(int position) {
         sendImageView.hideItemProgressBar(position);
+        sendImageView.setPictureSentResult();
     }
 }

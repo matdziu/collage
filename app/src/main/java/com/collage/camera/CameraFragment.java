@@ -53,6 +53,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.collage.sendimage.SendImageFragment.RESULT_PICTURE_SENT;
+
 public class CameraFragment extends BaseFragment {
 
     @BindView(R.id.texture_view)
@@ -72,6 +74,7 @@ public class CameraFragment extends BaseFragment {
 
     public static final String IMAGE_FILE_PATH = "imageFilePath";
     public static final String IMAGE_FILE_NAME = "imageFileName";
+    public static final int REQUEST_SEND_IMAGE = 1;
 
     private static final int CAMERA_FRAGMENT_PERMISSIONS_CODE = 0;
     private int cameraFacing;
@@ -242,6 +245,13 @@ public class CameraFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_SEND_IMAGE && resultCode == RESULT_PICTURE_SENT) {
+            unlock();
+        }
+    }
+
     @SuppressWarnings("ConstantConditions")
     private void setUpCamera(int width, int height) {
         try {
@@ -372,7 +382,7 @@ public class CameraFragment extends BaseFragment {
         Intent intent = new Intent(getContext(), SendImageActivity.class);
         intent.putExtra(IMAGE_FILE_PATH, imageFile.getPath());
         intent.putExtra(IMAGE_FILE_NAME, imageFileName);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_SEND_IMAGE);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
