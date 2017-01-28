@@ -373,7 +373,9 @@ public class CameraFragment extends BaseFragment {
         imageView.setImageBitmap(previewImage);
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void unlock() {
+        imageFile.delete();
         isInPreviewMode = false;
         imageView.setVisibility(View.GONE);
         textureView.setVisibility(View.VISIBLE);
