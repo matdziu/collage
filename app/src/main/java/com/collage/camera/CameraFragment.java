@@ -79,6 +79,7 @@ public class CameraFragment extends BaseFragment {
     private static final int CAMERA_FRAGMENT_PERMISSIONS_CODE = 0;
     private int cameraFacing;
     private boolean fragmentVisible;
+    private boolean isInPreviewMode;
 
     private Size previewSize;
     private String cameraId;
@@ -210,7 +211,7 @@ public class CameraFragment extends BaseFragment {
                 public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
                     if (keyEvent.getAction() == KeyEvent.ACTION_UP
                             && keyCode == KeyEvent.KEYCODE_BACK
-                            && fragmentVisible) {
+                            && fragmentVisible && isInPreviewMode) {
                         unlock();
                         return true;
                     }
@@ -247,8 +248,10 @@ public class CameraFragment extends BaseFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SEND_IMAGE && resultCode == RESULT_PICTURE_SENT) {
-            unlock();
+        if (requestCode == REQUEST_SEND_IMAGE) {
+            if (resultCode == RESULT_PICTURE_SENT) {
+                unlock();
+            }
         }
     }
 
@@ -361,6 +364,7 @@ public class CameraFragment extends BaseFragment {
     }
 
     private void lock(Bitmap previewImage) {
+        isInPreviewMode = true;
         imageView.setVisibility(View.VISIBLE);
         textureView.setVisibility(View.GONE);
         takePictureButton.setVisibility(View.GONE);
@@ -370,6 +374,7 @@ public class CameraFragment extends BaseFragment {
     }
 
     private void unlock() {
+        isInPreviewMode = false;
         imageView.setVisibility(View.GONE);
         textureView.setVisibility(View.VISIBLE);
         takePictureButton.setVisibility(View.VISIBLE);
