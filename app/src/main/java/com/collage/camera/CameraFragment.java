@@ -24,6 +24,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.util.Range;
 import android.util.Size;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.TextureView;
@@ -197,6 +198,23 @@ public class CameraFragment extends BaseFragment {
 
         openBackgroundThread();
         startOpeningCamera();
+
+        if (getView() != null) {
+            getView().setFocusableInTouchMode(true);
+            getView().requestFocus();
+            getView().setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                    if (keyEvent.getAction() == KeyEvent.ACTION_UP
+                            && keyCode == KeyEvent.KEYCODE_BACK
+                            && fragmentVisible) {
+                        unlock();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
