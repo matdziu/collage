@@ -1,6 +1,6 @@
 package com.collage.gallery;
 
-import com.collage.interactors.FirebaseDatabaseInteractor;
+import com.collage.util.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.models.Photo;
 import com.collage.util.models.User;
 

@@ -15,8 +15,8 @@ import android.widget.Toast;
 import com.collage.R;
 import com.collage.base.BaseFragment;
 import com.collage.home.HomeActivity;
-import com.collage.interactors.FirebaseAuthInteractor;
-import com.collage.interactors.FirebaseDatabaseInteractor;
+import com.collage.util.interactors.FirebaseAuthInteractor;
+import com.collage.util.interactors.FirebaseDatabaseInteractor;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

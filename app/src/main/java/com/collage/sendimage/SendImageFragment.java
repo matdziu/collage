@@ -12,8 +12,8 @@ import android.widget.ProgressBar;
 
 import com.collage.R;
 import com.collage.base.BaseFragment;
-import com.collage.interactors.FirebaseDatabaseInteractor;
-import com.collage.interactors.FirebaseStorageInteractor;
+import com.collage.util.interactors.FirebaseDatabaseInteractor;
+import com.collage.util.interactors.FirebaseStorageInteractor;
 import com.collage.util.adapters.SendImageAdapter;
 import com.collage.util.models.User;
 

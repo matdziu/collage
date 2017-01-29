@@ -2,7 +2,7 @@ package com.collage.login;
 
 import android.util.Patterns;
 
-import com.collage.interactors.FirebaseAuthInteractor;
+import com.collage.util.interactors.FirebaseAuthInteractor;
 
 class LoginPresenter implements LoginListener {
 

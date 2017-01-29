@@ -2,8 +2,8 @@ package com.collage.sendimage;
 
 import android.net.Uri;
 
-import com.collage.interactors.FirebaseDatabaseInteractor;
-import com.collage.interactors.FirebaseStorageInteractor;
+import com.collage.util.interactors.FirebaseDatabaseInteractor;
+import com.collage.util.interactors.FirebaseStorageInteractor;
 import com.collage.util.models.User;
 
 import java.util.List;

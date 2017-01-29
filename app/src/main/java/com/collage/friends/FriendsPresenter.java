@@ -1,6 +1,6 @@
 package com.collage.friends;
 
-import com.collage.interactors.FirebaseDatabaseInteractor;
+import com.collage.util.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.events.GalleryEvent;
 import com.collage.util.models.User;
 

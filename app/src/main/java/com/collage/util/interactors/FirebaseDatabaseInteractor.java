@@ -1,4 +1,4 @@
-package com.collage.interactors;
+package com.collage.util.interactors;
 
 import android.net.Uri;
 

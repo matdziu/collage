@@ -15,9 +15,9 @@ import com.collage.R;
 import com.collage.base.BaseFragment;
 import com.collage.friendsearch.FriendSearchActivity;
 import com.collage.home.HomeActivity;
-import com.collage.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.adapters.FriendsAdapter;
 import com.collage.util.events.GalleryEvent;
+import com.collage.util.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.models.User;
 
 import org.greenrobot.eventbus.EventBus;

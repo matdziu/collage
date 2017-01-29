@@ -2,8 +2,8 @@ package com.collage.signup;
 
 import android.util.Patterns;
 
-import com.collage.interactors.FirebaseAuthInteractor;
-import com.collage.interactors.FirebaseDatabaseInteractor;
+import com.collage.util.interactors.FirebaseAuthInteractor;
+import com.collage.util.interactors.FirebaseDatabaseInteractor;
 
 class SignUpPresenter implements SignUpListener {
 
