@@ -51,6 +51,11 @@ public class PendingInvitationsAdapter extends RecyclerView.Adapter<PendingInvit
         return pendingInvitationsList.size();
     }
 
+    public void setPendingInvitationsList(List<User> pendingInvitationsList) {
+        this.pendingInvitationsList = pendingInvitationsList;
+        notifyDataSetChanged();
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.item_pending_text_view)

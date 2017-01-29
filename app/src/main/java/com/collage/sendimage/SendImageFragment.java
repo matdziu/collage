@@ -18,6 +18,7 @@ import com.collage.interactors.FirebaseStorageInteractor;
 import com.collage.util.adapters.SendImageAdapter;
 import com.collage.util.models.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -30,6 +31,7 @@ public class SendImageFragment extends BaseFragment implements SendImageView {
 
     private SendImagePresenter sendImagePresenter;
     public static final int RESULT_PICTURE_SENT = 1;
+    private SendImageAdapter sendImageAdapter;
 
     @BindView(R.id.send_image_recycler_view)
     RecyclerView recyclerView;
@@ -43,6 +45,7 @@ public class SendImageFragment extends BaseFragment implements SendImageView {
         sendImagePresenter = new SendImagePresenter(this, new FirebaseDatabaseInteractor(),
                 new FirebaseStorageInteractor(), getArguments().getString(IMAGE_FILE_PATH),
                 getArguments().getString(IMAGE_FILE_NAME));
+        sendImageAdapter = new SendImageAdapter(new ArrayList<User>(), sendImagePresenter);
     }
 
     @Nullable
@@ -60,6 +63,7 @@ public class SendImageFragment extends BaseFragment implements SendImageView {
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.setAdapter(sendImageAdapter);
 
         return view;
     }
@@ -94,7 +98,7 @@ public class SendImageFragment extends BaseFragment implements SendImageView {
 
     @Override
     public void updateRecyclerView(List<User> friendsList) {
-        recyclerView.setAdapter(new SendImageAdapter(friendsList, sendImagePresenter));
+        sendImageAdapter.setFriendsList(friendsList);
     }
 
     @Override

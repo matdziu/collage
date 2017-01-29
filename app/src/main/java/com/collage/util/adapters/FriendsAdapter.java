@@ -52,16 +52,15 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (selectedPosition != holder.getAdapterPosition()) {
-                    int previousSelectedPosition = selectedPosition;
-                    selectedPosition = holder.getAdapterPosition();
+                int previousSelectedPosition = selectedPosition;
+                selectedPosition = holder.getAdapterPosition();
 
-                    notifyItemChanged(previousSelectedPosition);
-                    notifyItemChanged(selectedPosition);
+                notifyItemChanged(previousSelectedPosition);
+                notifyItemChanged(selectedPosition);
 
-                    friendsListener.onFriendSelected(
-                            friendList.get(holder.getAdapterPosition()));
-                }
+                friendsListener.onFriendSelected(
+                        friendList.get(holder.getAdapterPosition()));
+
             }
         });
     }
@@ -69,6 +68,10 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     @Override
     public int getItemCount() {
         return friendList.size();
+    }
+
+    public void setFriendList(List<User> friendList) {
+        this.friendList = friendList;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

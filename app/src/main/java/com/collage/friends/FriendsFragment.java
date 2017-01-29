@@ -22,6 +22,7 @@ import com.collage.util.models.User;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -37,13 +38,14 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
     ProgressBar progressBar;
 
     private FriendsPresenter friendsPresenter;
-
-    HomeActivity homeActivity;
+    private HomeActivity homeActivity;
+    private FriendsAdapter friendsAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         friendsPresenter = new FriendsPresenter(this, new FirebaseDatabaseInteractor());
+        friendsAdapter = new FriendsAdapter(new ArrayList<User>(), friendsPresenter, getContext());
         homeActivity = (HomeActivity) getActivity();
     }
 
@@ -62,6 +64,7 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.setAdapter(friendsAdapter);
 
         return view;
     }
@@ -96,7 +99,7 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
 
     @Override
     public void updateRecyclerView(List<User> usersList) {
-        recyclerView.setAdapter(new FriendsAdapter(usersList, friendsPresenter, getContext()));
+        friendsAdapter.setFriendList(usersList);
     }
 
     @Override

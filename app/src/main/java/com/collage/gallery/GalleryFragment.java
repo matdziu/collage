@@ -22,6 +22,7 @@ import com.collage.util.models.Photo;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -37,12 +38,13 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
 
-    private int properWidth;
+    private PhotosAdapter photosAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         galleryPresenter = new GalleryPresenter(this, new FirebaseDatabaseInteractor());
+        photosAdapter = new PhotosAdapter(new ArrayList<Photo>(), getProperWidth(), getContext());
     }
 
     @Nullable
@@ -51,7 +53,7 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
         ButterKnife.bind(this, view);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
-        properWidth = getProperWidth();
+        recyclerView.setAdapter(photosAdapter);
         return view;
     }
 
@@ -108,6 +110,6 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
 
     @Override
     public void updateRecyclerView(List<Photo> photosList) {
-        recyclerView.setAdapter(new PhotosAdapter(photosList, properWidth, getContext()));
+        photosAdapter.setPhotoList(photosList);
     }
 }

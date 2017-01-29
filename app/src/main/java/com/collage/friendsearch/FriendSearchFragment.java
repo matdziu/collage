@@ -19,6 +19,7 @@ import com.collage.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.adapters.PendingInvitationsAdapter;
 import com.collage.util.models.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -38,11 +39,13 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchVi
 
     private FriendSearchPresenter friendSearchPresenter;
     private List<User> pendingList;
+    private PendingInvitationsAdapter pendingInvitationsAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         friendSearchPresenter = new FriendSearchPresenter(this, new FirebaseDatabaseInteractor());
+        pendingInvitationsAdapter = new PendingInvitationsAdapter(new ArrayList<User>(), friendSearchPresenter);
     }
 
     @Nullable
@@ -60,6 +63,7 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchVi
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.setAdapter(pendingInvitationsAdapter);
 
         return view;
     }
@@ -88,7 +92,7 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchVi
     @Override
     public void updateRecyclerView(List<User> pendingList) {
         this.pendingList = pendingList;
-        recyclerView.setAdapter(new PendingInvitationsAdapter(pendingList, friendSearchPresenter));
+        pendingInvitationsAdapter.setPendingInvitationsList(pendingList);
     }
 
     @Override

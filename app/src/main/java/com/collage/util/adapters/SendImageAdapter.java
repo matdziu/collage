@@ -42,7 +42,7 @@ public class SendImageAdapter extends RecyclerView.Adapter<SendImageAdapter.View
             @Override
             public void onClick(View view) {
                 sendImageListener.onImageUploadStarted(friendsList
-                        .get(holder.getAdapterPosition()),
+                                .get(holder.getAdapterPosition()),
                         holder.getAdapterPosition());
             }
         });
@@ -51,6 +51,10 @@ public class SendImageAdapter extends RecyclerView.Adapter<SendImageAdapter.View
     @Override
     public int getItemCount() {
         return friendsList.size();
+    }
+
+    public void setFriendsList(List<User> friendsList) {
+        this.friendsList = friendsList;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

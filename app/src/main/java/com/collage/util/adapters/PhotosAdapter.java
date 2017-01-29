@@ -76,6 +76,11 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
         imageView.setLayoutParams(params);
     }
 
+    public void setPhotoList(List<Photo> photoList) {
+        this.photoList = photoList;
+        notifyDataSetChanged();
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.item_photo_image_view)
