@@ -55,8 +55,6 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
         ButterKnife.bind(this, view);
 
-        friendsPresenter.populateFriendsList();
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(recyclerView.getContext(),
@@ -67,6 +65,12 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
         recyclerView.setAdapter(friendsAdapter);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        friendsPresenter.populateFriendsList();
     }
 
     @Override
