@@ -20,6 +20,8 @@ import com.collage.util.adapters.FriendsAdapter;
 import com.collage.util.events.GalleryEvent;
 import com.collage.util.model.User;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -36,10 +38,13 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
 
     private FriendsPresenter friendsPresenter;
 
+    HomeActivity homeActivity;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         friendsPresenter = new FriendsPresenter(this, new FirebaseDatabaseInteractor());
+        homeActivity = (HomeActivity) getActivity();
     }
 
     @Nullable
@@ -64,7 +69,6 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
     @Override
     public void setMenuVisibility(boolean fragmentVisible) {
         super.setMenuVisibility(fragmentVisible);
-        HomeActivity homeActivity = (HomeActivity) getActivity();
         if (homeActivity != null) {
             if (fragmentVisible) {
                 showSystemUI();
@@ -97,11 +101,11 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
 
     @Override
     public void navigateToGalleryFragment() {
-
+        homeActivity.navigateToGalleryFragment(1);
     }
 
     @Override
     public void postGalleryEvent(GalleryEvent galleryEvent) {
-
+        EventBus.getDefault().post(galleryEvent);
     }
 }

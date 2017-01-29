@@ -10,12 +10,17 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.collage.R;
 import com.collage.base.BaseFragment;
 import com.collage.home.HomeActivity;
-import com.collage.R;
 import com.collage.util.adapters.PhotosAdapter;
+import com.collage.util.events.GalleryEvent;
 import com.collage.util.model.Photo;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +62,23 @@ public class GalleryFragment extends BaseFragment {
         recyclerView.setAdapter(new PhotosAdapter(photoList));
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void onGalleryEvent(GalleryEvent galleryEvent) {
+        Toast.makeText(getContext(), galleryEvent.getAlbumStorageId(), Toast.LENGTH_SHORT).show();
     }
 
     private int getProperWidth() {

@@ -48,4 +48,8 @@ public class HomeActivity extends BaseActivity {
         super.showHomeNavigation();
         homeTabLayout.setVisibility(View.VISIBLE);
     }
+
+    public void navigateToGalleryFragment(int galleryFragmentPosition) {
+        homeViewPager.setCurrentItem(galleryFragmentPosition, true);
+    }
 }
