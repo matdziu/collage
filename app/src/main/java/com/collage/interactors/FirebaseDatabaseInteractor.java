@@ -166,7 +166,7 @@ public class FirebaseDatabaseInteractor {
                 .child(USERS)
                 .child(firebaseUser.getUid())
                 .child(ACCEPTED_FRIENDS)
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         List<User> friendsList = new ArrayList<>();
