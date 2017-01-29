@@ -76,6 +76,7 @@ public class GalleryFragment extends BaseFragment {
         EventBus.getDefault().unregister(this);
     }
 
+    @SuppressWarnings("unused")
     @Subscribe
     public void onGalleryEvent(GalleryEvent galleryEvent) {
         Toast.makeText(getContext(), galleryEvent.getAlbumStorageId(), Toast.LENGTH_SHORT).show();
