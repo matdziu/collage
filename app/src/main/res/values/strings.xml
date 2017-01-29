@@ -17,4 +17,6 @@
     <string name="accept_pending_invite">Accept</string>
     <string name="sign_out">Sign out</string>
     <string name="send_image">Send</string>
+    <string name="camera_image_view_desc">Preview image</string>
+    <string name="photo_image_view_desc">Friend\'s album photo</string>
 </resources>

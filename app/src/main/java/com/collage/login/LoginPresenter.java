@@ -4,7 +4,6 @@ import android.util.Patterns;
 
 import com.collage.interactors.FirebaseAuthInteractor;
 
-
 class LoginPresenter implements LoginListener {
 
     private LoginView loginView;

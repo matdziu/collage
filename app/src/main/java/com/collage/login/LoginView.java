@@ -1,6 +1,5 @@
 package com.collage.login;
 
-
 interface LoginView {
 
     void showInvalidEmailError();

@@ -1,6 +1,5 @@
 package com.collage.sendimage;
 
-
 import android.net.Uri;
 
 import com.collage.interactors.FirebaseDatabaseInteractor;

@@ -1,6 +1,5 @@
 package com.collage.sendimage;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
@@ -84,7 +83,7 @@ public class SendImageFragment extends BaseFragment implements SendImageView {
     public void showItemProgressBar(int position) {
         SendImageAdapter.ViewHolder viewHolder =
                 (SendImageAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
-        viewHolder.button.setVisibility(View.GONE);
+        viewHolder.button.setVisibility(View.INVISIBLE);
         viewHolder.progressBar.setVisibility(View.VISIBLE);
     }
 
@@ -92,7 +91,6 @@ public class SendImageFragment extends BaseFragment implements SendImageView {
     public void hideItemProgressBar(int position) {
         SendImageAdapter.ViewHolder viewHolder =
                 (SendImageAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
-        viewHolder.button.setVisibility(View.GONE);
         viewHolder.progressBar.setVisibility(View.GONE);
     }
 

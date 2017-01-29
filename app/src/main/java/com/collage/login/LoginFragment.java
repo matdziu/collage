@@ -77,7 +77,7 @@ public class LoginFragment extends BaseFragment implements LoginView {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        transaction.replace(R.id.linear_layout_activity_login, new SignUpFragment());
+        transaction.replace(R.id.layout_activity_login, new SignUpFragment());
         transaction.addToBackStack(null);
         transaction.commit();
     }

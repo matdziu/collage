@@ -1,6 +1,5 @@
 package com.collage.interactors;
 
-
 import android.support.annotation.NonNull;
 
 import com.collage.login.LoginListener;

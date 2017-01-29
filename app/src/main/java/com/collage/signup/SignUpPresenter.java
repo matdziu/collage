@@ -1,6 +1,5 @@
 package com.collage.signup;
 
-
 import android.util.Patterns;
 
 import com.collage.interactors.FirebaseAuthInteractor;

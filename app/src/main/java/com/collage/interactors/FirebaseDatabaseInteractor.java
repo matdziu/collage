@@ -1,6 +1,5 @@
 package com.collage.interactors;
 
-
 import android.net.Uri;
 
 import com.collage.base.BaseUsersListener;

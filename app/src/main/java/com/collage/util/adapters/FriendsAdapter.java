@@ -79,7 +79,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         @BindView(R.id.friends_text_view)
         TextView textView;
 
-        @BindView(R.id.linear_layout_item_friend)
+        @BindView(R.id.layout_item_friend)
         LinearLayout linearLayout;
 
         ViewHolder(View itemView) {

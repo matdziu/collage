@@ -22,7 +22,7 @@ public class SendImageActivity extends BaseActivity {
         Bundle arguments = getIntent().getExtras();
         sendImageFragment.setArguments(arguments);
 
-        transaction.replace(R.id.linear_layout_activity_send_image, sendImageFragment);
+        transaction.replace(R.id.layout_activity_send_image, sendImageFragment);
         transaction.commit();
     }
 

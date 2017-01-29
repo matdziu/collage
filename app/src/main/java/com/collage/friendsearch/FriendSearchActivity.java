@@ -17,7 +17,7 @@ public class FriendSearchActivity extends BaseActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        transaction.replace(R.id.linear_layout_activity_friend_search, new FriendSearchFragment());
+        transaction.replace(R.id.layout_activity_friend_search, new FriendSearchFragment());
         transaction.commit();
     }
 

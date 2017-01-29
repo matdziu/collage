@@ -1,6 +1,5 @@
 package com.collage.base;
 
-
 import com.collage.interactors.FirebaseAuthInteractor;
 
 class BasePresenter {

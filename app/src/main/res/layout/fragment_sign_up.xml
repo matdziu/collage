@@ -50,7 +50,7 @@
             android:id="@+id/text_input_layout_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/text_input_layout_email"
+            android:layout_alignStart="@+id/text_input_layout_email"
             android:layout_below="@+id/text_input_layout_email"
             app:passwordToggleDrawable="@drawable/asl_password_visibility"
             app:passwordToggleEnabled="true">
@@ -69,7 +69,7 @@
             android:id="@+id/button_create_account"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/text_input_layout_password"
+            android:layout_alignStart="@+id/text_input_layout_password"
             android:layout_below="@+id/text_input_layout_password"
             android:background="@drawable/custom_button"
             android:text="@string/create_account"

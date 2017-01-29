@@ -1,6 +1,5 @@
 package com.collage.friendsearch;
 
-
 import com.collage.util.models.User;
 
 import java.util.List;

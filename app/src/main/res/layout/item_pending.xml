@@ -9,7 +9,7 @@
         android:id="@+id/item_pending_accept_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
         android:text="@string/accept_pending_invite" />
 
     <TextView

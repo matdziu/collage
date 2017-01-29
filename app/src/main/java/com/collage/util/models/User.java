@@ -1,6 +1,5 @@
 package com.collage.util.models;
 
-
 public class User {
 
     public String fullName;
