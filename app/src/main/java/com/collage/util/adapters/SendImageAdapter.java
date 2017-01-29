@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.collage.R;
 import com.collage.sendimage.SendImageListener;
-import com.collage.util.model.User;
+import com.collage.util.models.User;
 
 import java.util.List;
 
@@ -42,7 +42,7 @@ public class SendImageAdapter extends RecyclerView.Adapter<SendImageAdapter.View
             @Override
             public void onClick(View view) {
                 sendImageListener.onImageUploadStarted(friendsList
-                        .get(holder.getAdapterPosition()).albumStorageId,
+                        .get(holder.getAdapterPosition()),
                         holder.getAdapterPosition());
             }
         });

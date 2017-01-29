@@ -3,64 +3,55 @@ package com.collage.gallery;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
 import com.collage.R;
 import com.collage.base.BaseFragment;
 import com.collage.home.HomeActivity;
+import com.collage.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.adapters.PhotosAdapter;
 import com.collage.util.events.GalleryEvent;
-import com.collage.util.model.Photo;
+import com.collage.util.models.Photo;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class GalleryFragment extends BaseFragment {
+public class GalleryFragment extends BaseFragment implements GalleryView {
+
+    private GalleryPresenter galleryPresenter;
 
     @BindView(R.id.gallery_recycler_view)
     RecyclerView recyclerView;
+
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
+
+    private int properWidth;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        galleryPresenter = new GalleryPresenter(this, new FirebaseDatabaseInteractor());
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
         ButterKnife.bind(this, view);
-
-        List<Photo> photoList = new ArrayList<>();
-
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo), getProperWidth()));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo), getProperWidth()));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo), getProperWidth()));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo), getProperWidth()));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo), getProperWidth()));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo), getProperWidth()));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo), getProperWidth()));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo), getProperWidth()));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo), getProperWidth()));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo), getProperWidth()));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo), getProperWidth()));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo), getProperWidth()));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo), getProperWidth()));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo), getProperWidth()));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo), getProperWidth()));
-        photoList.add(new Photo(ContextCompat.getDrawable(getContext(), R.drawable.sample_photo), getProperWidth()));
-
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
-        recyclerView.setAdapter(new PhotosAdapter(photoList));
-
+        properWidth = getProperWidth();
         return view;
     }
 
@@ -76,10 +67,22 @@ public class GalleryFragment extends BaseFragment {
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    public void setMenuVisibility(boolean fragmentVisible) {
+        super.setMenuVisibility(fragmentVisible);
+        HomeActivity homeActivity = (HomeActivity) getActivity();
+        if (homeActivity != null) {
+            if (fragmentVisible) {
+                showSystemUI();
+                homeActivity.showHomeNavigation();
+            }
+        }
+    }
+
     @SuppressWarnings("unused")
     @Subscribe
     public void onGalleryEvent(GalleryEvent galleryEvent) {
-        Toast.makeText(getContext(), galleryEvent.getAlbumStorageId(), Toast.LENGTH_SHORT).show();
+        galleryPresenter.populatePhotosList(galleryEvent.getFriend());
     }
 
     private int getProperWidth() {
@@ -92,14 +95,19 @@ public class GalleryFragment extends BaseFragment {
     }
 
     @Override
-    public void setMenuVisibility(boolean fragmentVisible) {
-        super.setMenuVisibility(fragmentVisible);
-        HomeActivity homeActivity = (HomeActivity) getActivity();
-        if (homeActivity != null) {
-            if (fragmentVisible) {
-                showSystemUI();
-                homeActivity.showHomeNavigation();
-            }
-        }
+    public void showProgressBar() {
+        recyclerView.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        recyclerView.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void updateRecyclerView(List<Photo> photosList) {
+        recyclerView.setAdapter(new PhotosAdapter(photosList, properWidth, getContext()));
     }
 }

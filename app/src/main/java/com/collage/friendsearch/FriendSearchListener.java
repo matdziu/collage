@@ -2,9 +2,7 @@ package com.collage.friendsearch;
 
 
 import com.collage.base.BaseUsersListener;
-import com.collage.util.model.User;
-
-import java.util.List;
+import com.collage.util.models.User;
 
 public interface FriendSearchListener extends BaseUsersListener {
 

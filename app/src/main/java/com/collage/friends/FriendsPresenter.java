@@ -2,7 +2,7 @@ package com.collage.friends;
 
 import com.collage.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.events.GalleryEvent;
-import com.collage.util.model.User;
+import com.collage.util.models.User;
 
 import java.util.List;
 
@@ -32,8 +32,8 @@ class FriendsPresenter implements FriendsListener {
     }
 
     @Override
-    public void onFriendSelected(String albumStorageId) {
+    public void onFriendSelected(User friend) {
         friendsView.navigateToGalleryFragment();
-        friendsView.postGalleryEvent(new GalleryEvent(albumStorageId));
+        friendsView.postGalleryEvent(new GalleryEvent(friend));
     }
 }

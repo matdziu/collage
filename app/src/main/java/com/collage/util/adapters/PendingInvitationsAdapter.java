@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.collage.R;
 import com.collage.friendsearch.FriendSearchListener;
-import com.collage.util.model.User;
+import com.collage.util.models.User;
 
 import java.util.List;
 

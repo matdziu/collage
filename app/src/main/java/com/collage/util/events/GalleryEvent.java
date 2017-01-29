@@ -1,14 +1,16 @@
 package com.collage.util.events;
 
+import com.collage.util.models.User;
+
 public class GalleryEvent {
 
-    private String albumStorageId;
+    private User friend;
 
-    public GalleryEvent(String albumStorageId) {
-        this.albumStorageId = albumStorageId;
+    public GalleryEvent(User friend) {
+        this.friend = friend;
     }
 
-    public String getAlbumStorageId() {
-        return albumStorageId;
+    public User getFriend() {
+        return friend;
     }
 }

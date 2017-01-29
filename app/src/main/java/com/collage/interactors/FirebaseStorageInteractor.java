@@ -3,6 +3,7 @@ package com.collage.interactors;
 import android.net.Uri;
 
 import com.collage.sendimage.SendImageListener;
+import com.collage.util.models.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -15,17 +16,18 @@ public class FirebaseStorageInteractor {
     private StorageReference storageReference =
             FirebaseStorage.getInstance().getReference();
 
-    public void uploadImage(String albumStorageId, String imageFilePath,
+    public void uploadImage(final User friend, String imageFilePath,
                             String imageFileName, final int position,
                             final SendImageListener sendImageListener) {
         Uri imageFile = Uri.fromFile(new File(imageFilePath));
-        storageReference.child(albumStorageId)
+        storageReference.child(friend.albumStorageId)
                 .child(imageFileName)
                 .putFile(imageFile)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        sendImageListener.onImageUploadFinished(position);
+                        sendImageListener.onImageUploadFinished(position,
+                                taskSnapshot.getDownloadUrl(), friend);
                     }
                 });
     }

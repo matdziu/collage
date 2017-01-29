@@ -1,9 +1,13 @@
 package com.collage.interactors;
 
 
+import android.net.Uri;
+
 import com.collage.base.BaseUsersListener;
 import com.collage.friendsearch.FriendSearchListener;
-import com.collage.util.model.User;
+import com.collage.gallery.GalleryListener;
+import com.collage.util.models.Photo;
+import com.collage.util.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +29,7 @@ public class FirebaseDatabaseInteractor {
     private final static String EMAIL = "email";
     private final static String PENDING_FRIENDS = "pendingFriends";
     private final static String ACCEPTED_FRIENDS = "acceptedFriends";
+    private static final String IMAGE_URLS = "imageUrls";
 
     private DatabaseReference databaseReference =
             FirebaseDatabase.getInstance().getReference();
@@ -169,6 +174,51 @@ public class FirebaseDatabaseInteractor {
                             friendsList.add(dataItem.getValue(User.class));
                         }
                         baseUsersListener.onUsersListFetched(friendsList);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Timber.e(databaseError.getMessage());
+                    }
+                });
+    }
+
+    public void addImageUrl(Uri downloadUrl, User friend) {
+        databaseReference
+                .child(USERS)
+                .child(firebaseUser.getUid())
+                .child(ACCEPTED_FRIENDS)
+                .child(friend.uid)
+                .child(IMAGE_URLS)
+                .push()
+                .setValue(downloadUrl.toString());
+
+        databaseReference
+                .child(USERS)
+                .child(friend.uid)
+                .child(ACCEPTED_FRIENDS)
+                .child(firebaseUser.getUid())
+                .child(IMAGE_URLS)
+                .push()
+                .setValue(downloadUrl.toString());
+    }
+
+    public void fetchPhotos(User friend, final GalleryListener galleryListener) {
+        galleryListener.onPhotosFetchingStarted();
+        databaseReference
+                .child(USERS)
+                .child(firebaseUser.getUid())
+                .child(ACCEPTED_FRIENDS)
+                .child(friend.uid)
+                .child(IMAGE_URLS)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        List<Photo> photosList = new ArrayList<>();
+                        for (DataSnapshot dataItem : dataSnapshot.getChildren()) {
+                            photosList.add(new Photo(dataItem.getValue(String.class)));
+                        }
+                        galleryListener.onPhotosFetchingFinished(photosList);
                     }
 
                     @Override

@@ -1,9 +1,11 @@
 package com.collage.sendimage;
 
 
+import android.net.Uri;
+
 import com.collage.interactors.FirebaseDatabaseInteractor;
 import com.collage.interactors.FirebaseStorageInteractor;
-import com.collage.util.model.User;
+import com.collage.util.models.User;
 
 import java.util.List;
 
@@ -43,15 +45,16 @@ class SendImagePresenter implements SendImageListener {
     }
 
     @Override
-    public void onImageUploadStarted(String albumStorageId, int position) {
+    public void onImageUploadStarted(User friend, int position) {
         sendImageView.showItemProgressBar(position);
-        firebaseStorageInteractor.uploadImage(albumStorageId, imageFilePath,
+        firebaseStorageInteractor.uploadImage(friend, imageFilePath,
                 imageFileName, position, this);
     }
 
     @Override
-    public void onImageUploadFinished(int position) {
+    public void onImageUploadFinished(int position, Uri downloadUrl, User friend) {
         sendImageView.hideItemProgressBar(position);
         sendImageView.setPictureSentResult();
+        firebaseDatabaseInteractor.addImageUrl(downloadUrl, friend);
     }
 }

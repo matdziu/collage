@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.collage.R;
 import com.collage.friends.FriendsListener;
-import com.collage.util.model.User;
+import com.collage.util.models.User;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     private List<User> friendList;
     private FriendsListener friendsListener;
     private Context context;
-    private int selectedPosition;
+    private int selectedPosition = -1;
 
     public FriendsAdapter(List<User> friendList, FriendsListener friendsListener,
                           Context context) {
@@ -52,14 +52,16 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int previousSelectedPosition = selectedPosition;
-                selectedPosition = holder.getAdapterPosition();
+                if (selectedPosition != holder.getAdapterPosition()) {
+                    int previousSelectedPosition = selectedPosition;
+                    selectedPosition = holder.getAdapterPosition();
 
-                notifyItemChanged(previousSelectedPosition);
-                notifyItemChanged(selectedPosition);
+                    notifyItemChanged(previousSelectedPosition);
+                    notifyItemChanged(selectedPosition);
 
-                friendsListener.onFriendSelected(
-                        friendList.get(holder.getAdapterPosition()).albumStorageId);
+                    friendsListener.onFriendSelected(
+                            friendList.get(holder.getAdapterPosition()));
+                }
             }
         });
     }

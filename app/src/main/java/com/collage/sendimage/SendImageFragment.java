@@ -16,7 +16,7 @@ import com.collage.base.BaseFragment;
 import com.collage.interactors.FirebaseDatabaseInteractor;
 import com.collage.interactors.FirebaseStorageInteractor;
 import com.collage.util.adapters.SendImageAdapter;
-import com.collage.util.model.User;
+import com.collage.util.models.User;
 
 import java.util.List;
 
@@ -88,6 +88,7 @@ public class SendImageFragment extends BaseFragment implements SendImageView {
     public void hideItemProgressBar(int position) {
         SendImageAdapter.ViewHolder viewHolder =
                 (SendImageAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
+        viewHolder.button.setVisibility(View.GONE);
         viewHolder.progressBar.setVisibility(View.GONE);
     }
 

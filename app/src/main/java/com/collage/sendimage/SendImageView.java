@@ -1,7 +1,7 @@
 package com.collage.sendimage;
 
 
-import com.collage.util.model.User;
+import com.collage.util.models.User;
 
 import java.util.List;
 

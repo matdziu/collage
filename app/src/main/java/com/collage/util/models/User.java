@@ -1,4 +1,4 @@
-package com.collage.util.model;
+package com.collage.util.models;
 
 
 public class User {
