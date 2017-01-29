@@ -17,6 +17,7 @@ import com.collage.friendsearch.FriendSearchActivity;
 import com.collage.home.HomeActivity;
 import com.collage.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.adapters.FriendsAdapter;
+import com.collage.util.events.GalleryEvent;
 import com.collage.util.model.User;
 
 import java.util.List;
@@ -91,6 +92,16 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
 
     @Override
     public void updateRecyclerView(List<User> usersList) {
-        recyclerView.setAdapter(new FriendsAdapter(usersList));
+        recyclerView.setAdapter(new FriendsAdapter(usersList, friendsPresenter, getContext()));
+    }
+
+    @Override
+    public void navigateToGalleryFragment() {
+
+    }
+
+    @Override
+    public void postGalleryEvent(GalleryEvent galleryEvent) {
+
     }
 }
