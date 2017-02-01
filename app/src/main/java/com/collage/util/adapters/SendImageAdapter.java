@@ -54,6 +54,7 @@ public class SendImageAdapter extends RecyclerView.Adapter<SendImageAdapter.View
 
     public void setFriendsList(List<User> friendsList) {
         this.friendsList = friendsList;
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
