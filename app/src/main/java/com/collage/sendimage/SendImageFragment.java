@@ -12,9 +12,9 @@ import android.widget.ProgressBar;
 
 import com.collage.R;
 import com.collage.base.BaseFragment;
+import com.collage.util.adapters.SendImageAdapter;
 import com.collage.util.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.interactors.FirebaseStorageInteractor;
-import com.collage.util.adapters.SendImageAdapter;
 import com.collage.util.models.User;
 
 import java.util.ArrayList;
@@ -23,13 +23,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.collage.camera.CameraFragment.IMAGE_FILE_NAME;
-import static com.collage.camera.CameraFragment.IMAGE_FILE_PATH;
-
 public class SendImageFragment extends BaseFragment implements SendImageView {
 
     private SendImagePresenter sendImagePresenter;
-    public static final int RESULT_PICTURE_SENT = 1;
     private SendImageAdapter sendImageAdapter;
 
     @BindView(R.id.send_image_recycler_view)

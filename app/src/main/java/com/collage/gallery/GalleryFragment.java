@@ -1,5 +1,6 @@
 package com.collage.gallery;
 
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.widget.ProgressBar;
 import com.collage.R;
 import com.collage.base.BaseFragment;
 import com.collage.home.HomeActivity;
+import com.collage.sendimage.SendImageActivity;
 import com.collage.util.adapters.PhotosAdapter;
 import com.collage.util.events.GalleryEvent;
 import com.collage.util.interactors.FirebaseDatabaseInteractor;
@@ -22,12 +24,18 @@ import com.collage.util.models.Photo;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.app.Activity.RESULT_OK;
 
 public class GalleryFragment extends BaseFragment implements GalleryView {
 
@@ -40,6 +48,7 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
     ProgressBar progressBar;
 
     private PhotosAdapter photosAdapter;
+    private static final int REQUEST_PICK_IMAGE = 2;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -116,6 +125,40 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
 
     @OnClick(R.id.fab_add_photo)
     public void onAddPhotoClicked() {
+        Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        getIntent.setType("image/*");
+        startActivityForResult(getIntent, REQUEST_PICK_IMAGE);
+    }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_PICK_IMAGE) {
+            if (resultCode == RESULT_OK) {
+                try {
+                    imageFile = createImageFile(createImageGallery());
+                    InputStream inputStream = getContext()
+                            .getContentResolver().openInputStream(data.getData());
+                    if (inputStream != null) {
+                        byte[] buffer = new byte[inputStream.available()];
+                        inputStream.read(buffer);
+
+                        OutputStream outputStream = new FileOutputStream(imageFile);
+                        outputStream.write(buffer);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Intent intent = new Intent(getContext(), SendImageActivity.class);
+                intent.putExtra(IMAGE_FILE_PATH, imageFile.getPath());
+                intent.putExtra(IMAGE_FILE_NAME, imageFile.getName());
+                startActivityForResult(intent, REQUEST_SEND_IMAGE);
+            }
+        }
+
+        if (requestCode == REQUEST_SEND_IMAGE) {
+            imageFile.delete();
+        }
     }
 }

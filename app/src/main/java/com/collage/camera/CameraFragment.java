@@ -15,7 +15,6 @@ import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
@@ -38,22 +37,16 @@ import com.collage.base.BaseFragment;
 import com.collage.home.HomeActivity;
 import com.collage.sendimage.SendImageActivity;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.collage.sendimage.SendImageFragment.RESULT_PICTURE_SENT;
 
 public class CameraFragment extends BaseFragment {
 
@@ -72,10 +65,6 @@ public class CameraFragment extends BaseFragment {
     @BindView(R.id.fab_upload_photo)
     FloatingActionButton uploadPhotoButton;
 
-    public static final String IMAGE_FILE_PATH = "imageFilePath";
-    public static final String IMAGE_FILE_NAME = "imageFileName";
-    public static final int REQUEST_SEND_IMAGE = 1;
-
     private static final int CAMERA_FRAGMENT_PERMISSIONS_CODE = 0;
     private int cameraFacing;
     private boolean fragmentVisible;
@@ -83,10 +72,6 @@ public class CameraFragment extends BaseFragment {
 
     private Size previewSize;
     private String cameraId;
-
-    private File galleryFolder;
-    private File imageFile;
-    private String imageFileName;
 
     private TextureView.SurfaceTextureListener surfaceTextureListener;
 
@@ -108,8 +93,6 @@ public class CameraFragment extends BaseFragment {
         requestPermissions(new String[]{Manifest.permission.CAMERA,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE},
                 CAMERA_FRAGMENT_PERMISSIONS_CODE);
-
-        createImageGallery();
 
         cameraFacing = CameraCharacteristics.LENS_FACING_BACK;
         cameraManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
@@ -388,31 +371,14 @@ public class CameraFragment extends BaseFragment {
     public void onUploadButtonClicked() {
         Intent intent = new Intent(getContext(), SendImageActivity.class);
         intent.putExtra(IMAGE_FILE_PATH, imageFile.getPath());
-        intent.putExtra(IMAGE_FILE_NAME, imageFileName);
+        intent.putExtra(IMAGE_FILE_NAME, imageFile.getName());
         startActivityForResult(intent, REQUEST_SEND_IMAGE);
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    private void createImageGallery() {
-        File storageDirectory = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
-        galleryFolder = new File(storageDirectory, getResources().getString(R.string.app_name));
-        if (!galleryFolder.exists()) {
-            galleryFolder.mkdirs();
-        }
-    }
-
-    private File createImageFile(File galleryFolder) throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
-                Locale.getDefault()).format(new Date());
-        imageFileName = "image_" + timeStamp + "_";
-        return File.createTempFile(imageFileName, ".jpg", galleryFolder);
     }
 
     @OnClick(R.id.fab_take_picture)
     public void captureImage() {
         try {
-            imageFile = createImageFile(galleryFolder);
+            imageFile = createImageFile(createImageGallery());
         } catch (IOException e) {
             e.printStackTrace();
         }
