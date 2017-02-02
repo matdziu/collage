@@ -14,9 +14,9 @@ import android.widget.ProgressBar;
 import com.collage.R;
 import com.collage.base.BaseFragment;
 import com.collage.home.HomeActivity;
-import com.collage.util.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.adapters.PhotosAdapter;
 import com.collage.util.events.GalleryEvent;
+import com.collage.util.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.models.Photo;
 
 import org.greenrobot.eventbus.EventBus;
@@ -27,6 +27,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class GalleryFragment extends BaseFragment implements GalleryView {
 
@@ -111,5 +112,10 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
     @Override
     public void updateRecyclerView(List<Photo> photosList) {
         photosAdapter.setPhotoList(photosList);
+    }
+
+    @OnClick(R.id.fab_add_photo)
+    public void onAddPhotoClicked() {
+
     }
 }
