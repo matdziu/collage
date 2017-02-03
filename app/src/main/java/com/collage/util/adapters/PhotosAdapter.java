@@ -1,6 +1,7 @@
 package com.collage.util.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,10 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.collage.R;
+import com.collage.gallerydetail.GalleryDetailActivity;
 import com.collage.util.models.Photo;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -25,6 +29,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
     private List<Photo> photoList;
     private int imageWidth;
     private Context context;
+    public static final String EXTRAS_PHOTO_LIST = "photoList";
 
     public PhotosAdapter(List<Photo> photoList, int imageWidth, Context context) {
         this.photoList = photoList;
@@ -44,7 +49,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
         setImageViewBounds(holder.imageView, imageWidth);
         holder.progressBar.setVisibility(View.VISIBLE);
         Glide.with(context)
-                .load(photoList.get(position).getImageUrl())
+                .load(photoList.get(position).imageUrl)
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onResourceReady(GlideDrawable resource, String model,
@@ -61,6 +66,14 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
                     }
                 })
                 .into(holder.imageView);
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, GalleryDetailActivity.class);
+                intent.putExtra(EXTRAS_PHOTO_LIST, Parcels.wrap(photoList));
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

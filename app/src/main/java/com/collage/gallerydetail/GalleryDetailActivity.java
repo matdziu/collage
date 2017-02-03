@@ -6,9 +6,16 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.collage.R;
+import com.collage.util.models.Photo;
+
+import org.parceler.Parcels;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.collage.util.adapters.PhotosAdapter.EXTRAS_PHOTO_LIST;
 
 public class GalleryDetailActivity extends AppCompatActivity {
 
@@ -18,7 +25,10 @@ public class GalleryDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
         setContentView(R.layout.activity_gallery_detail);
+        ButterKnife.bind(this);
+
+        List<Photo> photoList = Parcels.unwrap(
+                getIntent().getExtras().getParcelable(EXTRAS_PHOTO_LIST));
     }
 }

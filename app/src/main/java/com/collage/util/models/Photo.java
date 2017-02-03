@@ -1,14 +1,18 @@
 package com.collage.util.models;
 
+import org.parceler.Parcel;
+
+@Parcel
 public class Photo {
 
-    private String imageUrl;
+    public String imageUrl;
+
+    @SuppressWarnings("unused")
+    public Photo() {
+        // default constructor for Parceler
+    }
 
     public Photo(String imageUrl) {
         this.imageUrl = imageUrl;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
     }
 }
