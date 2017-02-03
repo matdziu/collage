@@ -1,16 +1,13 @@
 package com.collage.friendsearch;
 
+import com.collage.base.BaseUsersView;
 import com.collage.util.models.User;
 
-import java.util.List;
-
-interface FriendSearchView {
+interface FriendSearchView extends BaseUsersView {
 
     void showProgressBar();
 
     void hideProgressBar();
-
-    void updateRecyclerView(List<User> pendingList);
 
     void showFriendFound();
 

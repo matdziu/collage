@@ -47,6 +47,9 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
         friendsPresenter = new FriendsPresenter(this, new FirebaseDatabaseInteractor());
         friendsAdapter = new FriendsAdapter(new ArrayList<User>(), friendsPresenter, getContext());
         homeActivity = (HomeActivity) getActivity();
+
+        baseUsersView = this;
+        basePresenter = friendsPresenter;
     }
 
     @Nullable

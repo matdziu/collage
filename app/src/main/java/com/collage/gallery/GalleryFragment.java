@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -89,6 +90,12 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
                 homeActivity.showHomeNavigation();
             }
         }
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menuItem.setVisible(false);
     }
 
     @SuppressWarnings("unused")

@@ -11,8 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.collage.R;
-import com.collage.util.interactors.FirebaseAuthInteractor;
 import com.collage.login.LoginActivity;
+import com.collage.util.interactors.FirebaseAuthInteractor;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import butterknife.BindView;

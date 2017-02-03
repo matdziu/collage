@@ -1,8 +1,13 @@
 package com.collage.base;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -16,11 +21,23 @@ import java.util.Locale;
 
 public class BaseFragment extends Fragment {
 
+    protected BasePresenter basePresenter;
+    protected BaseUsersView baseUsersView;
+
     protected File imageFile;
+    protected MenuItem menuItem;
+
     public static final String IMAGE_FILE_PATH = "imageFilePath";
     public static final String IMAGE_FILE_NAME = "imageFileName";
+
     public static final int REQUEST_SEND_IMAGE = 1;
     public static final int RESULT_PICTURE_SENT = 1;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     protected void closeSoftKeyboard() {
         View focusedView = getActivity()
@@ -71,5 +88,26 @@ public class BaseFragment extends Fragment {
                 Locale.getDefault()).format(new Date());
         String imageFileName = "image_" + timeStamp + "_";
         return File.createTempFile(imageFileName, ".jpg", galleryFolder);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menuItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+
+        searchView.setQueryHint(getResources().getString(R.string.search_title));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String query) {
+                basePresenter.filterUsers(baseUsersView, query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+        });
     }
 }

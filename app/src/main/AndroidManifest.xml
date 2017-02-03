@@ -25,10 +25,25 @@
 
         <activity
             android:name=".home.HomeActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
+        <activity android:name=".sendimage.SendImageActivity">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
+        <activity android:name=".friendsearch.FriendSearchActivity">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
         <activity android:name=".login.LoginActivity" />
-        <activity android:name=".friendsearch.FriendSearchActivity" />
-        <activity android:name=".sendimage.SendImageActivity" />
         <activity android:name=".gallerydetail.GalleryDetailActivity" />
     </application>
 

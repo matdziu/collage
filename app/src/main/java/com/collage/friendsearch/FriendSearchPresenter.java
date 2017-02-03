@@ -1,11 +1,12 @@
 package com.collage.friendsearch;
 
+import com.collage.base.BasePresenter;
 import com.collage.util.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.models.User;
 
 import java.util.List;
 
-class FriendSearchPresenter implements FriendSearchListener {
+class FriendSearchPresenter extends BasePresenter implements FriendSearchListener {
 
     private FriendSearchView friendSearchView;
     private FirebaseDatabaseInteractor firebaseDatabaseInteractor;
@@ -47,6 +48,7 @@ class FriendSearchPresenter implements FriendSearchListener {
 
     @Override
     public void onUsersListFetched(List<User> pendingList) {
+        this.usersList = pendingList;
         friendSearchView.hideProgressBar();
         friendSearchView.updateRecyclerView(pendingList);
     }

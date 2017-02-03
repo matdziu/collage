@@ -1,17 +1,14 @@
 package com.collage.friends;
 
+import com.collage.base.BaseUsersView;
 import com.collage.util.events.GalleryEvent;
 import com.collage.util.models.User;
 
-import java.util.List;
-
-interface FriendsView {
+interface FriendsView extends BaseUsersView {
 
     void showProgressBar();
 
     void hideProgressBar();
-
-    void updateRecyclerView(List<User> usersList);
 
     void navigateToGalleryFragment();
 

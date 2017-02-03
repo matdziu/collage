@@ -25,6 +25,7 @@ import android.util.Range;
 import android.util.Size;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
@@ -227,6 +228,12 @@ public class CameraFragment extends BaseFragment {
                 homeActivity.hideHomeNavigation();
             }
         }
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menuItem.setVisible(false);
     }
 
     @Override

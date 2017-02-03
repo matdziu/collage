@@ -1,10 +1,9 @@
 package com.collage.sendimage;
 
+import com.collage.base.BaseUsersView;
 import com.collage.util.models.User;
 
-import java.util.List;
-
-interface SendImageView {
+interface SendImageView extends BaseUsersView {
 
     void showProgressBar();
 
@@ -13,8 +12,6 @@ interface SendImageView {
     void showItemProgressBar(int position);
 
     void hideItemProgressBar(int position);
-
-    void updateRecyclerView(List<User> friendsList);
 
     void setPictureSentResult();
 }

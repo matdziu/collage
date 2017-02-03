@@ -21,4 +21,5 @@
     <string name="photo_image_view_desc">Friend\'s album photo</string>
     <string name="select_image">Select an image:</string>
     <string name="gallery_detail_image_view_desc">Photo from album</string>
+    <string name="search_title">Search…</string>
 </resources>

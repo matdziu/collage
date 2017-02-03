@@ -1,12 +1,13 @@
 package com.collage.friends;
 
-import com.collage.util.interactors.FirebaseDatabaseInteractor;
+import com.collage.base.BasePresenter;
 import com.collage.util.events.GalleryEvent;
+import com.collage.util.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.models.User;
 
 import java.util.List;
 
-class FriendsPresenter implements FriendsListener {
+class FriendsPresenter extends BasePresenter implements FriendsListener {
 
     private FriendsView friendsView;
     private FirebaseDatabaseInteractor firebaseDatabaseInteractor;
@@ -27,6 +28,7 @@ class FriendsPresenter implements FriendsListener {
 
     @Override
     public void onUsersListFetched(List<User> friendsList) {
+        this.usersList = friendsList;
         friendsView.hideProgressBar();
         friendsView.updateRecyclerView(friendsList);
     }

@@ -41,6 +41,9 @@ public class SendImageFragment extends BaseFragment implements SendImageView {
                 new FirebaseStorageInteractor(), getArguments().getString(IMAGE_FILE_PATH),
                 getArguments().getString(IMAGE_FILE_NAME));
         sendImageAdapter = new SendImageAdapter(new ArrayList<User>(), sendImagePresenter);
+
+        baseUsersView = this;
+        basePresenter = sendImagePresenter;
     }
 
     @Nullable
