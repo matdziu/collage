@@ -61,6 +61,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
                 friendsListener.onFriendSelected(
                         friendList.get(holder.getAdapterPosition()));
 
+                PhotosAdapter.cachedPhotoArray.clear();
             }
         });
     }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder> {
+
+    static SparseArray<Bitmap> cachedPhotoArray = new SparseArray<>();
 
     private List<Photo> photoList;
     private int imageWidth;
@@ -58,6 +61,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
                                                    Target<Bitmap> target, boolean isFromMemoryCache,
                                                    boolean isFirstResource) {
                         holder.progressBar.setVisibility(View.GONE);
+                        cachedPhotoArray.put(holder.getAdapterPosition(), resource);
                         return false;
                     }
 

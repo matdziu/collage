@@ -14,6 +14,7 @@ public class PhotosDetailAdapter extends FragmentStatePagerAdapter {
 
     private List<Photo> photoList;
     public static final String EXTRAS_PHOTO_URL = "photoUrl";
+    public static final String EXTRAS_CACHED_BITMAP = "cachedBitmap";
 
     public PhotosDetailAdapter(FragmentManager fm, List<Photo> photoList) {
         super(fm);
@@ -24,6 +25,7 @@ public class PhotosDetailAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         Bundle arguments = new Bundle();
         arguments.putString(EXTRAS_PHOTO_URL, photoList.get(position).imageUrl);
+        arguments.putParcelable(EXTRAS_CACHED_BITMAP, PhotosAdapter.cachedPhotoArray.get(position));
 
         GalleryDetailFragment galleryDetailFragment = new GalleryDetailFragment();
         galleryDetailFragment.setArguments(arguments);

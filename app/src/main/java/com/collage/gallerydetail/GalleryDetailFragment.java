@@ -1,5 +1,6 @@
 package com.collage.gallerydetail;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import com.collage.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.collage.util.adapters.PhotosDetailAdapter.EXTRAS_CACHED_BITMAP;
 import static com.collage.util.adapters.PhotosDetailAdapter.EXTRAS_PHOTO_URL;
 
 public class GalleryDetailFragment extends Fragment {
@@ -33,8 +35,14 @@ public class GalleryDetailFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         String photoUrl = getArguments().getString(EXTRAS_PHOTO_URL);
-        Glide.with(this)
-                .load(photoUrl)
-                .into(imageView);
+        Bitmap bitmap = getArguments().getParcelable(EXTRAS_CACHED_BITMAP);
+
+        if (bitmap != null) {
+            imageView.setImageBitmap(bitmap);
+        } else {
+            Glide.with(this)
+                    .load(photoUrl)
+                    .into(imageView);
+        }
     }
 }
