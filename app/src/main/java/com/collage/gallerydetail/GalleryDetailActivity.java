@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.collage.R;
+import com.collage.util.adapters.PhotosDetailAdapter;
 import com.collage.util.models.Photo;
 
 import org.parceler.Parcels;
@@ -30,5 +31,8 @@ public class GalleryDetailActivity extends AppCompatActivity {
 
         List<Photo> photoList = Parcels.unwrap(
                 getIntent().getExtras().getParcelable(EXTRAS_PHOTO_LIST));
+        PhotosDetailAdapter photosDetailAdapter = new PhotosDetailAdapter(getSupportFragmentManager(),
+                photoList);
+        viewPager.setAdapter(photosDetailAdapter);
     }
 }
