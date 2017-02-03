@@ -16,6 +16,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.collage.util.adapters.PhotosAdapter.EXTRAS_CURRENT_PHOTO_POSITION;
 import static com.collage.util.adapters.PhotosAdapter.EXTRAS_PHOTO_LIST;
 
 public class GalleryDetailActivity extends AppCompatActivity {
@@ -34,5 +35,6 @@ public class GalleryDetailActivity extends AppCompatActivity {
         PhotosDetailAdapter photosDetailAdapter = new PhotosDetailAdapter(getSupportFragmentManager(),
                 photoList);
         viewPager.setAdapter(photosDetailAdapter);
+        viewPager.setCurrentItem(getIntent().getExtras().getInt(EXTRAS_CURRENT_PHOTO_POSITION));
     }
 }

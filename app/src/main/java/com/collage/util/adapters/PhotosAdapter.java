@@ -34,6 +34,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
     private Point size;
     private Context context;
     public static final String EXTRAS_PHOTO_LIST = "photoList";
+    public static final String EXTRAS_CURRENT_PHOTO_POSITION = "currentPhotoPosition";
 
     public PhotosAdapter(List<Photo> photoList, Point size, Context context) {
         this.photoList = photoList;
@@ -56,7 +57,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
         Glide.with(context)
                 .load(photoList.get(position).imageUrl)
                 .asBitmap()
-                .override(700, 700)
+                .override(size.x, size.y)
                 .listener(new RequestListener<String, Bitmap>() {
                     @Override
                     public boolean onResourceReady(Bitmap resource, String model,
@@ -80,6 +81,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
             public void onClick(View v) {
                 Intent intent = new Intent(context, GalleryDetailActivity.class);
                 intent.putExtra(EXTRAS_PHOTO_LIST, Parcels.wrap(photoList));
+                intent.putExtra(EXTRAS_CURRENT_PHOTO_POSITION, holder.getAdapterPosition());
                 context.startActivity(intent);
             }
         });
