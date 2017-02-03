@@ -3,6 +3,7 @@ package com.collage.util.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -30,13 +31,13 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
     static SparseArray<Bitmap> cachedPhotoArray = new SparseArray<>();
 
     private List<Photo> photoList;
-    private int imageWidth;
+    private Point size;
     private Context context;
     public static final String EXTRAS_PHOTO_LIST = "photoList";
 
-    public PhotosAdapter(List<Photo> photoList, int imageWidth, Context context) {
+    public PhotosAdapter(List<Photo> photoList, Point size, Context context) {
         this.photoList = photoList;
-        this.imageWidth = imageWidth;
+        this.size = size;
         this.context = context;
     }
 
@@ -49,12 +50,13 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        setImageViewBounds(holder.imageView, imageWidth);
+        setImageViewBounds(holder.imageView, size);
         holder.progressBar.setVisibility(View.VISIBLE);
 
         Glide.with(context)
                 .load(photoList.get(position).imageUrl)
                 .asBitmap()
+                .override(700, 700)
                 .listener(new RequestListener<String, Bitmap>() {
                     @Override
                     public boolean onResourceReady(Bitmap resource, String model,
@@ -89,10 +91,10 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
     }
 
     @SuppressWarnings("SuspiciousNameCombination")
-    private void setImageViewBounds(ImageView imageView, int imageWidth) {
+    private void setImageViewBounds(ImageView imageView, Point size) {
         ViewGroup.LayoutParams params = imageView.getLayoutParams();
-        params.width = imageWidth;
-        params.height = imageWidth;
+        params.width = size.x / 3;
+        params.height = size.x / 3;
         imageView.setLayoutParams(params);
     }
 

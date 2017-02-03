@@ -54,7 +54,7 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         galleryPresenter = new GalleryPresenter(this, new FirebaseDatabaseInteractor());
-        photosAdapter = new PhotosAdapter(new ArrayList<Photo>(), getProperWidth(), getContext());
+        photosAdapter = new PhotosAdapter(new ArrayList<Photo>(), getScreenSize(), getContext());
     }
 
     @Nullable
@@ -97,13 +97,13 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
         galleryPresenter.populatePhotosList(galleryEvent.getFriend());
     }
 
-    private int getProperWidth() {
+    private Point getScreenSize() {
         Display display = getActivity().
                 getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
 
-        return (size.x / 3);
+        return size;
     }
 
     @Override
