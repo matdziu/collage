@@ -29,6 +29,7 @@
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".friendsearch.FriendSearchActivity" />
         <activity android:name=".sendimage.SendImageActivity" />
+        <activity android:name=".gallerydetail.GalleryDetailActivity" />
     </application>
 
 </manifest>
