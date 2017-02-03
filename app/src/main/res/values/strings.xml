@@ -20,4 +20,5 @@
     <string name="camera_image_view_desc">Preview image</string>
     <string name="photo_image_view_desc">Friend\'s album photo</string>
     <string name="select_image">Select an image:</string>
+    <string name="gallery_detail_image_view_desc">Photo from album</string>
 </resources>
