@@ -99,13 +99,13 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchVi
 
     @Override
     public void showFriendFound() {
-        Toast.makeText(getContext(), "Invitation sent", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.invitation_sent, Toast.LENGTH_SHORT).show();
         editText.setText("");
     }
 
     @Override
     public void showFriendNotFound() {
-        Toast.makeText(getContext(), "Friend not found", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.friend_not_found, Toast.LENGTH_SHORT).show();
     }
 
     @Override

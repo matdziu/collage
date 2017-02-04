@@ -22,4 +22,6 @@
     <string name="select_image">Select an image:</string>
     <string name="gallery_detail_image_view_desc">Photo from album</string>
     <string name="search_title">Search…</string>
+    <string name="invitation_sent">Invitation sent</string>
+    <string name="friend_not_found">Friend not found</string>
 </resources>
