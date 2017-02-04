@@ -50,8 +50,7 @@ public class SendImageAdapter extends RecyclerView.Adapter<SendImageAdapter.View
             @Override
             public void onClick(View view) {
                 friend.sendingStarted = true;
-                sendImageListener.onImageUploadStarted(friendsList
-                        .get(holder.getAdapterPosition()));
+                sendImageListener.onImageUploadStarted(friend);
                 notifyDataSetChanged();
             }
         });
