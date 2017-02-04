@@ -37,6 +37,7 @@ class FriendSearchPresenter extends BasePresenter implements FriendSearchListene
 
     @Override
     public void onInvitationAccepted(int position, User friend) {
+        this.usersList.remove(friend);
         friendSearchView.removeFromRecyclerView(position);
         firebaseDatabaseInteractor.addFriend(friend);
     }
