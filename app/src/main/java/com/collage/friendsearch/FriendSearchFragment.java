@@ -110,7 +110,9 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchVi
 
     @Override
     public void removeFromRecyclerView(int position) {
-        pendingList.remove(position);
-        recyclerView.getAdapter().notifyItemRemoved(position);
+        if (pendingList.size() > 0) {
+            pendingList.remove(position);
+            recyclerView.getAdapter().notifyItemRemoved(position);
+        }
     }
 }
