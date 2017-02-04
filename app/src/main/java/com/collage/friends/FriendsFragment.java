@@ -3,6 +3,7 @@ package com.collage.friends;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,6 +38,9 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
 
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     private FriendsPresenter friendsPresenter;
     private HomeActivity homeActivity;
     private FriendsAdapter friendsAdapter;
@@ -69,6 +73,13 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
 
         friendsPresenter.populateFriendsList();
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                friendsPresenter.populateFriendsList();
+            }
+        });
+
         return view;
     }
 
@@ -98,6 +109,7 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
     public void hideProgressBar() {
         recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
