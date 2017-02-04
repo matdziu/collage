@@ -14,8 +14,8 @@ import android.widget.Toast;
 
 import com.collage.R;
 import com.collage.base.BaseFragment;
-import com.collage.util.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.adapters.PendingInvitationsAdapter;
+import com.collage.util.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.models.User;
 
 import java.util.ArrayList;
@@ -110,9 +110,7 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchVi
 
     @Override
     public void removeFromRecyclerView(int position) {
-        if (pendingList.size() > 0) {
-            pendingList.remove(position);
-            recyclerView.getAdapter().notifyItemRemoved(position);
-        }
+        pendingList.remove(position);
+        recyclerView.getAdapter().notifyItemRemoved(position);
     }
 }
