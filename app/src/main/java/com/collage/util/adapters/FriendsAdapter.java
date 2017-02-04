@@ -23,7 +23,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     private List<User> friendList;
     private FriendsListener friendsListener;
     private Context context;
-    private int selectedPosition = -1;
+    private User currentlySelectedFriend;
 
     public FriendsAdapter(List<User> friendList, FriendsListener friendsListener,
                           Context context) {
@@ -41,7 +41,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        if (holder.getAdapterPosition() == selectedPosition) {
+        if (friendList.get(position).isHighlighted) {
             holder.linearLayout.setBackgroundColor(ContextCompat.getColor(
                     context, R.color.colorPrimary));
         } else {
@@ -52,14 +52,17 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int previousSelectedPosition = selectedPosition;
-                selectedPosition = holder.getAdapterPosition();
+                User previouslySelectedFriend = currentlySelectedFriend;
+                currentlySelectedFriend = friendList.get(holder.getAdapterPosition());
 
-                notifyItemChanged(previousSelectedPosition);
-                notifyItemChanged(selectedPosition);
+                if (previouslySelectedFriend != null) {
+                    previouslySelectedFriend.isHighlighted = false;
+                }
+                currentlySelectedFriend.isHighlighted = true;
 
                 friendsListener.onFriendSelected(
                         friendList.get(holder.getAdapterPosition()));
+                notifyDataSetChanged();
 
                 PhotosAdapter.cachedPhotoArray.clear();
             }
