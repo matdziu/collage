@@ -67,13 +67,9 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(friendsAdapter);
 
-        return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         friendsPresenter.populateFriendsList();
+
+        return view;
     }
 
     @Override
