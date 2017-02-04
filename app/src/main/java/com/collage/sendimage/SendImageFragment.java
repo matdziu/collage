@@ -79,23 +79,8 @@ public class SendImageFragment extends BaseFragment implements SendImageView {
     }
 
     @Override
-    public void showItemProgressBar(int position) {
-        SendImageAdapter.ViewHolder viewHolder =
-                (SendImageAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
-        viewHolder.button.setVisibility(View.INVISIBLE);
-        viewHolder.progressBar.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideItemProgressBar(int position) {
-        SendImageAdapter.ViewHolder viewHolder =
-                (SendImageAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
-        viewHolder.progressBar.setVisibility(View.GONE);
-    }
-
-    @Override
     public void updateRecyclerView(List<User> friendsList) {
-        sendImageAdapter.setFriendsList(friendsList);
+        recyclerView.setAdapter(new SendImageAdapter(friendsList, sendImagePresenter));
     }
 
     @Override

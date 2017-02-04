@@ -7,7 +7,7 @@ import com.collage.util.models.User;
 
 public interface SendImageListener extends BaseUsersListener {
 
-    void onImageUploadStarted(User friend, int position);
+    void onImageUploadStarted(User friend);
 
-    void onImageUploadFinished(int position, Uri downloadUrl, User friend);
+    void onImageUploadFinished(Uri downloadUrl, User friendFinished);
 }

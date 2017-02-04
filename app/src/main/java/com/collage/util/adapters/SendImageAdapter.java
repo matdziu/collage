@@ -36,13 +36,23 @@ public class SendImageAdapter extends RecyclerView.Adapter<SendImageAdapter.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        final User friend = friendsList.get(position);
+        if (friend.sendingStarted) {
+            holder.button.setVisibility(View.INVISIBLE);
+            holder.progressBar.setVisibility(View.VISIBLE);
+        } else if (friend.sendingFinished) {
+            holder.button.setVisibility(View.INVISIBLE);
+            holder.progressBar.setVisibility(View.GONE);
+        }
+
         holder.textView.setText(friendsList.get(position).fullName);
         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                friend.sendingStarted = true;
                 sendImageListener.onImageUploadStarted(friendsList
-                                .get(holder.getAdapterPosition()),
-                        holder.getAdapterPosition());
+                        .get(holder.getAdapterPosition()));
+                notifyDataSetChanged();
             }
         });
     }
@@ -52,12 +62,7 @@ public class SendImageAdapter extends RecyclerView.Adapter<SendImageAdapter.View
         return friendsList.size();
     }
 
-    public void setFriendsList(List<User> friendsList) {
-        this.friendsList = friendsList;
-        notifyDataSetChanged();
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.item_send_image_text_view)
         TextView textView;

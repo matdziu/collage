@@ -10,6 +10,7 @@ public class BasePresenter {
 
     private FirebaseAuthInteractor firebaseAuthInteractor;
     protected List<User> usersList;
+    protected List<User> filteredList;
 
     protected BasePresenter() {
         // default constructor
@@ -32,6 +33,7 @@ public class BasePresenter {
                     filteredList.add(user);
                 }
             }
+            this.filteredList = filteredList;
             baseUsersView.updateRecyclerView(filteredList);
         }
     }

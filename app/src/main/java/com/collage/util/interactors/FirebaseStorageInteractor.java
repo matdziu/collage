@@ -16,8 +16,7 @@ public class FirebaseStorageInteractor {
     private StorageReference storageReference =
             FirebaseStorage.getInstance().getReference();
 
-    public void uploadImage(final User friend, String imageFilePath,
-                            String imageFileName, final int position,
+    public void uploadImage(final User friend, String imageFilePath, String imageFileName,
                             final SendImageListener sendImageListener) {
         Uri imageFile = Uri.fromFile(new File(imageFilePath));
         storageReference.child(friend.albumStorageId)
@@ -26,8 +25,9 @@ public class FirebaseStorageInteractor {
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        sendImageListener.onImageUploadFinished(position,
-                                taskSnapshot.getDownloadUrl(), friend);
+                        friend.sendingStarted = false;
+                        friend.sendingFinished = true;
+                        sendImageListener.onImageUploadFinished(taskSnapshot.getDownloadUrl(), friend);
                     }
                 });
     }
