@@ -85,6 +85,8 @@ public class SendImageFragment extends BaseFragment implements SendImageView {
 
     @Override
     public void setPictureSentResult() {
-        getActivity().setResult(RESULT_PICTURE_SENT);
+        if (getActivity() != null) {
+            getActivity().setResult(RESULT_PICTURE_SENT);
+        }
     }
 }
