@@ -46,22 +46,27 @@ class SendImagePresenter extends BasePresenter implements SendImageListener {
     }
 
     @Override
-    public void onImageUploadStarted(User friend) {
-        firebaseStorageInteractor.uploadImage(friend, imageFilePath,
+    public void onImageUploadStarted(User friendStarted) {
+        sendImageView.updateRecyclerView(updateList(friendStarted));
+        firebaseStorageInteractor.uploadImage(friendStarted, imageFilePath,
                 imageFileName, this);
     }
 
     @Override
     public void onImageUploadFinished(Uri downloadUrl, User friendFinished) {
+        sendImageView.updateRecyclerView(updateList(friendFinished));
+        sendImageView.setPictureSentResult();
+        firebaseDatabaseInteractor.addImageUrl(downloadUrl, friendFinished);
+    }
+
+    private List<User> updateList(User friend) {
         List<User> updatedList = filteredList != null ? filteredList : usersList;
         for (int position = 0; position < updatedList.size(); position++) {
             if (updatedList.get(position).uid
-                    .equals(friendFinished.uid)) {
-                updatedList.set(position, friendFinished);
+                    .equals(friend.uid)) {
+                updatedList.set(position, friend);
             }
         }
-        sendImageView.updateRecyclerView(updatedList);
-        sendImageView.setPictureSentResult();
-        firebaseDatabaseInteractor.addImageUrl(downloadUrl, friendFinished);
+        return updatedList;
     }
 }

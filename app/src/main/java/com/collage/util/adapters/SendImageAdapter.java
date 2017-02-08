@@ -51,7 +51,6 @@ public class SendImageAdapter extends RecyclerView.Adapter<SendImageAdapter.View
             public void onClick(View view) {
                 friend.sendingStarted = true;
                 sendImageListener.onImageUploadStarted(friend);
-                notifyDataSetChanged();
             }
         });
     }
