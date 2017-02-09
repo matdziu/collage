@@ -41,6 +41,12 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
 
+    @BindView(R.id.content_fragment_friends)
+    ViewGroup contentFragmentFriends;
+
+    @BindView(R.id.layout_connection_error)
+    ViewGroup layoutConnectionError;
+
     private FriendsPresenter friendsPresenter;
     private HomeActivity homeActivity;
     private FriendsAdapter friendsAdapter;
@@ -115,6 +121,19 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
     @Override
     public void updateRecyclerView(List<User> usersList) {
         friendsAdapter.setFriendList(usersList);
+    }
+
+    @Override
+    public void showConnectionError() {
+        contentFragmentFriends.setVisibility(View.GONE);
+        layoutConnectionError.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.button_retry)
+    public void onRetryClicked() {
+        contentFragmentFriends.setVisibility(View.VISIBLE);
+        layoutConnectionError.setVisibility(View.GONE);
+        friendsPresenter.populateFriendsList();
     }
 
     @Override

@@ -160,6 +160,7 @@ public class FirebaseDatabaseInteractor {
     }
 
     public void fetchFriendsList(final BaseUsersListener baseUsersListener) {
+        checkConnection(baseUsersListener);
         baseUsersListener.onUsersListFetchingStarted();
         databaseReference
                 .child(USERS)
@@ -225,5 +226,21 @@ public class FirebaseDatabaseInteractor {
                         Timber.e(databaseError.getMessage());
                     }
                 });
+    }
+
+    private void checkConnection(final BaseUsersListener baseUsersListener) {
+        DatabaseReference connectionReference = FirebaseDatabase.getInstance().getReference(".info/connected");
+        connectionReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                boolean connected = dataSnapshot.getValue(Boolean.class);
+                if (!connected) baseUsersListener.onConnectionError();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Timber.e(databaseError.getMessage());
+            }
+        });
     }
 }

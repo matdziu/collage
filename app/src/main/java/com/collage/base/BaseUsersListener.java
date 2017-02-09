@@ -9,4 +9,6 @@ public interface BaseUsersListener {
     void onUsersListFetchingStarted();
 
     void onUsersListFetched(List<User> usersList);
+
+    void onConnectionError();
 }

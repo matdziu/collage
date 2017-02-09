@@ -22,6 +22,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class SendImageFragment extends BaseFragment implements SendImageView {
 
@@ -33,6 +34,12 @@ public class SendImageFragment extends BaseFragment implements SendImageView {
 
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
+
+    @BindView(R.id.content_fragment_send_image)
+    ViewGroup contentFragmentSendImage;
+
+    @BindView(R.id.layout_connection_error)
+    ViewGroup layoutConnectionError;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,6 +88,19 @@ public class SendImageFragment extends BaseFragment implements SendImageView {
     @Override
     public void updateRecyclerView(List<User> friendsList) {
         recyclerView.setAdapter(new SendImageAdapter(friendsList, sendImagePresenter));
+    }
+
+    @Override
+    public void showConnectionError() {
+        contentFragmentSendImage.setVisibility(View.GONE);
+        layoutConnectionError.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.button_retry)
+    public void onRetryClicked() {
+        contentFragmentSendImage.setVisibility(View.VISIBLE);
+        layoutConnectionError.setVisibility(View.GONE);
+        sendImagePresenter.populatePendingList();
     }
 
     @Override

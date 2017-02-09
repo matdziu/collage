@@ -7,4 +7,6 @@ import java.util.List;
 public interface BaseUsersView {
 
     void updateRecyclerView(List<User> userList);
+
+    void showConnectionError();
 }

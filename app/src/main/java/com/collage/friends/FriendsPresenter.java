@@ -34,6 +34,11 @@ class FriendsPresenter extends BasePresenter implements FriendsListener {
     }
 
     @Override
+    public void onConnectionError() {
+        friendsView.showConnectionError();
+    }
+
+    @Override
     public void onFriendSelected(User friend) {
         friendsView.navigateToGalleryFragment();
         friendsView.postGalleryEvent(new GalleryEvent(friend));

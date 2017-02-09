@@ -1,21 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/send_image_recycler_view"
+    <RelativeLayout
+        android:id="@+id/content_fragment_send_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp" />
+        android:background="@android:color/white">
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="16dp"
-        android:visibility="gone" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/send_image_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp" />
 
-</RelativeLayout>
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="16dp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <include layout="@layout/view_connection_error" />
+
+</LinearLayout>

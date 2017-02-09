@@ -46,6 +46,11 @@ class SendImagePresenter extends BasePresenter implements SendImageListener {
     }
 
     @Override
+    public void onConnectionError() {
+        sendImageView.showConnectionError();
+    }
+
+    @Override
     public void onImageUploadStarted(User friendStarted) {
         sendImageView.updateRecyclerView(updateList(friendStarted));
         firebaseStorageInteractor.uploadImage(friendStarted, imageFilePath,

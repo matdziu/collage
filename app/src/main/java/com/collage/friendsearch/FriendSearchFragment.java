@@ -36,6 +36,12 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchVi
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
 
+    @BindView(R.id.content_fragment_friend_search)
+    ViewGroup contentFragmentFriendSearch;
+
+    @BindView(R.id.layout_connection_error)
+    ViewGroup layoutConnectionError;
+
     private FriendSearchPresenter friendSearchPresenter;
     private List<User> pendingList;
     private PendingInvitationsAdapter pendingInvitationsAdapter;
@@ -95,6 +101,19 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchVi
     public void updateRecyclerView(List<User> pendingList) {
         this.pendingList = pendingList;
         pendingInvitationsAdapter.setPendingInvitationsList(pendingList);
+    }
+
+    @Override
+    public void showConnectionError() {
+        contentFragmentFriendSearch.setVisibility(View.GONE);
+        layoutConnectionError.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.button_retry)
+    public void onRetryClicked() {
+        contentFragmentFriendSearch.setVisibility(View.VISIBLE);
+        layoutConnectionError.setVisibility(View.GONE);
+        friendSearchPresenter.populatePendingList();
     }
 
     @Override

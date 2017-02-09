@@ -58,4 +58,9 @@ class FriendSearchPresenter extends BasePresenter implements FriendSearchListene
         friendSearchView.hideProgressBar();
         friendSearchView.updateRecyclerView(pendingList);
     }
+
+    @Override
+    public void onConnectionError() {
+        friendSearchView.showConnectionError();
+    }
 }
