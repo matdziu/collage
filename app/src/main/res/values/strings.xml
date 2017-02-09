@@ -24,4 +24,6 @@
     <string name="search_title">Search…</string>
     <string name="invitation_sent">Invitation sent</string>
     <string name="friend_not_found">Friend not found</string>
+    <string name="connection_error_text">Please check your connection and retry.</string>
+    <string name="retry_button_text">Retry</string>
 </resources>
