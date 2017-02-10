@@ -24,7 +24,7 @@ public class BasePresenter {
         firebaseAuthInteractor.signOut();
     }
 
-    void filterUsers(BaseView baseView, String query) {
+    void filterUsers(BaseView<User> baseView, String query) {
         List<User> filteredList = new ArrayList<>();
         if (usersList != null) {
             for (User user : usersList) {
