@@ -2,7 +2,7 @@ package com.collage.util.interactors;
 
 import android.net.Uri;
 
-import com.collage.base.BaseUsersListener;
+import com.collage.base.BaseListener;
 import com.collage.friendsearch.FriendSearchListener;
 import com.collage.gallery.GalleryListener;
 import com.collage.util.models.Photo;
@@ -95,8 +95,8 @@ public class FirebaseDatabaseInteractor {
         });
     }
 
-    public void fetchPendingList(final BaseUsersListener baseUsersListener) {
-        baseUsersListener.onUsersListFetchingStarted();
+    public void fetchPendingList(final BaseListener<User> baseListener) {
+        baseListener.onListFetchingStarted();
         databaseReference
                 .child(USERS)
                 .child(firebaseUser.getUid())
@@ -108,7 +108,7 @@ public class FirebaseDatabaseInteractor {
                         for (DataSnapshot dataItem : dataSnapshot.getChildren()) {
                             pendingList.add(dataItem.getValue(User.class));
                         }
-                        baseUsersListener.onUsersListFetched(pendingList);
+                        baseListener.onListFetched(pendingList);
                     }
 
                     @Override
@@ -159,8 +159,8 @@ public class FirebaseDatabaseInteractor {
                 .removeValue();
     }
 
-    public void fetchFriendsList(final BaseUsersListener baseUsersListener) {
-        baseUsersListener.onUsersListFetchingStarted();
+    public void fetchFriendsList(final BaseListener<User> baseListener) {
+        baseListener.onListFetchingStarted();
         databaseReference
                 .child(USERS)
                 .child(firebaseUser.getUid())
@@ -172,7 +172,7 @@ public class FirebaseDatabaseInteractor {
                         for (DataSnapshot dataItem : dataSnapshot.getChildren()) {
                             friendsList.add(dataItem.getValue(User.class));
                         }
-                        baseUsersListener.onUsersListFetched(friendsList);
+                        baseListener.onListFetched(friendsList);
                     }
 
                     @Override
@@ -203,7 +203,7 @@ public class FirebaseDatabaseInteractor {
     }
 
     public void fetchPhotos(User friend, final GalleryListener galleryListener) {
-        galleryListener.onPhotosFetchingStarted();
+        galleryListener.onListFetchingStarted();
         databaseReference
                 .child(USERS)
                 .child(firebaseUser.getUid())
@@ -217,7 +217,7 @@ public class FirebaseDatabaseInteractor {
                         for (DataSnapshot dataItem : dataSnapshot.getChildren()) {
                             photosList.add(new Photo(dataItem.getValue(String.class)));
                         }
-                        galleryListener.onPhotosFetchingFinished(photosList);
+                        galleryListener.onListFetched(photosList);
                     }
 
                     @Override

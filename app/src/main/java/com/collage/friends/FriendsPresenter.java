@@ -23,12 +23,12 @@ class FriendsPresenter extends BasePresenter implements FriendsListener {
     }
 
     @Override
-    public void onUsersListFetchingStarted() {
+    public void onListFetchingStarted() {
         friendsView.showProgressBar();
     }
 
     @Override
-    public void onUsersListFetched(List<User> friendsList) {
+    public void onListFetched(List<User> friendsList) {
         this.usersList = friendsList;
         friendsView.hideProgressBar();
         friendsView.updateRecyclerView(friendsList);

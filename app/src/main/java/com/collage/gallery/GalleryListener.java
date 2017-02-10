@@ -1,12 +1,7 @@
 package com.collage.gallery;
 
+import com.collage.base.BaseListener;
 import com.collage.util.models.Photo;
 
-import java.util.List;
-
-public interface GalleryListener {
-
-    void onPhotosFetchingStarted();
-
-    void onPhotosFetchingFinished(List<Photo> photosList);
+public interface GalleryListener extends BaseListener<Photo> {
 }

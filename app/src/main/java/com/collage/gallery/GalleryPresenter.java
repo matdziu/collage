@@ -23,12 +23,12 @@ class GalleryPresenter implements GalleryListener {
     }
 
     @Override
-    public void onPhotosFetchingStarted() {
+    public void onListFetchingStarted() {
         galleryView.showProgressBar();
     }
 
     @Override
-    public void onPhotosFetchingFinished(List<Photo> photosList) {
+    public void onListFetched(List<Photo> photosList) {
         galleryView.hideProgressBar();
         galleryView.updateRecyclerView(photosList);
     }

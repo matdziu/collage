@@ -49,12 +49,12 @@ class FriendSearchPresenter extends BasePresenter implements FriendSearchListene
     }
 
     @Override
-    public void onUsersListFetchingStarted() {
+    public void onListFetchingStarted() {
         friendSearchView.showProgressBar();
     }
 
     @Override
-    public void onUsersListFetched(List<User> pendingList) {
+    public void onListFetched(List<User> pendingList) {
         this.usersList = pendingList;
         friendSearchView.hideProgressBar();
         friendSearchView.updateRecyclerView(pendingList);
