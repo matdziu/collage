@@ -26,4 +26,8 @@
     <string name="friend_not_found">Friend not found</string>
     <string name="connection_error_text">Please check your connection and retry.</string>
     <string name="retry_button_text">Retry</string>
+    <string name="no_invitations_text">No invitations.</string>
+    <string name="no_friends_text">You don\'t have friends yet :(</string>
+    <string name="no_photos">No photos yet :(</string>
+    <string name="select_friend_text">Select a friend to see your photos!</string>
 </resources>

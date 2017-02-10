@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.collage.R;
 import com.collage.base.BaseFragment;
@@ -55,9 +56,16 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
     @BindView(R.id.layout_connection_error)
     ViewGroup layoutConnectionError;
 
+    @BindView(R.id.no_items_text_view)
+    TextView noItemsTextView;
+
+    @BindView(R.id.no_friend_selected_text_view)
+    TextView noFriendSelectedTextView;
+
     private PhotosAdapter photosAdapter;
     private User currentFriend;
     private static final int REQUEST_PICK_IMAGE = 2;
+    public static final int SPAN_COUNT = 3;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,8 +79,9 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
         ButterKnife.bind(this, view);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(SPAN_COUNT, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter(photosAdapter);
+        noFriendSelectedTextView.setVisibility(View.VISIBLE);
         return view;
     }
 
@@ -111,6 +120,7 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
     public void onGalleryEvent(GalleryEvent galleryEvent) {
         this.currentFriend = galleryEvent.getFriend();
         galleryPresenter.populatePhotosList(currentFriend);
+        noFriendSelectedTextView.setVisibility(View.GONE);
     }
 
     private Point getScreenSize() {
@@ -131,6 +141,16 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
     public void hideProgressBar() {
         recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showNoItemsInfo() {
+        noItemsTextView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideNoItemsInfo() {
+        noItemsTextView.setVisibility(View.GONE);
     }
 
     @Override

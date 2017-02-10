@@ -58,5 +58,7 @@ class FriendSearchPresenter extends BasePresenter implements FriendSearchListene
         this.usersList = pendingList;
         friendSearchView.hideProgressBar();
         friendSearchView.updateRecyclerView(pendingList);
+        if (pendingList.size() > 0) friendSearchView.hideNoItemsInfo();
+        else friendSearchView.showNoItemsInfo();
     }
 }

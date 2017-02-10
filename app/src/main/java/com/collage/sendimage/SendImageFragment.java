@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.collage.R;
 import com.collage.base.BaseFragment;
@@ -40,6 +41,9 @@ public class SendImageFragment extends BaseFragment implements SendImageView {
 
     @BindView(R.id.layout_connection_error)
     ViewGroup layoutConnectionError;
+
+    @BindView(R.id.no_items_text_view)
+    TextView noItemsTextView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,6 +87,16 @@ public class SendImageFragment extends BaseFragment implements SendImageView {
     public void hideProgressBar() {
         recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showNoItemsInfo() {
+        noItemsTextView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideNoItemsInfo() {
+        noItemsTextView.setVisibility(View.GONE);
     }
 
     @Override

@@ -44,6 +44,8 @@ class SendImagePresenter extends BasePresenter implements SendImageListener {
         this.usersList = friendsList;
         sendImageView.hideProgressBar();
         sendImageView.updateRecyclerView(friendsList);
+        if (friendsList.size() > 0) sendImageView.hideNoItemsInfo();
+        else sendImageView.showNoItemsInfo();
     }
 
     @Override

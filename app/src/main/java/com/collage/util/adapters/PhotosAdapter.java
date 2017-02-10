@@ -26,6 +26,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.collage.gallery.GalleryFragment.SPAN_COUNT;
+
 public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder> {
 
     static SparseArray<Bitmap> cachedPhotoArray = new SparseArray<>();
@@ -95,8 +97,8 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
     @SuppressWarnings("SuspiciousNameCombination")
     private void setImageViewBounds(ImageView imageView, Point size) {
         ViewGroup.LayoutParams params = imageView.getLayoutParams();
-        params.width = size.x / 3;
-        params.height = size.x / 3;
+        params.width = size.x / SPAN_COUNT;
+        params.height = size.x / SPAN_COUNT;
         imageView.setLayoutParams(params);
     }
 

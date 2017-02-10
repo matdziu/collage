@@ -13,4 +13,8 @@ public interface BaseView<T> {
     void showProgressBar();
 
     void hideProgressBar();
+
+    void showNoItemsInfo();
+
+    void hideNoItemsInfo();
 }

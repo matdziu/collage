@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.collage.R;
 import com.collage.base.BaseFragment;
@@ -46,6 +47,9 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
 
     @BindView(R.id.layout_connection_error)
     ViewGroup layoutConnectionError;
+
+    @BindView(R.id.no_items_text_view)
+    TextView noItemsTextView;
 
     private FriendsPresenter friendsPresenter;
     private HomeActivity homeActivity;
@@ -116,6 +120,16 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
         recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void showNoItemsInfo() {
+        noItemsTextView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideNoItemsInfo() {
+        noItemsTextView.setVisibility(View.GONE);
     }
 
     @Override

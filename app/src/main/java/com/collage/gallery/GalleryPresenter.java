@@ -31,5 +31,7 @@ class GalleryPresenter implements GalleryListener {
     public void onListFetched(List<Photo> photosList) {
         galleryView.hideProgressBar();
         galleryView.updateRecyclerView(photosList);
+        if (photosList.size() > 0) galleryView.hideNoItemsInfo();
+        else galleryView.showNoItemsInfo();
     }
 }

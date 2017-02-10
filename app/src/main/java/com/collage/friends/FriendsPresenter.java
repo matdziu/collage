@@ -32,6 +32,8 @@ class FriendsPresenter extends BasePresenter implements FriendsListener {
         this.usersList = friendsList;
         friendsView.hideProgressBar();
         friendsView.updateRecyclerView(friendsList);
+        if (friendsList.size() > 0) friendsView.hideNoItemsInfo();
+        else friendsView.showNoItemsInfo();
     }
 
     @Override

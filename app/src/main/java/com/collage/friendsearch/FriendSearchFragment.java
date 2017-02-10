@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.collage.R;
@@ -41,6 +42,9 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchVi
 
     @BindView(R.id.layout_connection_error)
     ViewGroup layoutConnectionError;
+
+    @BindView(R.id.no_items_text_view)
+    TextView noItemsTextView;
 
     private FriendSearchPresenter friendSearchPresenter;
     private List<User> pendingList;
@@ -95,6 +99,16 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchVi
     public void hideProgressBar() {
         recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showNoItemsInfo() {
+        noItemsTextView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideNoItemsInfo() {
+        noItemsTextView.setVisibility(View.GONE);
     }
 
     @Override
