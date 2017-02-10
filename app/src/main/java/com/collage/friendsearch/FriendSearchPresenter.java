@@ -22,7 +22,8 @@ class FriendSearchPresenter extends BasePresenter implements FriendSearchListene
     }
 
     void populatePendingList() {
-        firebaseDatabaseInteractor.fetchPendingList(this);
+        if (friendSearchView.isConnected()) firebaseDatabaseInteractor.fetchPendingList(this);
+        else friendSearchView.showConnectionError();
     }
 
     @Override
@@ -57,10 +58,5 @@ class FriendSearchPresenter extends BasePresenter implements FriendSearchListene
         this.usersList = pendingList;
         friendSearchView.hideProgressBar();
         friendSearchView.updateRecyclerView(pendingList);
-    }
-
-    @Override
-    public void onConnectionError() {
-        friendSearchView.showConnectionError();
     }
 }

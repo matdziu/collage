@@ -1,6 +1,8 @@
 package com.collage.base;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -88,6 +90,13 @@ public class BaseFragment extends Fragment {
                 Locale.getDefault()).format(new Date());
         String imageFileName = "image_" + timeStamp + "_";
         return File.createTempFile(imageFileName, ".jpg", galleryFolder);
+    }
+
+    public boolean isConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
     }
 
     @Override

@@ -30,7 +30,8 @@ class SendImagePresenter extends BasePresenter implements SendImageListener {
 
 
     void populatePendingList() {
-        firebaseDatabaseInteractor.fetchFriendsList(this);
+        if (sendImageView.isConnected()) firebaseDatabaseInteractor.fetchFriendsList(this);
+        else sendImageView.showConnectionError();
     }
 
     @Override
@@ -43,11 +44,6 @@ class SendImagePresenter extends BasePresenter implements SendImageListener {
         this.usersList = friendsList;
         sendImageView.hideProgressBar();
         sendImageView.updateRecyclerView(friendsList);
-    }
-
-    @Override
-    public void onConnectionError() {
-        sendImageView.showConnectionError();
     }
 
     @Override

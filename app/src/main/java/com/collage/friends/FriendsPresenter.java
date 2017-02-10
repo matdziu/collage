@@ -18,7 +18,8 @@ class FriendsPresenter extends BasePresenter implements FriendsListener {
     }
 
     void populateFriendsList() {
-        firebaseDatabaseInteractor.fetchFriendsList(this);
+        if (friendsView.isConnected()) firebaseDatabaseInteractor.fetchFriendsList(this);
+        else friendsView.showConnectionError();
     }
 
     @Override
@@ -31,11 +32,6 @@ class FriendsPresenter extends BasePresenter implements FriendsListener {
         this.usersList = friendsList;
         friendsView.hideProgressBar();
         friendsView.updateRecyclerView(friendsList);
-    }
-
-    @Override
-    public void onConnectionError() {
-        friendsView.showConnectionError();
     }
 
     @Override
