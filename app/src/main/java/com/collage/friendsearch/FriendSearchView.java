@@ -4,10 +4,6 @@ import com.collage.base.BaseUsersView;
 
 interface FriendSearchView extends BaseUsersView {
 
-    void showProgressBar();
-
-    void hideProgressBar();
-
     void showFriendFound();
 
     void showFriendNotFound();

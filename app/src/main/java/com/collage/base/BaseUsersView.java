@@ -11,4 +11,8 @@ public interface BaseUsersView {
     void showConnectionError();
 
     boolean isConnected();
+
+    void showProgressBar();
+
+    void hideProgressBar();
 }
