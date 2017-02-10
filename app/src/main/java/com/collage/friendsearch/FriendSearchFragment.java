@@ -52,7 +52,7 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchVi
         friendSearchPresenter = new FriendSearchPresenter(this, new FirebaseDatabaseInteractor());
         pendingInvitationsAdapter = new PendingInvitationsAdapter(new ArrayList<User>(), friendSearchPresenter);
 
-        baseUsersView = this;
+        baseView = this;
         basePresenter = friendSearchPresenter;
     }
 

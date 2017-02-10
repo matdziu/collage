@@ -1,8 +1,9 @@
 package com.collage.friendsearch;
 
-import com.collage.base.BaseUsersView;
+import com.collage.base.BaseView;
+import com.collage.util.models.User;
 
-interface FriendSearchView extends BaseUsersView {
+interface FriendSearchView extends BaseView<User> {
 
     void showFriendFound();
 

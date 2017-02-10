@@ -49,7 +49,7 @@ public class SendImageFragment extends BaseFragment implements SendImageView {
                 getArguments().getString(IMAGE_FILE_NAME));
         sendImageAdapter = new SendImageAdapter(new ArrayList<User>(), sendImagePresenter);
 
-        baseUsersView = this;
+        baseView = this;
         basePresenter = sendImagePresenter;
     }
 

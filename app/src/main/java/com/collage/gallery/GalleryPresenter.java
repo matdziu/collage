@@ -18,7 +18,8 @@ class GalleryPresenter implements GalleryListener {
     }
 
     void populatePhotosList(User friend) {
-        firebaseDatabaseInteractor.fetchPhotos(friend, this);
+        if (galleryView.isConnected()) firebaseDatabaseInteractor.fetchPhotos(friend, this);
+        else galleryView.showConnectionError();
     }
 
     @Override

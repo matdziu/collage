@@ -58,7 +58,7 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
         friendsAdapter = new FriendsAdapter(new ArrayList<User>(), friendsPresenter, getContext());
         homeActivity = (HomeActivity) getActivity();
 
-        baseUsersView = this;
+        baseView = this;
         basePresenter = friendsPresenter;
     }
 

@@ -1,12 +1,10 @@
 package com.collage.base;
 
-import com.collage.util.models.User;
-
 import java.util.List;
 
-public interface BaseUsersView {
+public interface BaseView<T> {
 
-    void updateRecyclerView(List<User> userList);
+    void updateRecyclerView(List<T> fetchedList);
 
     void showConnectionError();
 

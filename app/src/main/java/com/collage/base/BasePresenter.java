@@ -24,7 +24,7 @@ public class BasePresenter {
         firebaseAuthInteractor.signOut();
     }
 
-    void filterUsers(BaseUsersView baseUsersView, String query) {
+    void filterUsers(BaseView baseView, String query) {
         List<User> filteredList = new ArrayList<>();
         if (usersList != null) {
             for (User user : usersList) {
@@ -34,7 +34,7 @@ public class BasePresenter {
                 }
             }
             this.filteredList = filteredList;
-            baseUsersView.updateRecyclerView(filteredList);
+            baseView.updateRecyclerView(filteredList);
         }
     }
 }

@@ -21,6 +21,7 @@ import com.collage.util.adapters.PhotosAdapter;
 import com.collage.util.events.GalleryEvent;
 import com.collage.util.interactors.FirebaseDatabaseInteractor;
 import com.collage.util.models.Photo;
+import com.collage.util.models.User;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -48,7 +49,14 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
 
+    @BindView(R.id.content_fragment_gallery)
+    ViewGroup contentFragmentGallery;
+
+    @BindView(R.id.layout_connection_error)
+    ViewGroup layoutConnectionError;
+
     private PhotosAdapter photosAdapter;
+    private User currentFriend;
     private static final int REQUEST_PICK_IMAGE = 2;
 
     @Override
@@ -101,7 +109,8 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
     @SuppressWarnings("unused")
     @Subscribe
     public void onGalleryEvent(GalleryEvent galleryEvent) {
-        galleryPresenter.populatePhotosList(galleryEvent.getFriend());
+        this.currentFriend = galleryEvent.getFriend();
+        galleryPresenter.populatePhotosList(currentFriend);
     }
 
     private Point getScreenSize() {
@@ -109,7 +118,6 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
                 getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-
         return size;
     }
 
@@ -128,6 +136,19 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
     @Override
     public void updateRecyclerView(List<Photo> photosList) {
         photosAdapter.setPhotoList(photosList);
+    }
+
+    @Override
+    public void showConnectionError() {
+        contentFragmentGallery.setVisibility(View.GONE);
+        layoutConnectionError.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.button_retry)
+    public void onRetryClicked() {
+        contentFragmentGallery.setVisibility(View.VISIBLE);
+        layoutConnectionError.setVisibility(View.GONE);
+        galleryPresenter.populatePhotosList(currentFriend);
     }
 
     @OnClick(R.id.fab_add_photo)

@@ -24,7 +24,7 @@ import java.util.Locale;
 public class BaseFragment extends Fragment {
 
     protected BasePresenter basePresenter;
-    protected BaseUsersView baseUsersView;
+    protected BaseView baseView;
 
     protected File imageFile;
     protected MenuItem menuItem;
@@ -109,7 +109,7 @@ public class BaseFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String query) {
-                basePresenter.filterUsers(baseUsersView, query);
+                basePresenter.filterUsers(baseView, query);
                 return true;
             }
 
