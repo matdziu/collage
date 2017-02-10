@@ -41,7 +41,8 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        if (friendList.get(position).isHighlighted) {
+        if (currentlySelectedFriend != null && friendList.get(position).uid
+                .equals(currentlySelectedFriend.uid)) {
             holder.linearLayout.setBackgroundColor(ContextCompat.getColor(
                     context, R.color.colorPrimary));
         } else {
@@ -52,14 +53,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                User previouslySelectedFriend = currentlySelectedFriend;
                 currentlySelectedFriend = friendList.get(holder.getAdapterPosition());
-
-                if (previouslySelectedFriend != null) {
-                    previouslySelectedFriend.isHighlighted = false;
-                }
-                currentlySelectedFriend.isHighlighted = true;
-
                 friendsListener.onFriendSelected(
                         friendList.get(holder.getAdapterPosition()));
                 notifyDataSetChanged();

@@ -210,7 +210,7 @@ public class FirebaseDatabaseInteractor {
                 .child(ACCEPTED_FRIENDS)
                 .child(friend.uid)
                 .child(IMAGE_URLS)
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         List<Photo> photosList = new ArrayList<>();

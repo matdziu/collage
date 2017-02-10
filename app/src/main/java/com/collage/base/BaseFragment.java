@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.collage.R;
+import com.collage.util.models.User;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +25,7 @@ import java.util.Locale;
 public class BaseFragment extends Fragment {
 
     protected BasePresenter basePresenter;
-    protected BaseView baseView;
+    protected BaseView<User> baseView;
 
     protected File imageFile;
     protected MenuItem menuItem;

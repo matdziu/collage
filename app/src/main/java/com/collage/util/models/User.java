@@ -6,7 +6,6 @@ public class User {
     public String email;
     public String uid;
     public String albumStorageId;
-    public boolean isHighlighted;
     public boolean sendingStarted;
     public boolean sendingFinished;
 
