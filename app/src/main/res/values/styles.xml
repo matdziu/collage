@@ -22,7 +22,7 @@
 
     <style name="ButtonStyle" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:background">@drawable/button_shape</item>
+        <item name="android:background">@drawable/button_selector</item>
     </style>
 
 </resources>
