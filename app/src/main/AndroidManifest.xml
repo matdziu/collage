@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.collage">
+    package="pl.collage">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".splash.SplashActivity"
+            android:name="pl.collage.splash.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -25,7 +25,7 @@
         </activity>
 
         <activity
-            android:name=".home.HomeActivity"
+            android:name="pl.collage.home.HomeActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <meta-data
@@ -34,7 +34,7 @@
         </activity>
 
         <activity
-            android:name=".sendimage.SendImageActivity"
+            android:name="pl.collage.sendimage.SendImageActivity"
             android:label="@string/send_image_screen_title"
             android:screenOrientation="portrait">
             <meta-data
@@ -43,7 +43,7 @@
         </activity>
 
         <activity
-            android:name=".friendsearch.FriendSearchActivity"
+            android:name="pl.collage.friendsearch.FriendSearchActivity"
             android:label="@string/friend_search_screen_title"
             android:screenOrientation="portrait">
             <meta-data
@@ -52,10 +52,10 @@
         </activity>
 
         <activity
-            android:name=".login.LoginActivity"
+            android:name="pl.collage.login.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".gallerydetail.GalleryDetailActivity"
+            android:name="pl.collage.gallerydetail.GalleryDetailActivity"
             android:screenOrientation="portrait" />
     </application>
 

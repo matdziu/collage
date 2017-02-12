@@ -8,20 +8,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:918291616926:android:dd087ff662f314a3",
+        "mobilesdk_app_id": "1:918291616926:android:c2cf8fe23ece8483",
         "android_client_info": {
-          "package_name": "com.collage"
+          "package_name": "pl.collage"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "918291616926-rvvup7bk5j6u2osb1o9bok8ou35jsgk3.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.collage",
-            "certificate_hash": "B80D13A4636CBBE80A83758957F767DAAB17C9A6"
-          }
-        },
         {
           "client_id": "918291616926-khlpf4arvkok0v9bo209lt3k4dqp7rpc.apps.googleusercontent.com",
           "client_type": 3
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "918291616926-khlpf4arvkok0v9bo209lt3k4dqp7rpc.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
