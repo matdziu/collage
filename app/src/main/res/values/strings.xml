@@ -30,4 +30,8 @@
     <string name="no_friends_text">You don\'t have friends yet :(</string>
     <string name="no_photos">No photos yet :(</string>
     <string name="select_friend_text">Select a friend to see your photos!</string>
+    <string name="friends_screen_title">Friends</string>
+    <string name="gallery_screen_title">Album</string>
+    <string name="send_image_screen_title">Send to a friend</string>
+    <string name="friend_search_screen_title">Add a friend</string>
 </resources>

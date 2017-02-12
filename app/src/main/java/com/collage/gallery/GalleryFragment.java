@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Display;
@@ -102,9 +103,11 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
         super.setMenuVisibility(fragmentVisible);
         HomeActivity homeActivity = (HomeActivity) getActivity();
         if (homeActivity != null) {
-            if (fragmentVisible) {
+            ActionBar toolbar = homeActivity.getSupportActionBar();
+            if (fragmentVisible && toolbar != null) {
                 showSystemUI();
                 homeActivity.showHomeNavigation();
+                toolbar.setTitle(R.string.gallery_screen_title);
             }
         }
     }

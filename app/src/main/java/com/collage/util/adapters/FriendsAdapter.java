@@ -44,7 +44,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         if (currentlySelectedFriend != null && friendList.get(position).uid
                 .equals(currentlySelectedFriend.uid)) {
             holder.linearLayout.setBackgroundColor(ContextCompat.getColor(
-                    context, R.color.colorPrimary));
+                    context, R.color.colorAccent));
         } else {
             holder.linearLayout.setBackgroundColor(ContextCompat.getColor(
                     context, android.R.color.white));

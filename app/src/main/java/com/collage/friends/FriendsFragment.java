@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -97,11 +98,20 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
     public void setMenuVisibility(boolean fragmentVisible) {
         super.setMenuVisibility(fragmentVisible);
         if (homeActivity != null) {
-            if (fragmentVisible) {
+            ActionBar toolbar = homeActivity.getSupportActionBar();
+            if (fragmentVisible && toolbar != null) {
                 showSystemUI();
                 homeActivity.showHomeNavigation();
+                toolbar.setTitle(R.string.friends_screen_title);
             }
         }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ActionBar toolbar = homeActivity.getSupportActionBar();
+        if (toolbar != null) toolbar.setTitle(R.string.friends_screen_title);
     }
 
     @OnClick(R.id.fab_add_friend)
