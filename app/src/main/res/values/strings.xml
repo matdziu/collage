@@ -34,4 +34,5 @@
     <string name="gallery_screen_title">Album</string>
     <string name="send_image_screen_title">Send to a friend</string>
     <string name="friend_search_screen_title">Add a friend</string>
+    <string name="friends_profile_picture_desc">Your friend\'s profile picture</string>
 </resources>

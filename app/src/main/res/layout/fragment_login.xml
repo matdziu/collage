@@ -48,24 +48,22 @@
 
         <Button
             android:id="@+id/button_login"
+            style="@style/ButtonStyle"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/text_input_layout_password"
             android:layout_below="@+id/text_input_layout_password"
-            android:background="@drawable/custom_button"
-            android:text="@string/login"
-            android:textColor="@color/colorPrimary" />
+            android:text="@string/login" />
 
         <Button
             android:id="@+id/button_sign_up"
+            style="@style/ButtonStyle"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/button_login"
             android:layout_below="@+id/button_login"
             android:layout_marginTop="8dp"
-            android:background="@drawable/custom_button"
-            android:text="@string/sign_up"
-            android:textColor="@color/colorPrimary" />
+            android:text="@string/sign_up" />
 
     </RelativeLayout>
 

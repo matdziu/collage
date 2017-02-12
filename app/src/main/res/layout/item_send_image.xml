@@ -9,6 +9,7 @@
 
     <TextView
         android:id="@+id/item_send_image_text_view"
+        style="@style/TextViewStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="70"
@@ -16,6 +17,7 @@
 
     <Button
         android:id="@+id/item_send_image_button"
+        style="@style/ButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="30"

@@ -31,6 +31,7 @@
 
                 <EditText
                     android:id="@+id/edit_text_friend_search"
+                    style="@style/TextViewStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/type_your_friends_email"
@@ -39,10 +40,10 @@
 
                 <Button
                     android:id="@+id/button_friend_search"
+                    style="@style/ButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:background="@drawable/custom_button"
                     android:text="@string/invite_friend" />
 
             </LinearLayout>
@@ -50,6 +51,7 @@
         </android.support.v7.widget.CardView>
 
         <TextView
+            style="@style/TextViewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -58,6 +60,7 @@
 
         <TextView
             android:id="@+id/no_items_text_view"
+            style="@style/TextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

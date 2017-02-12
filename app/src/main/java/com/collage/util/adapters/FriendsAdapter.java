@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.collage.R;
@@ -43,10 +42,10 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (currentlySelectedFriend != null && friendList.get(position).uid
                 .equals(currentlySelectedFriend.uid)) {
-            holder.linearLayout.setBackgroundColor(ContextCompat.getColor(
+            holder.layout.setBackgroundColor(ContextCompat.getColor(
                     context, R.color.colorAccent));
         } else {
-            holder.linearLayout.setBackgroundColor(ContextCompat.getColor(
+            holder.layout.setBackgroundColor(ContextCompat.getColor(
                     context, android.R.color.white));
         }
         holder.textView.setText(friendList.get(position).fullName);
@@ -79,7 +78,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         TextView textView;
 
         @BindView(R.id.layout_item_friend)
-        LinearLayout linearLayout;
+        ViewGroup layout;
 
         ViewHolder(View itemView) {
             super(itemView);

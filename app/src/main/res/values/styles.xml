@@ -11,8 +11,18 @@
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@drawable/sample_window_background</item>
+        <item name="android:windowBackground">@drawable/window_background</item>
         <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="TextViewStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
+    <style name="ButtonStyle" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/button_shape</item>
     </style>
 
 </resources>

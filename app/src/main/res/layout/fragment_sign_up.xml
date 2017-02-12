@@ -66,13 +66,12 @@
 
         <Button
             android:id="@+id/button_create_account"
+            style="@style/ButtonStyle"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/text_input_layout_password"
             android:layout_below="@+id/text_input_layout_password"
-            android:background="@drawable/custom_button"
-            android:text="@string/create_account"
-            android:textColor="@color/colorPrimary" />
+            android:text="@string/create_account" />
 
     </RelativeLayout>
 
