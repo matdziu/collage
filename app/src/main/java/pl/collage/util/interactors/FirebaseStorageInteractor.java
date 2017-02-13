@@ -46,4 +46,9 @@ public class FirebaseStorageInteractor {
             albumReference.child(photo.imageId).delete();
         }
     }
+
+    public void removePhoto(String imageId, User currentFriend) {
+        StorageReference albumReference = storageReference.child(currentFriend.albumStorageId);
+        albumReference.child(imageId).delete();
+    }
 }

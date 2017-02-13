@@ -32,6 +32,7 @@ public class FirebaseDatabaseInteractor {
     private final static String PENDING_FRIENDS = "pendingFriends";
     private final static String ACCEPTED_FRIENDS = "acceptedFriends";
     private static final String IMAGES = "images";
+    private static final String IMAGE_ID = "imageId";
 
     private DatabaseReference databaseReference =
             FirebaseDatabase.getInstance().getReference();
@@ -272,5 +273,60 @@ public class FirebaseDatabaseInteractor {
                 .child(ACCEPTED_FRIENDS)
                 .child(firebaseUser.getUid())
                 .removeValue();
+    }
+
+    public void removePhoto(final String imageId, final User currentFriend,
+                            final GalleryListener galleryListener) {
+        databaseReference
+                .child(USERS)
+                .child(firebaseUser.getUid())
+                .child(ACCEPTED_FRIENDS)
+                .child(currentFriend.uid)
+                .child(IMAGES)
+                .orderByChild(IMAGE_ID)
+                .equalTo(imageId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        dataSnapshot
+                                .getChildren()
+                                .iterator()
+                                .next()
+                                .getRef()
+                                .removeValue();
+                        galleryListener.onPhotoRemovalFinished();
+                        galleryListener.removePhotoFromStorage(imageId, currentFriend);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Timber.e(databaseError.getMessage());
+                    }
+                });
+
+        databaseReference
+                .child(USERS)
+                .child(currentFriend.uid)
+                .child(ACCEPTED_FRIENDS)
+                .child(firebaseUser.getUid())
+                .child(IMAGES)
+                .orderByChild(IMAGE_ID)
+                .equalTo(imageId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        dataSnapshot
+                                .getChildren()
+                                .iterator()
+                                .next()
+                                .getRef()
+                                .removeValue();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Timber.e(databaseError.getMessage());
+                    }
+                });
     }
 }

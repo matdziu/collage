@@ -15,16 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import pl.collage.R;
-import pl.collage.base.BaseFragment;
-import pl.collage.home.HomeActivity;
-import pl.collage.sendimage.SendImageActivity;
-import pl.collage.util.adapters.PhotosAdapter;
-import pl.collage.util.events.GalleryEvent;
-import pl.collage.util.interactors.FirebaseDatabaseInteractor;
-import pl.collage.util.models.Photo;
-import pl.collage.util.models.User;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -38,6 +28,15 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import pl.collage.R;
+import pl.collage.base.BaseFragment;
+import pl.collage.home.HomeActivity;
+import pl.collage.sendimage.SendImageActivity;
+import pl.collage.util.adapters.PhotosAdapter;
+import pl.collage.util.events.GalleryEvent;
+import pl.collage.util.interactors.FirebaseDatabaseInteractor;
+import pl.collage.util.interactors.FirebaseStorageInteractor;
+import pl.collage.util.models.Photo;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -64,15 +63,14 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
     TextView noFriendSelectedTextView;
 
     private PhotosAdapter photosAdapter;
-    private User currentFriend;
     private static final int REQUEST_PICK_IMAGE = 2;
     public static final int SPAN_COUNT = 3;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        galleryPresenter = new GalleryPresenter(this, new FirebaseDatabaseInteractor());
-        photosAdapter = new PhotosAdapter(new ArrayList<Photo>(), getScreenSize(), getContext());
+        galleryPresenter = new GalleryPresenter(this, new FirebaseDatabaseInteractor(), new FirebaseStorageInteractor());
+        photosAdapter = new PhotosAdapter(new ArrayList<Photo>(), getScreenSize(), getContext(), galleryPresenter);
     }
 
     @Nullable
@@ -121,8 +119,8 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
     @SuppressWarnings("unused")
     @Subscribe
     public void onGalleryEvent(GalleryEvent galleryEvent) {
-        this.currentFriend = galleryEvent.getFriend();
-        galleryPresenter.populatePhotosList(currentFriend);
+        galleryPresenter.setCurrentFriend(galleryEvent.getFriend());
+        galleryPresenter.populatePhotosList();
         noFriendSelectedTextView.setVisibility(View.GONE);
     }
 
@@ -171,7 +169,7 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
     public void onRetryClicked() {
         contentFragmentGallery.setVisibility(View.VISIBLE);
         layoutConnectionError.setVisibility(View.GONE);
-        galleryPresenter.populatePhotosList(currentFriend);
+        galleryPresenter.populatePhotosList();
     }
 
     @OnClick(R.id.fab_add_photo)

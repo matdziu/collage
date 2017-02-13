@@ -25,6 +25,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.collage.R;
+import pl.collage.gallery.GalleryListener;
 import pl.collage.gallerydetail.GalleryDetailActivity;
 import pl.collage.util.models.Photo;
 
@@ -37,13 +38,16 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
     private List<Photo> photoList;
     private Point size;
     private Context context;
+    private GalleryListener galleryListener;
     public static final String EXTRAS_PHOTO_LIST = "photoList";
     public static final String EXTRAS_CURRENT_PHOTO_POSITION = "currentPhotoPosition";
 
-    public PhotosAdapter(List<Photo> photoList, Point size, Context context) {
+    public PhotosAdapter(List<Photo> photoList, Point size, Context context,
+                         GalleryListener galleryListener) {
         this.photoList = photoList;
         this.size = size;
         this.context = context;
+        this.galleryListener = galleryListener;
     }
 
     @Override
@@ -99,6 +103,8 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
+                                galleryListener.onPhotoRemovalStarted(
+                                        photoList.get(holder.getAdapterPosition()).imageId);
                                 break;
                         }
                     }
