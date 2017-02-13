@@ -3,6 +3,7 @@ package pl.collage.friends;
 import java.util.List;
 
 import pl.collage.base.BasePresenter;
+import pl.collage.util.events.FriendDeletionEvent;
 import pl.collage.util.events.GalleryEvent;
 import pl.collage.util.interactors.FirebaseDatabaseInteractor;
 import pl.collage.util.interactors.FirebaseStorageInteractor;
@@ -53,8 +54,9 @@ class FriendsPresenter extends BasePresenter implements FriendsListener {
     }
 
     @Override
-    public void onFriendRemovalFinished() {
+    public void onFriendRemovalFinished(User deletedFriend) {
         populateFriendsList();
+        friendsView.postFriendDeletionEvent(new FriendDeletionEvent(deletedFriend));
     }
 
     @Override

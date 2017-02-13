@@ -33,6 +33,7 @@ import pl.collage.base.BaseFragment;
 import pl.collage.home.HomeActivity;
 import pl.collage.sendimage.SendImageActivity;
 import pl.collage.util.adapters.PhotosAdapter;
+import pl.collage.util.events.FriendDeletionEvent;
 import pl.collage.util.events.GalleryEvent;
 import pl.collage.util.interactors.FirebaseDatabaseInteractor;
 import pl.collage.util.interactors.FirebaseStorageInteractor;
@@ -116,12 +117,20 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
         menuItem.setVisible(false);
     }
 
-    @SuppressWarnings("unused")
     @Subscribe
     public void onGalleryEvent(GalleryEvent galleryEvent) {
         galleryPresenter.setCurrentFriend(galleryEvent.getFriend());
         galleryPresenter.populatePhotosList();
         noFriendSelectedTextView.setVisibility(View.GONE);
+    }
+
+    @Subscribe
+    public void onFriendDeletionEvent(FriendDeletionEvent friendDeletionEvent) {
+        if (friendDeletionEvent.getDeletedFriend().uid
+                .equals(galleryPresenter.getCurrentFriend().uid)) {
+            noFriendSelectedTextView.setVisibility(View.VISIBLE);
+            photosAdapter.setPhotoList(new ArrayList<Photo>());
+        }
     }
 
     private Point getScreenSize() {

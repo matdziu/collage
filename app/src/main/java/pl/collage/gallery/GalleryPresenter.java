@@ -44,6 +44,10 @@ class GalleryPresenter implements GalleryListener {
         this.currentFriend = currentFriend;
     }
 
+    User getCurrentFriend() {
+        return currentFriend;
+    }
+
     @Override
     public void onPhotoRemovalStarted(String imageId) {
         firebaseDatabaseInteractor.removePhoto(imageId, currentFriend, this);

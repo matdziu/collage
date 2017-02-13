@@ -26,6 +26,7 @@ import pl.collage.base.BaseFragment;
 import pl.collage.friendsearch.FriendSearchActivity;
 import pl.collage.home.HomeActivity;
 import pl.collage.util.adapters.FriendsAdapter;
+import pl.collage.util.events.FriendDeletionEvent;
 import pl.collage.util.events.GalleryEvent;
 import pl.collage.util.interactors.FirebaseDatabaseInteractor;
 import pl.collage.util.interactors.FirebaseStorageInteractor;
@@ -168,5 +169,10 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
     @Override
     public void postGalleryEvent(GalleryEvent galleryEvent) {
         EventBus.getDefault().post(galleryEvent);
+    }
+
+    @Override
+    public void postFriendDeletionEvent(FriendDeletionEvent friendDeletionEvent) {
+        EventBus.getDefault().post(friendDeletionEvent);
     }
 }

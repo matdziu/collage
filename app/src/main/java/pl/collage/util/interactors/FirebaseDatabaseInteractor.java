@@ -256,7 +256,7 @@ public class FirebaseDatabaseInteractor {
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        friendsListener.onFriendRemovalFinished();
+                                        friendsListener.onFriendRemovalFinished(friend);
                                     }
                                 });
                     }

@@ -12,7 +12,7 @@ public interface FriendsListener extends BaseListener<User> {
 
     void onFriendRemovalStarted(User friend);
 
-    void onFriendRemovalFinished();
+    void onFriendRemovalFinished(User deletedFriend);
 
     void onPhotosToRemoveFetched(List<Photo> photosList, User friend);
 }
