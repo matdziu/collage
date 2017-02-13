@@ -52,7 +52,7 @@
             android:layout_marginBottom="24dp"
             android:layout_marginEnd="24dp"
             android:src="@drawable/ic_add_photo"
-            app:backgroundTint="@color/buttonColor" />
+            app:backgroundTint="@color/buttonNormalColor" />
 
     </RelativeLayout>
 
