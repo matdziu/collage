@@ -50,7 +50,9 @@ class GalleryPresenter implements GalleryListener {
 
     @Override
     public void onPhotoRemovalStarted(String imageId) {
-        firebaseDatabaseInteractor.removePhoto(imageId, currentFriend, this);
+        if (galleryView.isConnected())
+            firebaseDatabaseInteractor.removePhoto(imageId, currentFriend, this);
+        else galleryView.showConnectionError();
     }
 
     @Override

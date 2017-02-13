@@ -129,6 +129,7 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
         if (friendDeletionEvent.getDeletedFriend().uid
                 .equals(galleryPresenter.getCurrentFriend().uid)) {
             noFriendSelectedTextView.setVisibility(View.VISIBLE);
+            noItemsTextView.setVisibility(View.GONE);
             photosAdapter.setPhotoList(new ArrayList<Photo>());
         }
     }

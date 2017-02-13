@@ -50,7 +50,8 @@ class FriendsPresenter extends BasePresenter implements FriendsListener {
 
     @Override
     public void onFriendRemovalStarted(User friend) {
-        firebaseDatabaseInteractor.removeFriend(friend, this);
+        if (friendsView.isConnected()) firebaseDatabaseInteractor.removeFriend(friend, this);
+        else friendsView.showConnectionError();
     }
 
     @Override
