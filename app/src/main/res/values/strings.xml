@@ -35,4 +35,11 @@
     <string name="send_image_screen_title">Send to a friend</string>
     <string name="friend_search_screen_title">Add a friend</string>
     <string name="friends_profile_picture_desc">Your friend\'s profile picture</string>
+    <string name="photo_text">Photo</string>
+    <string-array name="friends_long_click_options">
+        <item name="asd">Remove friend</item>
+    </string-array>
+    <string-array name="photos_long_click_options">
+        <item>Remove photo</item>
+    </string-array>
 </resources>

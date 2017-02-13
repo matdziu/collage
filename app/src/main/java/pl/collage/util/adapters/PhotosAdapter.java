@@ -1,9 +1,11 @@
 package pl.collage.util.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -15,9 +17,6 @@ import android.widget.ProgressBar;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import pl.collage.R;
-import pl.collage.gallerydetail.GalleryDetailActivity;
-import pl.collage.util.models.Photo;
 
 import org.parceler.Parcels;
 
@@ -25,6 +24,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import pl.collage.R;
+import pl.collage.gallerydetail.GalleryDetailActivity;
+import pl.collage.util.models.Photo;
 
 import static pl.collage.gallery.GalleryFragment.SPAN_COUNT;
 
@@ -85,6 +87,24 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
                 intent.putExtra(EXTRAS_PHOTO_LIST, Parcels.wrap(photoList));
                 intent.putExtra(EXTRAS_CURRENT_PHOTO_POSITION, holder.getAdapterPosition());
                 context.startActivity(intent);
+            }
+        });
+        holder.imageView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle(R.string.photo_text);
+                builder.setItems(R.array.photos_long_click_options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                break;
+                        }
+                    }
+                });
+                builder.show();
+                return true;
             }
         });
     }

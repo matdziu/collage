@@ -1,21 +1,22 @@
 package pl.collage.util.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import pl.collage.R;
-import pl.collage.friends.FriendsListener;
-import pl.collage.util.models.User;
-
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import pl.collage.R;
+import pl.collage.friends.FriendsListener;
+import pl.collage.util.models.User;
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
 
@@ -58,6 +59,24 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
                 notifyDataSetChanged();
 
                 PhotosAdapter.cachedPhotoArray.clear();
+            }
+        });
+        holder.textView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle(holder.textView.getText().toString());
+                builder.setItems(R.array.friends_long_click_options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                break;
+                        }
+                    }
+                });
+                builder.show();
+                return true;
             }
         });
     }
