@@ -1,13 +1,12 @@
 package pl.collage.sendimage;
 
-import android.net.Uri;
-
 import pl.collage.base.BaseListener;
+import pl.collage.util.models.Photo;
 import pl.collage.util.models.User;
 
 public interface SendImageListener extends BaseListener<User> {
 
     void onImageUploadStarted(User friendStarted);
 
-    void onImageUploadFinished(Uri downloadUrl, User friendFinished);
+    void onImageUploadFinished(Photo uploadedPhoto, User friendFinished);
 }

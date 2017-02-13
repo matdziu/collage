@@ -71,6 +71,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
+                                friendsListener.onFriendRemovalStarted(friendList.get(holder.getAdapterPosition()));
                                 break;
                         }
                     }

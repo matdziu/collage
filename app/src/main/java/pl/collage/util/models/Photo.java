@@ -6,13 +6,9 @@ import org.parceler.Parcel;
 public class Photo {
 
     public String imageUrl;
+    public String imageId;
 
-    @SuppressWarnings("unused")
     public Photo() {
         // default constructor for Parceler
-    }
-
-    public Photo(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 }

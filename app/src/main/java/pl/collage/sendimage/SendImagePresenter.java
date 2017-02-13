@@ -1,13 +1,12 @@
 package pl.collage.sendimage;
 
-import android.net.Uri;
+import java.util.List;
 
 import pl.collage.base.BasePresenter;
 import pl.collage.util.interactors.FirebaseDatabaseInteractor;
 import pl.collage.util.interactors.FirebaseStorageInteractor;
+import pl.collage.util.models.Photo;
 import pl.collage.util.models.User;
-
-import java.util.List;
 
 class SendImagePresenter extends BasePresenter implements SendImageListener {
 
@@ -56,10 +55,10 @@ class SendImagePresenter extends BasePresenter implements SendImageListener {
     }
 
     @Override
-    public void onImageUploadFinished(Uri downloadUrl, User friendFinished) {
+    public void onImageUploadFinished(Photo uploadedPhoto, User friendFinished) {
         sendImageView.updateRecyclerView(updateList(friendFinished));
         sendImageView.setPictureSentResult();
-        firebaseDatabaseInteractor.addImageUrl(downloadUrl, friendFinished);
+        firebaseDatabaseInteractor.addImage(uploadedPhoto, friendFinished);
     }
 
     private List<User> updateList(User friend) {

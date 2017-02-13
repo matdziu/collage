@@ -1,12 +1,9 @@
 package pl.collage.util.interactors;
 
-import android.net.Uri;
+import android.support.annotation.NonNull;
 
-import pl.collage.base.BaseListener;
-import pl.collage.friendsearch.FriendSearchListener;
-import pl.collage.gallery.GalleryListener;
-import pl.collage.util.models.Photo;
-import pl.collage.util.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -20,6 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import pl.collage.base.BaseListener;
+import pl.collage.friends.FriendsListener;
+import pl.collage.friendsearch.FriendSearchListener;
+import pl.collage.gallery.GalleryListener;
+import pl.collage.util.models.Photo;
+import pl.collage.util.models.User;
 import timber.log.Timber;
 
 public class FirebaseDatabaseInteractor {
@@ -28,7 +31,7 @@ public class FirebaseDatabaseInteractor {
     private final static String EMAIL = "email";
     private final static String PENDING_FRIENDS = "pendingFriends";
     private final static String ACCEPTED_FRIENDS = "acceptedFriends";
-    private static final String IMAGE_URLS = "imageUrls";
+    private static final String IMAGES = "images";
 
     private DatabaseReference databaseReference =
             FirebaseDatabase.getInstance().getReference();
@@ -182,24 +185,24 @@ public class FirebaseDatabaseInteractor {
                 });
     }
 
-    public void addImageUrl(Uri downloadUrl, User friend) {
+    public void addImage(Photo photo, User friend) {
         databaseReference
                 .child(USERS)
                 .child(firebaseUser.getUid())
                 .child(ACCEPTED_FRIENDS)
                 .child(friend.uid)
-                .child(IMAGE_URLS)
+                .child(IMAGES)
                 .push()
-                .setValue(downloadUrl.toString());
+                .setValue(photo);
 
         databaseReference
                 .child(USERS)
                 .child(friend.uid)
                 .child(ACCEPTED_FRIENDS)
                 .child(firebaseUser.getUid())
-                .child(IMAGE_URLS)
+                .child(IMAGES)
                 .push()
-                .setValue(downloadUrl.toString());
+                .setValue(photo);
     }
 
     public void fetchPhotos(User friend, final GalleryListener galleryListener) {
@@ -209,13 +212,13 @@ public class FirebaseDatabaseInteractor {
                 .child(firebaseUser.getUid())
                 .child(ACCEPTED_FRIENDS)
                 .child(friend.uid)
-                .child(IMAGE_URLS)
+                .child(IMAGES)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         List<Photo> photosList = new ArrayList<>();
                         for (DataSnapshot dataItem : dataSnapshot.getChildren()) {
-                            photosList.add(new Photo(dataItem.getValue(String.class)));
+                            photosList.add(dataItem.getValue(Photo.class));
                         }
                         galleryListener.onListFetched(photosList);
                     }
@@ -225,5 +228,49 @@ public class FirebaseDatabaseInteractor {
                         Timber.e(databaseError.getMessage());
                     }
                 });
+    }
+
+    public void removeFriend(final User friend, final FriendsListener friendsListener) {
+        databaseReference
+                .child(USERS)
+                .child(firebaseUser.getUid())
+                .child(ACCEPTED_FRIENDS)
+                .child(friend.uid)
+                .child(IMAGES)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        List<Photo> photosList = new ArrayList<>();
+                        for (DataSnapshot dataItem : dataSnapshot.getChildren()) {
+                            photosList.add(dataItem.getValue(Photo.class));
+                        }
+                        friendsListener.onPhotosToRemoveFetched(photosList, friend);
+
+                        databaseReference
+                                .child(USERS)
+                                .child(firebaseUser.getUid())
+                                .child(ACCEPTED_FRIENDS)
+                                .child(friend.uid)
+                                .removeValue()
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        friendsListener.onFriendRemovalFinished();
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Timber.e(databaseError.getMessage());
+                    }
+                });
+
+        databaseReference
+                .child(USERS)
+                .child(friend.uid)
+                .child(ACCEPTED_FRIENDS)
+                .child(firebaseUser.getUid())
+                .removeValue();
     }
 }

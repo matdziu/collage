@@ -14,14 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import pl.collage.base.BaseFragment;
-import pl.collage.friendsearch.FriendSearchActivity;
-import pl.collage.home.HomeActivity;
-import pl.collage.util.adapters.FriendsAdapter;
-import pl.collage.util.events.GalleryEvent;
-import pl.collage.util.interactors.FirebaseDatabaseInteractor;
-import pl.collage.util.models.User;
-
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
@@ -30,6 +22,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import pl.collage.base.BaseFragment;
+import pl.collage.friendsearch.FriendSearchActivity;
+import pl.collage.home.HomeActivity;
+import pl.collage.util.adapters.FriendsAdapter;
+import pl.collage.util.events.GalleryEvent;
+import pl.collage.util.interactors.FirebaseDatabaseInteractor;
+import pl.collage.util.interactors.FirebaseStorageInteractor;
+import pl.collage.util.models.User;
 
 public class FriendsFragment extends BaseFragment implements FriendsView {
 
@@ -58,7 +58,8 @@ public class FriendsFragment extends BaseFragment implements FriendsView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        friendsPresenter = new FriendsPresenter(this, new FirebaseDatabaseInteractor());
+        friendsPresenter = new FriendsPresenter(this, new FirebaseDatabaseInteractor(),
+                new FirebaseStorageInteractor());
         friendsAdapter = new FriendsAdapter(new ArrayList<User>(), friendsPresenter, getContext());
         homeActivity = (HomeActivity) getActivity();
 

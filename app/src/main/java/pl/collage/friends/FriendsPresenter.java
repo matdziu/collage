@@ -1,20 +1,25 @@
 package pl.collage.friends;
 
+import java.util.List;
+
 import pl.collage.base.BasePresenter;
 import pl.collage.util.events.GalleryEvent;
 import pl.collage.util.interactors.FirebaseDatabaseInteractor;
+import pl.collage.util.interactors.FirebaseStorageInteractor;
+import pl.collage.util.models.Photo;
 import pl.collage.util.models.User;
-
-import java.util.List;
 
 class FriendsPresenter extends BasePresenter implements FriendsListener {
 
     private FriendsView friendsView;
     private FirebaseDatabaseInteractor firebaseDatabaseInteractor;
+    private FirebaseStorageInteractor firebaseStorageInteractor;
 
-    FriendsPresenter(FriendsView friendsView, FirebaseDatabaseInteractor firebaseDatabaseInteractor) {
+    FriendsPresenter(FriendsView friendsView, FirebaseDatabaseInteractor firebaseDatabaseInteractor,
+                     FirebaseStorageInteractor firebaseStorageInteractor) {
         this.friendsView = friendsView;
         this.firebaseDatabaseInteractor = firebaseDatabaseInteractor;
+        this.firebaseStorageInteractor = firebaseStorageInteractor;
     }
 
     void populateFriendsList() {
@@ -40,5 +45,20 @@ class FriendsPresenter extends BasePresenter implements FriendsListener {
     public void onFriendSelected(User friend) {
         friendsView.navigateToGalleryFragment();
         friendsView.postGalleryEvent(new GalleryEvent(friend));
+    }
+
+    @Override
+    public void onFriendRemovalStarted(User friend) {
+        firebaseDatabaseInteractor.removeFriend(friend, this);
+    }
+
+    @Override
+    public void onFriendRemovalFinished() {
+        populateFriendsList();
+    }
+
+    @Override
+    public void onPhotosToRemoveFetched(List<Photo> photosList, User friend) {
+        firebaseStorageInteractor.removeAlbum(photosList, friend);
     }
 }
