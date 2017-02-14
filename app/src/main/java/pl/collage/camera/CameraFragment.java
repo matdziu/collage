@@ -33,11 +33,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import pl.collage.R;
-import pl.collage.base.BaseFragment;
-import pl.collage.home.HomeActivity;
-import pl.collage.sendimage.SendImageActivity;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,6 +43,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import pl.collage.R;
+import pl.collage.base.BaseFragment;
+import pl.collage.home.HomeActivity;
+import pl.collage.sendimage.SendImageActivity;
 
 public class CameraFragment extends BaseFragment {
 
@@ -255,8 +254,7 @@ public class CameraFragment extends BaseFragment {
                         cameraFacing) {
                     StreamConfigurationMap streamConfigurationMap = cameraCharacteristics.get(
                             CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-//                    previewSize = streamConfigurationMap.getOutputSizes(SurfaceTexture.class)[0];
-                    previewSize = fixWrongAspectRatio(streamConfigurationMap
+                    previewSize = chooseOptimalSize(streamConfigurationMap
                             .getOutputSizes(SurfaceTexture.class), width, height);
                     this.cameraId = cameraId;
                     return;
@@ -427,26 +425,9 @@ public class CameraFragment extends BaseFragment {
         startOpeningCamera();
     }
 
-    // this method is supposed to fix auto exposure problems resulting in dark preview
-    private void fixDarkPreview() throws CameraAccessException {
-        Range<Integer>[] autoExposureFPSRanges = cameraManager
-                .getCameraCharacteristics(cameraId)
-                .get(CameraCharacteristics.CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES);
-
-        if (autoExposureFPSRanges != null) {
-            for (Range<Integer> autoExposureRange : autoExposureFPSRanges) {
-                if (autoExposureRange.equals(Range.create(15, 30))) {
-                    captureRequestBuilder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE,
-                            Range.create(15, 30));
-                }
-            }
-        }
-    }
-
-    // this method is supposed to fix improper width and height of stretched preview
-    private Size fixWrongAspectRatio(Size[] mapSizes, int width, int height) {
+    private Size chooseOptimalSize(Size[] outputSizes, int width, int height) {
         List<Size> collectorSizes = new ArrayList<>();
-        for (Size option : mapSizes) {
+        for (Size option : outputSizes) {
             if (width > height) {
                 if (option.getWidth() > width &&
                         option.getHeight() > height) {
@@ -469,6 +450,22 @@ public class CameraFragment extends BaseFragment {
                 }
             });
         }
-        return mapSizes[0];
+        return outputSizes[0];
+    }
+
+    // this method is supposed to fix auto exposure problems resulting in dark preview
+    private void fixDarkPreview() throws CameraAccessException {
+        Range<Integer>[] autoExposureFPSRanges = cameraManager
+                .getCameraCharacteristics(cameraId)
+                .get(CameraCharacteristics.CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES);
+
+        if (autoExposureFPSRanges != null) {
+            for (Range<Integer> autoExposureRange : autoExposureFPSRanges) {
+                if (autoExposureRange.equals(Range.create(15, 30))) {
+                    captureRequestBuilder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE,
+                            Range.create(15, 30));
+                }
+            }
+        }
     }
 }
