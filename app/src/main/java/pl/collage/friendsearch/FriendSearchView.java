@@ -14,4 +14,8 @@ interface FriendSearchView extends BaseView<User> {
     void showInviteProgressBar();
 
     void hideInviteProgresBar();
+
+    void showEmptyEmailFieldError();
+
+    void hideEmptyEmailFieldError();
 }

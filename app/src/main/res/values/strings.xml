@@ -11,7 +11,7 @@
     <string name="password_error">Password should contain at least 6 characters and no empty spaces</string>
     <string name="login_failure">Login failure</string>
     <string name="sign_up_failure">Account creation failed</string>
-    <string name="type_your_friends_email">Type your friend\'s email…</string>
+    <string name="type_your_friends_email">Type your friend\'s email</string>
     <string name="invite_friend">Invite</string>
     <string name="pending_invitations">Pending invitations:</string>
     <string name="accept_pending_invite">Accept</string>
@@ -36,6 +36,7 @@
     <string name="friend_search_screen_title">Add a friend</string>
     <string name="friends_profile_picture_desc">Your friend\'s profile picture</string>
     <string name="photo_text">Photo</string>
+    <string name="empty_email_invite_error_text">Enter your friend\'s email first</string>
     <string-array name="friends_long_click_options">
         <item name="asd">Remove friend</item>
     </string-array>

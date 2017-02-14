@@ -18,11 +18,16 @@ class FriendSearchPresenter extends BasePresenter implements FriendSearchListene
     }
 
     void searchForFriend(String email) {
-        if (friendSearchView.isConnected()) {
-            friendSearchView.showInviteProgressBar();
-            firebaseDatabaseInteractor.searchForFriend(email, this);
+        if (!email.isEmpty()) {
+            friendSearchView.hideEmptyEmailFieldError();
+            if (friendSearchView.isConnected()) {
+                friendSearchView.showInviteProgressBar();
+                firebaseDatabaseInteractor.searchForFriend(email, this);
+            } else {
+                friendSearchView.showConnectionError();
+            }
         } else {
-            friendSearchView.showConnectionError();
+            friendSearchView.showEmptyEmailFieldError();
         }
     }
 
