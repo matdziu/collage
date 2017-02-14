@@ -51,52 +51,66 @@ public class FirebaseDatabaseInteractor {
     }
 
     public void searchForFriend(String email, final FriendSearchListener friendSearchListener) {
-        Query friendQuery = databaseReference
-                .child(USERS)
-                .orderByChild(EMAIL)
-                .equalTo(email);
-        friendQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    friendSearchListener.onFriendFound();
+        if (firebaseUser.getEmail() != null && !firebaseUser.getEmail().equals(email)) {
+            Query friendQuery = databaseReference
+                    .child(USERS)
+                    .orderByChild(EMAIL)
+                    .equalTo(email);
+            friendQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        DataSnapshot friendSnapshot = dataSnapshot
+                                .getChildren()
+                                .iterator()
+                                .next();
 
-                    final String friendUid = dataSnapshot
-                            .getChildren()
-                            .iterator()
-                            .next()
-                            .getKey();
+                        if (friendSnapshot.child(PENDING_FRIENDS).hasChild(firebaseUser.getUid())) {
+                            friendSearchListener.onAlreadyInvited();
+                            return;
+                        }
 
-                    databaseReference
-                            .child(USERS)
-                            .child(firebaseUser.getUid())
-                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    User collageUser = dataSnapshot.getValue(User.class);
-                                    databaseReference
-                                            .child(USERS)
-                                            .child(friendUid)
-                                            .child(PENDING_FRIENDS)
-                                            .child(collageUser.uid)
-                                            .setValue(collageUser);
-                                }
+                        if (friendSnapshot.child(ACCEPTED_FRIENDS).hasChild(firebaseUser.getUid())) {
+                            friendSearchListener.onAlreadyYourFriend();
+                            return;
+                        }
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-                                    Timber.e(databaseError.getMessage());
-                                }
-                            });
-                } else {
-                    friendSearchListener.onFriendNotFound();
+                        friendSearchListener.onFriendFound();
+                        final String friendUid = friendSnapshot.getKey();
+
+                        databaseReference
+                                .child(USERS)
+                                .child(firebaseUser.getUid())
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        User collageUser = dataSnapshot.getValue(User.class);
+                                        databaseReference
+                                                .child(USERS)
+                                                .child(friendUid)
+                                                .child(PENDING_FRIENDS)
+                                                .child(collageUser.uid)
+                                                .setValue(collageUser);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        Timber.e(databaseError.getMessage());
+                                    }
+                                });
+                    } else {
+                        friendSearchListener.onFriendNotFound();
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Timber.e(databaseError.getMessage());
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Timber.e(databaseError.getMessage());
+                }
+            });
+        } else {
+            friendSearchListener.onCantInviteYourself();
+        }
     }
 
     public void fetchPendingList(final BaseListener<User> baseListener) {

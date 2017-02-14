@@ -179,4 +179,28 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchVi
     public void hideEmptyEmailFieldError() {
         textInputLayout.setError(null);
     }
+
+    @Override
+    public void showCantInviteYourself() {
+        Toast.makeText(getContext(), R.string.invite_yourself_error_text, Toast.LENGTH_SHORT).show();
+        editText.setText("");
+    }
+
+    @Override
+    public void showAlreadyYourFriend() {
+        Toast.makeText(getContext(), R.string.already_friend_error_text, Toast.LENGTH_SHORT).show();
+        editText.setText("");
+    }
+
+    @Override
+    public void showAlreadyInvited() {
+        Toast.makeText(getContext(), R.string.already_invited_error_text, Toast.LENGTH_SHORT).show();
+        editText.setText("");
+    }
+
+    @Override
+    public void showAlreadyOnPending() {
+        Toast.makeText(getContext(), R.string.already_pending_error_text, Toast.LENGTH_SHORT).show();
+        editText.setText("");
+    }
 }

@@ -18,4 +18,12 @@ interface FriendSearchView extends BaseView<User> {
     void showEmptyEmailFieldError();
 
     void hideEmptyEmailFieldError();
+
+    void showCantInviteYourself();
+
+    void showAlreadyYourFriend();
+
+    void showAlreadyInvited();
+
+    void showAlreadyOnPending();
 }

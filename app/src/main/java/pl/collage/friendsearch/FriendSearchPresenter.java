@@ -18,17 +18,34 @@ class FriendSearchPresenter extends BasePresenter implements FriendSearchListene
     }
 
     void searchForFriend(String email) {
-        if (!email.isEmpty()) {
-            friendSearchView.hideEmptyEmailFieldError();
-            if (friendSearchView.isConnected()) {
-                friendSearchView.showInviteProgressBar();
-                firebaseDatabaseInteractor.searchForFriend(email, this);
-            } else {
-                friendSearchView.showConnectionError();
-            }
-        } else {
+        if (email.isEmpty()) {
             friendSearchView.showEmptyEmailFieldError();
+            return;
+        } else {
+            friendSearchView.hideEmptyEmailFieldError();
         }
+
+        if (isAlreadyOnPendingList(email)) {
+            friendSearchView.showAlreadyOnPending();
+            return;
+        }
+
+        if (!friendSearchView.isConnected()) {
+            friendSearchView.showConnectionError();
+            return;
+        }
+
+        friendSearchView.showInviteProgressBar();
+        firebaseDatabaseInteractor.searchForFriend(email, this);
+    }
+
+    private boolean isAlreadyOnPendingList(String email) {
+        for (User pendingFriend : usersList) {
+            if (pendingFriend.email.equals(email)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     void populatePendingList() {
@@ -58,6 +75,24 @@ class FriendSearchPresenter extends BasePresenter implements FriendSearchListene
         usersList.remove(friend);
 
         firebaseDatabaseInteractor.addFriend(friend);
+    }
+
+    @Override
+    public void onCantInviteYourself() {
+        friendSearchView.showCantInviteYourself();
+        friendSearchView.hideInviteProgresBar();
+    }
+
+    @Override
+    public void onAlreadyYourFriend() {
+        friendSearchView.showAlreadyYourFriend();
+        friendSearchView.hideInviteProgresBar();
+    }
+
+    @Override
+    public void onAlreadyInvited() {
+        friendSearchView.showAlreadyInvited();
+        friendSearchView.hideInviteProgresBar();
     }
 
     @Override

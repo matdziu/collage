@@ -10,4 +10,10 @@ public interface FriendSearchListener extends BaseListener<User> {
     void onFriendNotFound();
 
     void onInvitationAccepted(int position, User friend);
+
+    void onCantInviteYourself();
+
+    void onAlreadyYourFriend();
+
+    void onAlreadyInvited();
 }
