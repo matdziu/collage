@@ -125,6 +125,7 @@ public class FriendSearchFragment extends BaseFragment implements FriendSearchVi
 
     @Override
     public void showConnectionError() {
+        noItemsTextView.setVisibility(View.GONE);
         contentFragmentFriendSearch.setVisibility(View.GONE);
         layoutConnectionError.setVisibility(View.VISIBLE);
     }
