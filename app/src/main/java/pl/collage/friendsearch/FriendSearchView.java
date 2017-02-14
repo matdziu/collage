@@ -10,4 +10,8 @@ interface FriendSearchView extends BaseView<User> {
     void showFriendNotFound();
 
     void removeFromRecyclerView(int position);
+
+    void showInviteProgressBar();
+
+    void hideInviteProgresBar();
 }

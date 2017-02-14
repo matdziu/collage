@@ -1,10 +1,10 @@
 package pl.collage.friendsearch;
 
+import java.util.List;
+
 import pl.collage.base.BasePresenter;
 import pl.collage.util.interactors.FirebaseDatabaseInteractor;
 import pl.collage.util.models.User;
-
-import java.util.List;
 
 class FriendSearchPresenter extends BasePresenter implements FriendSearchListener {
 
@@ -18,6 +18,7 @@ class FriendSearchPresenter extends BasePresenter implements FriendSearchListene
     }
 
     void searchForFriend(String email) {
+        friendSearchView.showInviteProgressBar();
         firebaseDatabaseInteractor.searchForFriend(email, this);
     }
 
@@ -29,11 +30,13 @@ class FriendSearchPresenter extends BasePresenter implements FriendSearchListene
     @Override
     public void onFriendFound() {
         friendSearchView.showFriendFound();
+        friendSearchView.hideInviteProgresBar();
     }
 
     @Override
     public void onFriendNotFound() {
         friendSearchView.showFriendNotFound();
+        friendSearchView.hideInviteProgresBar();
     }
 
     @Override
