@@ -1,6 +1,7 @@
 package pl.collage.base;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -8,19 +9,20 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-
-import pl.collage.R;
-import pl.collage.util.models.User;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import pl.collage.R;
+import pl.collage.util.models.User;
 
 public class BaseFragment extends Fragment {
 
@@ -91,6 +93,14 @@ public class BaseFragment extends Fragment {
                 Locale.getDefault()).format(new Date());
         String imageFileName = "image_" + timeStamp + "_";
         return File.createTempFile(imageFileName, ".jpg", galleryFolder);
+    }
+
+    protected Point getScreenSize() {
+        Display display = getActivity().
+                getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return size;
     }
 
     public boolean isConnected() {

@@ -35,10 +35,7 @@ import android.widget.Toast;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,9 +83,15 @@ public class CameraFragment extends BaseFragment {
     private Handler backgroundHandler;
     private HandlerThread backgroundThread;
 
+    private int screenWidth;
+    private int screenHeight;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        screenWidth = getScreenSize().x;
+        screenHeight = getScreenSize().y;
 
         requestPermissions(new String[]{Manifest.permission.CAMERA,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -107,7 +110,7 @@ public class CameraFragment extends BaseFragment {
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture,
                                                   int width, int height) {
-                setUpCamera(width, height);
+                setUpCamera(screenWidth, screenHeight);
                 openCamera();
             }
 
@@ -344,7 +347,7 @@ public class CameraFragment extends BaseFragment {
 
     private void startOpeningCamera() {
         if (textureView.isAvailable()) {
-            setUpCamera(textureView.getWidth(), textureView.getHeight());
+            setUpCamera(screenWidth, screenHeight);
             openCamera();
         } else {
             textureView.setSurfaceTextureListener(surfaceTextureListener);
@@ -426,31 +429,18 @@ public class CameraFragment extends BaseFragment {
     }
 
     private Size chooseOptimalSize(Size[] outputSizes, int width, int height) {
-        List<Size> collectorSizes = new ArrayList<>();
-        for (Size option : outputSizes) {
-            if (width > height) {
-                if (option.getWidth() > width &&
-                        option.getHeight() > height) {
-                    collectorSizes.add(option);
-                }
-            } else {
-                if (option.getWidth() > height &&
-                        option.getHeight() > width) {
-                    collectorSizes.add(option);
-                }
+        double prefferedRatio = height / (double) width;
+        Size currentOptimalSize = outputSizes[0];
+        double currentOptimalRatio = currentOptimalSize.getWidth() / (double) currentOptimalSize.getHeight();
+        for (Size currentSize : outputSizes) {
+            double currentRatio = currentSize.getWidth() / (double) currentSize.getHeight();
+            if (Math.abs(prefferedRatio - currentRatio) <
+                    Math.abs(prefferedRatio - currentOptimalRatio)) {
+                currentOptimalSize = currentSize;
+                currentOptimalRatio = currentRatio;
             }
         }
-
-        if (collectorSizes.size() > 0) {
-            return Collections.min(collectorSizes, new Comparator<Size>() {
-                @Override
-                public int compare(Size lhs, Size rhs) {
-                    return Long.signum(lhs.getWidth() * lhs.getHeight() -
-                            rhs.getWidth() * rhs.getHeight());
-                }
-            });
-        }
-        return outputSizes[0];
+        return currentOptimalSize;
     }
 
     // this method is supposed to fix auto exposure problems resulting in dark preview

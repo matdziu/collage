@@ -1,13 +1,11 @@
 package pl.collage.gallery;
 
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -132,14 +130,6 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
             noItemsTextView.setVisibility(View.GONE);
             photosAdapter.setPhotoList(new ArrayList<Photo>());
         }
-    }
-
-    private Point getScreenSize() {
-        Display display = getActivity().
-                getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        return size;
     }
 
     @Override
