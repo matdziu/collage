@@ -429,13 +429,13 @@ public class CameraFragment extends BaseFragment {
     }
 
     private Size chooseOptimalSize(Size[] outputSizes, int width, int height) {
-        double prefferedRatio = height / (double) width;
+        double preferredRatio = height / (double) width;
         Size currentOptimalSize = outputSizes[0];
         double currentOptimalRatio = currentOptimalSize.getWidth() / (double) currentOptimalSize.getHeight();
         for (Size currentSize : outputSizes) {
             double currentRatio = currentSize.getWidth() / (double) currentSize.getHeight();
-            if (Math.abs(prefferedRatio - currentRatio) <
-                    Math.abs(prefferedRatio - currentOptimalRatio)) {
+            if (Math.abs(preferredRatio - currentRatio) <
+                    Math.abs(preferredRatio - currentOptimalRatio)) {
                 currentOptimalSize = currentSize;
                 currentOptimalRatio = currentRatio;
             }
