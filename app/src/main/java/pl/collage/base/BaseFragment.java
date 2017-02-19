@@ -30,7 +30,7 @@ public class BaseFragment extends Fragment {
     protected BaseView<User> baseView;
 
     protected File imageFile;
-    protected MenuItem menuItem;
+    protected MenuItem searchMenuItem;
 
     public static final String IMAGE_FILE_PATH = "imageFilePath";
     public static final String IMAGE_FILE_NAME = "imageFileName";
@@ -113,8 +113,8 @@ public class BaseFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        menuItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchMenuItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) searchMenuItem.getActionView();
 
         searchView.setQueryHint(getResources().getString(R.string.search_title));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

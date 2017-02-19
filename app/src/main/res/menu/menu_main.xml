@@ -7,6 +7,10 @@
         android:title="@string/sign_out" />
 
     <item
+        android:id="@+id/menu_change_password"
+        android:title="@string/change_password" />
+
+    <item
         android:id="@+id/search"
         android:icon="@drawable/ic_search"
         android:title="@string/search_title"

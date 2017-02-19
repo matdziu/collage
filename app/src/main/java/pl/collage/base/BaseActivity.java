@@ -10,13 +10,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import pl.collage.R;
-import pl.collage.login.LoginActivity;
-import pl.collage.util.interactors.FirebaseAuthInteractor;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import pl.collage.R;
+import pl.collage.changepassword.ChangePasswordActivity;
+import pl.collage.login.LoginActivity;
+import pl.collage.util.interactors.FirebaseAuthInteractor;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -58,6 +59,11 @@ public abstract class BaseActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 return true;
+
+            case R.id.menu_change_password:
+                startActivity(new Intent(this, ChangePasswordActivity.class));
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

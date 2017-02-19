@@ -41,6 +41,10 @@
     <string name="already_friend_error_text">This user is already your friend</string>
     <string name="already_invited_error_text">You already invited that user</string>
     <string name="already_pending_error_text">This user is already on your pending list</string>
+    <string name="change_password">Change password</string>
+    <string name="retype_new_password">Retype new password</string>
+    <string name="type_new_password">Type new password</string>
+    <string name="type_old_password">Type old password</string>
     <string-array name="friends_long_click_options">
         <item name="asd">Remove friend</item>
     </string-array>

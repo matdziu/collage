@@ -112,7 +112,7 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        menuItem.setVisible(false);
+        searchMenuItem.setVisible(false);
     }
 
     @Subscribe

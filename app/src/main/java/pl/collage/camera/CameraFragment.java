@@ -235,7 +235,7 @@ public class CameraFragment extends BaseFragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        menuItem.setVisible(false);
+        searchMenuItem.setVisible(false);
     }
 
     @Override

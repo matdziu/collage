@@ -52,8 +52,14 @@
         <activity
             android:name="pl.collage.login.LoginActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name="pl.collage.gallerydetail.GalleryDetailActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".changepassword.ChangePasswordActivity"
+            android:label="@string/change_password"
             android:screenOrientation="portrait" />
     </application>
 
