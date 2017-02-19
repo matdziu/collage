@@ -2,7 +2,7 @@ package pl.collage.changepassword;
 
 import pl.collage.util.interactors.FirebaseAuthInteractor;
 
-class ChangePasswordPresenter {
+class ChangePasswordPresenter implements ChangePasswordListener {
 
     private ChangePasswordView changePasswordView;
     private FirebaseAuthInteractor firebaseAuthInteractor;
@@ -13,18 +13,50 @@ class ChangePasswordPresenter {
     }
 
     void validatePasswordChange(String oldPassword, String newPassword, String retypePassword) {
+        boolean isOldPasswordCorrect;
+        boolean isNewPasswordCorrect;
+        boolean isRetypePasswordCorrect;
+
+        if (oldPassword.replaceAll("\\s+", "").isEmpty()) {
+            isOldPasswordCorrect = false;
+            changePasswordView.showEmptyOldPasswordError();
+        } else {
+            isOldPasswordCorrect = true;
+            changePasswordView.hideEmptyOldPasswordError();
+        }
 
         if (newPassword.replaceAll("\\s+", "").isEmpty() || newPassword.contains(" ") ||
                 newPassword.length() < 6) {
+            isNewPasswordCorrect = false;
             changePasswordView.showPasswordTooShortError();
-            return;
+        } else {
+            isNewPasswordCorrect = true;
+            changePasswordView.hideNewPasswordErrors();
         }
 
         if (!newPassword.equals(retypePassword)) {
+            isRetypePasswordCorrect = false;
             changePasswordView.showWrongRetypeError();
-            return;
+        } else {
+            isRetypePasswordCorrect = true;
+            changePasswordView.hideNewPasswordErrors();
         }
 
-        changePasswordView.hideErrors();
+        if (isOldPasswordCorrect && isNewPasswordCorrect && isRetypePasswordCorrect) {
+            changePasswordView.showProgressBar();
+            firebaseAuthInteractor.changePassword(oldPassword, newPassword, this);
+        }
+    }
+
+    @Override
+    public void showError() {
+        changePasswordView.showChangePasswordError();
+        changePasswordView.hideProgressBar();
+    }
+
+    @Override
+    public void showSuccess() {
+        changePasswordView.showChangePasswordSuccess();
+        changePasswordView.finishWithSuccess();
     }
 }

@@ -10,5 +10,15 @@ interface ChangePasswordView {
 
     void showWrongRetypeError();
 
-    void hideErrors();
+    void showEmptyOldPasswordError();
+
+    void showChangePasswordError();
+
+    void showChangePasswordSuccess();
+
+    void finishWithSuccess();
+
+    void hideEmptyOldPasswordError();
+
+    void hideNewPasswordErrors();
 }

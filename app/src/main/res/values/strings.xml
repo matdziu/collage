@@ -46,8 +46,11 @@
     <string name="type_new_password">Type new password</string>
     <string name="type_old_password">Type old password</string>
     <string name="should_match_error">These fields should match</string>
+    <string name="change_password_success">Success!</string>
+    <string name="change_password_error">Error! Couldn\'t change password</string>
+    <string name="empty_old_password_error">This field can\'t be empty</string>
     <string-array name="friends_long_click_options">
-        <item name="asd">Remove friend</item>
+        <item>Remove friend</item>
     </string-array>
     <string-array name="photos_long_click_options">
         <item>Remove photo</item>

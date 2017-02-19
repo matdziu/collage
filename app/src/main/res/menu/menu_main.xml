@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_sign_out"
-        android:title="@string/sign_out" />
-
-    <item
         android:id="@+id/menu_change_password"
         android:title="@string/change_password" />
+
+    <item
+        android:id="@+id/menu_sign_out"
+        android:title="@string/sign_out" />
 
     <item
         android:id="@+id/search"

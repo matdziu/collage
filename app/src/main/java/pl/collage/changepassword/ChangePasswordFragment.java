@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +43,9 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
     @BindView(R.id.change_password_content_view)
     ViewGroup changePasswordContentView;
 
+    @BindView(R.id.layout_connection_error)
+    ViewGroup layoutConnectionError;
+
     private ChangePasswordPresenter changePasswordPresenter;
 
     @Override
@@ -66,6 +70,7 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
 
     @Override
     public void showProgressBar() {
+        closeSoftKeyboard();
         changePasswordContentView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
     }
@@ -89,8 +94,39 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
     }
 
     @Override
-    public void hideErrors() {
+    public void showEmptyOldPasswordError() {
+        oldPasswordTextInputLayout.setError(getString(R.string.empty_old_password_error));
+    }
+
+    @Override
+    public void hideEmptyOldPasswordError() {
+        oldPasswordTextInputLayout.setError(null);
+    }
+
+    @Override
+    public void hideNewPasswordErrors() {
         newPasswordTextInputLayout.setError(null);
         retypePasswordTextInputLayout.setError(null);
+    }
+
+    @Override
+    public void showChangePasswordError() {
+        Toast.makeText(getContext(), R.string.change_password_error, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showChangePasswordSuccess() {
+        Toast.makeText(getContext(), R.string.change_password_success, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void finishWithSuccess() {
+        getActivity().finish();
+    }
+
+    @OnClick(R.id.button_retry)
+    public void onRetryClicked() {
+        changePasswordPresenter.validatePasswordChange(oldPasswordEditText.getText().toString(),
+                newPasswordEditText.getText().toString(), retypePasswordEditText.getText().toString());
     }
 }

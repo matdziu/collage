@@ -2,13 +2,17 @@ package pl.collage.util.interactors;
 
 import android.support.annotation.NonNull;
 
-import pl.collage.login.LoginListener;
-import pl.collage.signup.SignUpListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import pl.collage.changepassword.ChangePasswordListener;
+import pl.collage.login.LoginListener;
+import pl.collage.signup.SignUpListener;
 
 public class FirebaseAuthInteractor {
 
@@ -72,5 +76,32 @@ public class FirebaseAuthInteractor {
                 }
             }
         };
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public void changePassword(String oldPassword, final String newPassword,
+                               final ChangePasswordListener changePasswordListener) {
+        final FirebaseUser user = firebaseAuth.getCurrentUser();
+        AuthCredential credential = EmailAuthProvider
+                .getCredential(user.getEmail(), oldPassword);
+
+        user.reauthenticate(credential)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        user.updatePassword(newPassword).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                changePasswordListener.showSuccess();
+                            }
+                        });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        changePasswordListener.showError();
+                    }
+                });
     }
 }
