@@ -31,7 +31,6 @@ class ChangePasswordPresenter implements ChangePasswordListener {
             changePasswordView.showPasswordTooShortError();
         } else {
             isNewPasswordCorrect = true;
-            changePasswordView.hideNewPasswordErrors();
         }
 
         if (!newPassword.equals(retypePassword)) {
@@ -39,6 +38,9 @@ class ChangePasswordPresenter implements ChangePasswordListener {
             changePasswordView.showWrongRetypeError();
         } else {
             isRetypePasswordCorrect = true;
+        }
+
+        if (isNewPasswordCorrect && isRetypePasswordCorrect) {
             changePasswordView.hideNewPasswordErrors();
         }
 
