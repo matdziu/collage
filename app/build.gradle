@@ -7,8 +7,8 @@ android {
         applicationId "pl.collage"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 4
-        versionName "1.1.1"
+        versionCode 5
+        versionName "1.1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -38,10 +38,12 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.android.support:support-v4:25.1.0'
     compile 'org.parceler:parceler-api:1.1.6'
+    compile 'com.google.firebase:firebase-crash:10.0.1'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     annotationProcessor 'org.parceler:parceler:1.1.6'
 }
+
 
 
 
