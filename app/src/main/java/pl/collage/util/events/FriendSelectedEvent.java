@@ -2,11 +2,11 @@ package pl.collage.util.events;
 
 import pl.collage.util.models.User;
 
-public class GalleryEvent {
+public class FriendSelectedEvent {
 
     private User friend;
 
-    public GalleryEvent(User friend) {
+    public FriendSelectedEvent(User friend) {
         this.friend = friend;
     }
 

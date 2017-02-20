@@ -4,7 +4,7 @@ import java.util.List;
 
 import pl.collage.base.BasePresenter;
 import pl.collage.util.events.FriendDeletionEvent;
-import pl.collage.util.events.GalleryEvent;
+import pl.collage.util.events.FriendSelectedEvent;
 import pl.collage.util.interactors.FirebaseDatabaseInteractor;
 import pl.collage.util.interactors.FirebaseStorageInteractor;
 import pl.collage.util.models.Photo;
@@ -45,7 +45,7 @@ class FriendsPresenter extends BasePresenter implements FriendsListener {
     @Override
     public void onFriendSelected(User friend) {
         friendsView.navigateToGalleryFragment();
-        friendsView.postGalleryEvent(new GalleryEvent(friend));
+        friendsView.postFriendSelectedEvent(new FriendSelectedEvent(friend));
     }
 
     @Override

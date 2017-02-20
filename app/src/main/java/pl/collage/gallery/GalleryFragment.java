@@ -32,7 +32,7 @@ import pl.collage.home.HomeActivity;
 import pl.collage.sendimage.SendImageActivity;
 import pl.collage.util.adapters.PhotosAdapter;
 import pl.collage.util.events.FriendDeletionEvent;
-import pl.collage.util.events.GalleryEvent;
+import pl.collage.util.events.FriendSelectedEvent;
 import pl.collage.util.interactors.FirebaseDatabaseInteractor;
 import pl.collage.util.interactors.FirebaseStorageInteractor;
 import pl.collage.util.models.Photo;
@@ -116,8 +116,8 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
     }
 
     @Subscribe
-    public void onGalleryEvent(GalleryEvent galleryEvent) {
-        galleryPresenter.setCurrentFriend(galleryEvent.getFriend());
+    public void onFriendSelectedEvent(FriendSelectedEvent friendSelectedEvent) {
+        galleryPresenter.setCurrentFriend(friendSelectedEvent.getFriend());
         galleryPresenter.populatePhotosList();
         noFriendSelectedTextView.setVisibility(View.GONE);
     }
