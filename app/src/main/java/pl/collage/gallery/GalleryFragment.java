@@ -118,7 +118,9 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
             getView().setOnKeyListener(new View.OnKeyListener() {
                 @Override
                 public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                    if (galleryPresenter.getCurrentFriend() != null
+                    if (keyEvent.getAction() == KeyEvent.ACTION_UP
+                            && keyCode == KeyEvent.KEYCODE_BACK
+                            && galleryPresenter.getCurrentFriend() != null
                             && fragmentVisible) {
                         homeActivity.navigateToFriendsFragment(0);
                         return true;
