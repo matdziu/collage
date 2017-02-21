@@ -34,6 +34,7 @@ import pl.collage.sendimage.SendImageActivity;
 import pl.collage.util.adapters.PhotosAdapter;
 import pl.collage.util.events.FriendDeletionEvent;
 import pl.collage.util.events.FriendSelectedEvent;
+import pl.collage.util.events.RefreshGalleryEvent;
 import pl.collage.util.interactors.FirebaseDatabaseInteractor;
 import pl.collage.util.interactors.FirebaseStorageInteractor;
 import pl.collage.util.models.Photo;
@@ -71,6 +72,7 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         galleryPresenter = new GalleryPresenter(this, new FirebaseDatabaseInteractor(), new FirebaseStorageInteractor());
         photosAdapter = new PhotosAdapter(new ArrayList<Photo>(), getScreenSize(), getContext(), galleryPresenter);
     }
@@ -93,14 +95,8 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroy() {
+        super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
 
@@ -154,6 +150,11 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
             noItemsTextView.setVisibility(View.GONE);
             photosAdapter.setPhotoList(new ArrayList<Photo>());
         }
+    }
+
+    @Subscribe
+    public void onRefreshGalleryEvent(RefreshGalleryEvent refreshGalleryEvent) {
+        galleryPresenter.populatePhotosList();
     }
 
     @Override
@@ -232,6 +233,7 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
 
         if (requestCode == REQUEST_SEND_IMAGE) {
             imageFile.delete();
+            galleryPresenter.populatePhotosList();
         }
     }
 }

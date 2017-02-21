@@ -33,6 +33,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collections;
@@ -44,6 +46,7 @@ import pl.collage.R;
 import pl.collage.base.BaseFragment;
 import pl.collage.home.HomeActivity;
 import pl.collage.sendimage.SendImageActivity;
+import pl.collage.util.events.RefreshGalleryEvent;
 
 public class CameraFragment extends BaseFragment {
 
@@ -243,6 +246,7 @@ public class CameraFragment extends BaseFragment {
         if (requestCode == REQUEST_SEND_IMAGE) {
             if (resultCode == RESULT_PICTURE_SENT) {
                 unlock();
+                EventBus.getDefault().post(new RefreshGalleryEvent());
             }
         }
     }
