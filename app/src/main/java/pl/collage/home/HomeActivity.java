@@ -5,12 +5,11 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import pl.collage.R;
 import pl.collage.base.BaseActivity;
 import pl.collage.util.adapters.HomeFragmentPagerAdapter;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class HomeActivity extends BaseActivity {
 
@@ -51,5 +50,9 @@ public class HomeActivity extends BaseActivity {
 
     public void navigateToGalleryFragment(int galleryFragmentPosition) {
         homeViewPager.setCurrentItem(galleryFragmentPosition, true);
+    }
+
+    public void navigateToFriendsFragment(int friendsFragmentPosition) {
+        homeViewPager.setCurrentItem(friendsFragmentPosition, true);
     }
 }

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -65,6 +66,8 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
     private static final int REQUEST_PICK_IMAGE = 2;
     public static final int SPAN_COUNT = 3;
 
+    HomeActivity homeActivity;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +87,12 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        homeActivity = (HomeActivity) getActivity();
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
@@ -96,9 +105,8 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
     }
 
     @Override
-    public void setMenuVisibility(boolean fragmentVisible) {
+    public void setMenuVisibility(final boolean fragmentVisible) {
         super.setMenuVisibility(fragmentVisible);
-        HomeActivity homeActivity = (HomeActivity) getActivity();
         if (homeActivity != null) {
             ActionBar toolbar = homeActivity.getSupportActionBar();
             if (fragmentVisible && toolbar != null) {
@@ -106,6 +114,22 @@ public class GalleryFragment extends BaseFragment implements GalleryView {
                 homeActivity.showHomeNavigation();
                 toolbar.setTitle(R.string.gallery_screen_title);
             }
+        }
+
+        if (getView() != null) {
+            getView().setFocusableInTouchMode(true);
+            getView().requestFocus();
+            getView().setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                    if (galleryPresenter.getCurrentFriend() != null
+                            && fragmentVisible) {
+                        homeActivity.navigateToFriendsFragment(0);
+                        return true;
+                    }
+                    return false;
+                }
+            });
         }
     }
 
